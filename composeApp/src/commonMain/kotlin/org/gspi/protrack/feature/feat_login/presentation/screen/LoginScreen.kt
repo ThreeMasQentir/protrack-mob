@@ -46,8 +46,13 @@ fun LoginScreen(
             viewModel.onEvent(LoginEvent.ClearError)
         }
         uiState.loginResponse?.let {
+            viewModel.onEvent(LoginEvent.OnDecoderToken)
+        }
+        uiState.decoderTokenResponse?.let {
             Success.show("Login successful")
             onLoginSuccess()
+            Loading.hide()
+            println("TokenCek: ${viewModel.getToken()}")
         }
     }
 

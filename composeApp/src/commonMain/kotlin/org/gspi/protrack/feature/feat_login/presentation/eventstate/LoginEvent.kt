@@ -4,5 +4,6 @@ sealed class LoginEvent {
     data class PhoneChanged(val phone: String) : LoginEvent()
     data class PasswordChanged(val password: String) : LoginEvent()
     data object LoginClicked : LoginEvent()
+    data object OnDecoderToken : LoginEvent()
     data object ClearError : LoginEvent()
 }

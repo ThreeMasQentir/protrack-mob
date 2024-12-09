@@ -8,17 +8,21 @@ import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.header
+import io.ktor.client.utils.EmptyContent.headers
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
+import org.gspi.protrack.common.local.UserPreferences
 import org.gspi.protrack.createDataStore
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
 
-fun androidHttpClient(context: Context): HttpClient {
+fun androidHttpClient(context: Context, myDataManager: UserPreferences): HttpClient {
     println("androidHttpClient: called")
     return HttpClient(OkHttp) {
         engine {
@@ -39,19 +43,19 @@ fun androidHttpClient(context: Context): HttpClient {
         install(ContentNegotiation) {
             json(Json { ignoreUnknownKeys = true })
         }
-//        install(DefaultRequest) {
-//            if (!headers.contains("No-Authentication") && myDataManager.getToken()
-//                    ?.isNotEmpty() == true
-//            ) {
-//                header("Authorization", "Bearer ${myDataManager.getToken()}")
-//            }
-//        }
+        install(DefaultRequest) {
+            if (!headers.contains("No-Authentication") && myDataManager.getToken()
+                    ?.isNotEmpty() == true
+            ) {
+                header("Authorization", "Bearer ${myDataManager.getToken()}")
+            }
+        }
     }
 }
 
 
 val androidModule = module {
-    single { androidHttpClient(get()) }
+    single { androidHttpClient(get(), get()) }
     single<DataStore<Preferences>> {
         createDataStore(androidContext())
     }

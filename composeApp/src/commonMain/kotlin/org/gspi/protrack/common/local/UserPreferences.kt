@@ -5,16 +5,22 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-
-val TOKEN_KEY = stringPreferencesKey("auth_token")
+import kotlinx.coroutines.runBlocking
 
 class UserPreferences(private val dataStore: DataStore<Preferences>) {
 
-    val token: Flow<String?> = dataStore.data
+    private val tokenFlow: Flow<String?> = dataStore.data
         .map { preferences ->
             preferences[TOKEN_KEY]
         }
+
+    fun getToken(): String? {
+        return runBlocking {
+            tokenFlow.firstOrNull()
+        }
+    }
 
     suspend fun saveToken(token: String) {
         dataStore.edit { preferences ->
@@ -26,5 +32,9 @@ class UserPreferences(private val dataStore: DataStore<Preferences>) {
         dataStore.edit { preferences ->
             preferences.remove(TOKEN_KEY)
         }
+    }
+
+    companion object {
+        private val TOKEN_KEY = stringPreferencesKey("auth_token")
     }
 }
