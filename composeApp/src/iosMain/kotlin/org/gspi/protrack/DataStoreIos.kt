@@ -3,8 +3,8 @@ package org.gspi.protrack
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import kotlinx.cinterop.ExperimentalForeignApi
-import org.gspi.protrack.core.DATASTORE_FILE_NAME
-import org.gspi.protrack.core.createDataStore
+import org.gspi.protrack.common.local.DATASTORE_FILE_NAME
+import org.gspi.protrack.common.local.createDataStore
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSURL

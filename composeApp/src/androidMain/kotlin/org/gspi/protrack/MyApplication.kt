@@ -1,7 +1,7 @@
 package org.gspi.protrack
 
 import android.app.Application
-import org.gspi.protrack.core.coreModule
+import org.gspi.protrack.common.di.coreModule
 import org.gspi.protrack.di.androidModule
 import org.gspi.protrack.feature.feat_login.di.loginModule
 import org.koin.android.ext.koin.androidContext

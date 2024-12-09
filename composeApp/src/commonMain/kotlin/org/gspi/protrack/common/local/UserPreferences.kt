@@ -1,4 +1,4 @@
-package org.gspi.protrack.core
+package org.gspi.protrack.common.local
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

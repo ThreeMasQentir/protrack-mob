@@ -11,31 +11,47 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.gspi.protrack.feature.feat_login.presentation.component.LoginBackgroundComponent
+import org.gspi.protrack.feature.feat_login.presentation.eventstate.LoginEvent
 import org.gspi.protrack.feature.feat_login.presentation.viewmodel.LoginViewModel
 import org.gspi.protrack.gspidesign.button.GspiButtonPrimary
+import org.gspi.protrack.gspidesign.error.Error
+import org.gspi.protrack.gspidesign.loading.Loading
+import org.gspi.protrack.gspidesign.success.Success
 import org.gspi.protrack.gspidesign.text.GspiTextLabel
 import org.gspi.protrack.gspidesign.text.GspiTextTitle
 import org.gspi.protrack.gspidesign.textfield.GspiTextFieldPassword
 import org.gspi.protrack.gspidesign.textfield.GspiTextFieldPhoneNumber
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel = remember { LoginViewModel() },
+    viewModel: LoginViewModel = koinViewModel(),
+    onLoginSuccess: () -> Unit
 ) {
-    var phoneNumber by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
 
-    viewModel.login()
+    val uiState by viewModel.uiState.collectAsState()
+    LaunchedEffect(uiState) {
+        if (uiState.isLoading) Loading.show() else Loading.hide()
+        uiState.errorMessage?.let { errorMessage ->
+            Error.show(errorMessage)
+            viewModel.onEvent(LoginEvent.ClearError)
+        }
+        uiState.loginResponse?.let {
+            Success.show("Login successful")
+            onLoginSuccess()
+        }
+    }
+
+
     Box(modifier = modifier.fillMaxSize()) {
         LoginBackgroundComponent(modifier)
         Card(
@@ -64,8 +80,10 @@ fun LoginScreen(
                 GspiTextTitle("Sign In")
                 GspiTextLabel("No Hp", modifier= Modifier.align(Alignment.Start))
                 GspiTextFieldPhoneNumber(
-                    value = phoneNumber,
-                    onValueChange = { phoneNumber = it },
+                    value = uiState.loginRequest.phone,
+                    onValueChange = {
+                        viewModel.onEvent(LoginEvent.PhoneChanged(it))
+                    },
                     placeholder = "Enter phone number",
                     isValid = {
 
@@ -73,14 +91,18 @@ fun LoginScreen(
                 )
                 GspiTextLabel("Password", modifier= Modifier.align(Alignment.Start))
                 GspiTextFieldPassword(
-                    value = password,
-                    onValueChange = { password = it },
+                    value = uiState.loginRequest.password,
+                    onValueChange = {
+                        viewModel.onEvent(LoginEvent.PasswordChanged(it))
+                    },
                     placeholder = "Enter password"
                 )
 
                 GspiButtonPrimary(
-                    text = "Submit",
-                    onClick = { /* Handle button click */ },
+                    text = "Login",
+                    onClick = {
+                        viewModel.onEvent(LoginEvent.LoginClicked)
+                    },
                     modifier = Modifier.padding(16.dp).fillMaxWidth()
                 )
             }
