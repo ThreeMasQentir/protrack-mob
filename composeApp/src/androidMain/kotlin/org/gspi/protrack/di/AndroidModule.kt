@@ -1,6 +1,9 @@
 package org.gspi.protrack.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import io.ktor.client.HttpClient
@@ -10,6 +13,8 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
+import org.gspi.protrack.createDataStore
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
 
@@ -44,6 +49,10 @@ fun androidHttpClient(context: Context): HttpClient {
     }
 }
 
+
 val androidModule = module {
     single { androidHttpClient(get()) }
+    single<DataStore<Preferences>> {
+        createDataStore(androidContext())
+    }
 }

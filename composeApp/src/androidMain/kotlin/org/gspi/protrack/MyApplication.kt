@@ -1,6 +1,7 @@
 package org.gspi.protrack
 
 import android.app.Application
+import org.gspi.protrack.core.coreModule
 import org.gspi.protrack.di.androidModule
 import org.gspi.protrack.feature.feat_login.di.loginModule
 import org.koin.android.ext.koin.androidContext
@@ -15,6 +16,7 @@ class MyApplication : Application() {
             androidLogger(Level.DEBUG)
             androidContext(this@MyApplication)
             modules(
+                coreModule,
                 androidModule,
                 loginModule
             )

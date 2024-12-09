@@ -12,6 +12,7 @@ androidx-lifecycle = "2.8.3"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
 compose-multiplatform = "1.7.0"
+datastoreVersion = "1.1.1"
 junit = "4.13.2"
 kotlin = "2.0.21"
 materialIconsCore = "1.7.0"
@@ -22,6 +23,8 @@ navigationCompose = "2.7.0-alpha07"
 datastore = "1.1.1"
 
 [libraries]
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastoreVersion" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastoreVersion" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
