@@ -30,11 +30,12 @@ import org.gspi.protrack.gspidesign.textfield.GspiTextFieldPhoneNumber
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel = remember { LoginViewModel() }
+    viewModel: LoginViewModel = remember { LoginViewModel() },
 ) {
     var phoneNumber by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+    viewModel.login()
     Box(modifier = modifier.fillMaxSize()) {
         LoginBackgroundComponent(modifier)
         Card(
