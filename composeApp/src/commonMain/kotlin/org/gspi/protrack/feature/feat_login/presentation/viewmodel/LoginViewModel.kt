@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.gspi.protrack.common.local.UserPreferences
 import org.gspi.protrack.common.utils.handleApiResponse
 import org.gspi.protrack.feature.feat_login.data.model.request.LoginRequest
+import org.gspi.protrack.feature.feat_login.data.model.response.DecoderTokenResponse
 import org.gspi.protrack.feature.feat_login.domain.DecoderTokenUseCase
 import org.gspi.protrack.feature.feat_login.domain.LoginUseCase
 import org.gspi.protrack.feature.feat_login.presentation.eventstate.LoginEvent
@@ -73,6 +74,7 @@ class LoginViewModel(
                 apiCall = { decoderTokenUseCase.execute() },
                 onSuccess = { response ->
                     updateUiState(_uiState.value.copy(isLoading = false, decoderTokenResponse = response))
+                    saveUserInformation(response)
                 },
                 onError = { error ->
                     updateUiState(_uiState.value.copy(isLoading = false, errorMessage = error))
@@ -84,6 +86,14 @@ class LoginViewModel(
     private fun saveToken(token: String) {
         viewModelScope.launch {
             userPreferences.saveToken(token)
+        }
+    }
+
+    private fun saveUserInformation(user: DecoderTokenResponse) {
+        viewModelScope.launch {
+            userPreferences.saveName(user.name)
+            userPreferences.savePhone(user.phone)
+            userPreferences.saveListRole(user.role)
         }
     }
 
