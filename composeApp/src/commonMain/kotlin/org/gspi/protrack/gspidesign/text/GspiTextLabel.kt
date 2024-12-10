@@ -24,6 +24,6 @@ fun GspiTextLabel(
             fontSize = 12.sp,
             color = Color(0xFF113F3F)
         ),
-        modifier = modifier.padding(horizontal = 16.dp),
+        modifier = modifier,
     )
 }

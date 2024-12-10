@@ -83,7 +83,7 @@ fun LoginScreen(
 
             ) {
                 GspiTextTitle("Sign In")
-                GspiTextLabel("No Hp", modifier= Modifier.align(Alignment.Start))
+                GspiTextLabel("No Hp", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
                 GspiTextFieldPhoneNumber(
                     value = uiState.loginRequest.phone,
                     onValueChange = {
@@ -94,7 +94,7 @@ fun LoginScreen(
 
                     }
                 )
-                GspiTextLabel("Password", modifier= Modifier.align(Alignment.Start))
+                GspiTextLabel("Password", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
                 GspiTextFieldPassword(
                     value = uiState.loginRequest.password,
                     onValueChange = {
