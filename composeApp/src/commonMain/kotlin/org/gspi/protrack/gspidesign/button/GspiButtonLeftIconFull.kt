@@ -28,7 +28,7 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun GspiButtonLeftIcon(
+fun GspiButtonLeftIconFull(
     text: String,
     icon: DrawableResource = Res.drawable.ic_edit,
     onClick: () -> Unit,
@@ -49,7 +49,8 @@ fun GspiButtonLeftIcon(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier.fillMaxWidth()
         ) {
             // Icon
             Icon(

@@ -48,10 +48,10 @@ fun NewProjectSearchComponent(
             ProjectTitle(
                 text = "Projects",
                 icon = Res.drawable.ic_project_map,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(start = 16.dp).weight(1.5f)
             )
             GspiButtonLeftIcon(
-                modifier = Modifier.wrapContentWidth(),
+                modifier = Modifier.wrapContentWidth().weight(1f),
                 text = "New Project",
                 icon = Res.drawable.ic_edit,
                 onClick = {
