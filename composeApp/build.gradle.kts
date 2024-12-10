@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.sqlDelight)
 }
 
 kotlin {
@@ -37,6 +38,7 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.chucker.library)
             implementation(libs.koin.android)
+            implementation(libs.sqldelight.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -59,10 +61,19 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.androidx.datastore)
             implementation(libs.androidx.datastore.preferences)
+            implementation(libs.sqldelight.coroutines)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.ios)
+            implementation(libs.sqldelight.native)
+        }
+    }
+}
 
+sqldelight {
+    databases {
+        create("ProjectDatabase") {
+            packageName = "com.example"
         }
     }
 }

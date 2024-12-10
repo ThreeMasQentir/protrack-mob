@@ -52,7 +52,6 @@ fun LoginScreen(
             Success.show("Login successful")
             onLoginSuccess()
             Loading.hide()
-            println("TokenCek: ${viewModel.getToken()}")
         }
     }
 

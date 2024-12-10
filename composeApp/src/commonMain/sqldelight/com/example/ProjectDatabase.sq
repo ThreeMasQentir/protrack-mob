@@ -1,0 +1,28 @@
+CREATE TABLE ProjectEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    project_name TEXT NOT NULL,
+    start_date TEXT NOT NULL,
+    deadline_date TEXT NOT NULL,
+    gps_current INTEGER NOT NULL,
+    gps_total INTEGER NOT NULL,
+    uav_current INTEGER NOT NULL,
+    uav_total INTEGER NOT NULL
+);
+
+-- Insert or replace a project
+insertProject:
+INSERT OR REPLACE INTO ProjectEntity (
+    id, project_name, start_date, deadline_date, gps_current, gps_total, uav_current, uav_total
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+-- Select all projects
+getAllProjects:
+SELECT * FROM ProjectEntity;
+
+-- Delete a project by ID
+deleteProjectById:
+DELETE FROM ProjectEntity WHERE id = ?;
+
+-- Delete all projects
+deleteAllProjects:
+DELETE FROM ProjectEntity;

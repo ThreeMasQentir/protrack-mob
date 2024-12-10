@@ -3,7 +3,6 @@ package org.gspi.protrack.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import io.ktor.client.HttpClient
@@ -11,11 +10,11 @@ import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.header
-import io.ktor.client.utils.EmptyContent.headers
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
+import org.gspi.protrack.common.local.DatabaseDriverFactory
 import org.gspi.protrack.common.local.UserPreferences
 import org.gspi.protrack.createDataStore
 import org.koin.android.ext.koin.androidContext
@@ -59,4 +58,5 @@ val androidModule = module {
     single<DataStore<Preferences>> {
         createDataStore(androidContext())
     }
+    single { DatabaseDriverFactory(androidContext()).create() }
 }

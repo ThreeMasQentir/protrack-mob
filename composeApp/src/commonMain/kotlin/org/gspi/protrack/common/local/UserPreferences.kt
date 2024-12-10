@@ -85,6 +85,12 @@ class UserPreferences(private val dataStore: DataStore<Preferences>) {
         }
     }
 
+    suspend fun clearAll() {
+        dataStore.edit { preferences ->
+            preferences.clear()
+        }
+    }
+
     companion object {
         private val TOKEN_KEY = stringPreferencesKey("auth_token")
         private val NAME_KEY = stringPreferencesKey("name")

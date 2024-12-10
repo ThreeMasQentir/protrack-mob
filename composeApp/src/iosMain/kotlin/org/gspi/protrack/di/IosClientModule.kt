@@ -2,6 +2,7 @@ package org.gspi.protrack.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import app.cash.sqldelight.db.SqlDriver
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.darwin.Darwin
 import io.ktor.client.plugins.DefaultRequest
@@ -9,6 +10,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.header
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import org.gspi.protrack.common.local.DatabaseDriverFactory
 import org.gspi.protrack.common.local.UserPreferences
 import org.gspi.protrack.createDataStoreIos
 import org.koin.dsl.module
@@ -34,4 +36,5 @@ val iosModule = module {
     single<DataStore<Preferences>> {
         createDataStoreIos()
     }
+    single<SqlDriver> { DatabaseDriverFactory().create() }
 }
