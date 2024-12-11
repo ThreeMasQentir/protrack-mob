@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,9 +22,12 @@ import org.gspi.protrack.gspidesign.font.PoppinsFontFamily
 
 @Composable
 fun GspiProgress(
-    progress: Float, // Progress value between 0.0 and 1.0
+    progress: Int, // Progress value between 0 and 100
     modifier: Modifier = Modifier
 ) {
+    // Clamp progress to ensure it's within 0 to 100
+    val clampedProgress = progress.coerceIn(0, 100)
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -35,13 +39,13 @@ fun GspiProgress(
         Box(
             modifier = Modifier
                 .fillMaxHeight()
-                .fillMaxWidth(progress) // Fill based on the progress value
+                .width((clampedProgress * 3).dp) // Adjust width based on progress (300.dp max for 100%)
                 .background(Color(0xFFFFC130), shape = RoundedCornerShape(12.dp)) // Yellow fill
         )
 
         // Progress Text
         Text(
-            text = "${(progress * 100).toInt()}%", // Convert progress to percentage
+            text = "$clampedProgress%", // Display progress as a percentage string
             style = TextStyle(
                 fontFamily = PoppinsFontFamily(),
                 fontWeight = FontWeight.Bold,

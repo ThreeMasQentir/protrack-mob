@@ -11,6 +11,7 @@ import io.ktor.client.request.header
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.gspi.protrack.common.local.DatabaseDriverFactory
+import org.gspi.protrack.common.local.IOSDatabaseDriverFactory
 import org.gspi.protrack.common.local.UserPreferences
 import org.gspi.protrack.createDataStoreIos
 import org.koin.dsl.module
@@ -20,6 +21,8 @@ fun iosHttpClient(myDataManager: UserPreferences): HttpClient {
         install(ContentNegotiation) {
             json(Json { ignoreUnknownKeys = true })
         }
+        //print token
+        println("token: ${myDataManager.getToken()}")
         install(DefaultRequest) {
             url("https://gspi-protrack.my.id/")
             if (!headers.contains("No-Authentication") && myDataManager.getToken()?.isNotEmpty() == true) {
@@ -36,5 +39,5 @@ val iosModule = module {
     single<DataStore<Preferences>> {
         createDataStoreIos()
     }
-    single<SqlDriver> { DatabaseDriverFactory().create() }
+    single<DatabaseDriverFactory> { IOSDatabaseDriverFactory() }
 }

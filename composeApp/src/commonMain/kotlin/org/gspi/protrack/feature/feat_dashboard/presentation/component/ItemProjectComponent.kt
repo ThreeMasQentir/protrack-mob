@@ -27,7 +27,7 @@ import org.gspi.protrack.gspidesign.text.GspiTextLabel
 @Composable
 fun ItemProjectComponent(
     projectName: String,
-    progress: Float,
+    progress: Int,
     timeline: String,
     timeLeft: String,
     modifier: Modifier = Modifier

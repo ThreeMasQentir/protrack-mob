@@ -1,4 +1,4 @@
-package org.gspi.protrack.feature.feat_login.data.api
+package org.gspi.protrack.feature.feat_login.data.source
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -11,7 +11,7 @@ import org.gspi.protrack.feature.feat_login.data.model.request.LoginRequest
 import org.gspi.protrack.feature.feat_login.data.model.response.DecoderTokenResponse
 import org.gspi.protrack.feature.feat_login.data.model.response.LoginResponse
 
-class LoginApi(private val client: HttpClient) {
+class LoginRemoteDataSource(private val client: HttpClient) {
 
     private val baseUrl = "https://gspi-protrack.my.id/api"
 

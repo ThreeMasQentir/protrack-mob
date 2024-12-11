@@ -20,7 +20,8 @@ ktor = "2.3.12"
 koin = "4.0.0"
 chucker = "4.0.0"
 navigationCompose = "2.7.0-alpha07"
-sqldelight = "2.0.2"
+sqldelight = "2.0.1"
+sqliter = "1.2.0"
 
 [libraries]
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastoreVersion" }
@@ -57,6 +58,8 @@ sqldelight-android = { module = "app.cash.sqldelight:android-driver", version.re
 sqldelight-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 sqldelight-jvm = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
+sqldelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "sqldelight" }
+sqliter = { module = "co.touchlab:sqliter", version.ref = "sqliter" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -9,6 +9,8 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,7 +24,11 @@ import org.gspi.protrack.feature.feat_dashboard.presentation.component.DrawerDas
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.ItemProjectComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.NewProjectSearchComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.ProTrackHeaderComponent
+import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
 import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.DashboardViewModel
+import org.gspi.protrack.feature.feat_login.presentation.eventstate.LoginEvent
+import org.gspi.protrack.gspidesign.error.Error
+import org.gspi.protrack.gspidesign.loading.Loading
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -30,13 +36,19 @@ fun DashboardScreen(
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = koinViewModel()
 ) {
-    var searchValue by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsState()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-
-   viewModel.getAllProjects()
-
-
+    LaunchedEffect(Unit){
+        viewModel.onEvent(DashboardEvent.LoadListProject)
+    }
+    LaunchedEffect(uiState) {
+        if (uiState.isLoading) Loading.show() else Loading.hide()
+        uiState.errorMessage?.let { errorMessage ->
+            Error.show(errorMessage)
+            viewModel.onEvent(DashboardEvent.ClearError)
+        }
+    }
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -59,24 +71,24 @@ fun DashboardScreen(
                     isDashboard = true,
                     onHamburgerClick = {
                         scope.launch {
-                            drawerState.open() // Open the navigation drawer
+                            drawerState.open()
                         }
                     }
                 )
                 Spacer(modifier = Modifier.padding(8.dp))
                 NewProjectSearchComponent(
-                    searchValue = searchValue,
+                    searchValue = uiState.searchValue,
                     onValueChange = {
-                        searchValue = it
+                        viewModel.onEvent(DashboardEvent.OnSearchValueChange(it))
                     }
                 )
-
-                for (i in 0..5) {
+                uiState.listProject.forEach { project ->
+//                    val progressPercent = project.gpsCurrent / project.gpsTotal * 100
                     ItemProjectComponent(
-                        projectName = "Proyek Foto Tegak BPN  Kabupaten Demak",
-                        progress = 0.7f,
-                        timeline = "1 Dec 2024 - 31 Jan 2025",
-                        timeLeft = "63 days left"
+                        projectName = project.projectName,
+                        progress = 45,
+                        timeline = "${project.startDate} - ${project.deadlineDate}",
+                        timeLeft = "10 days left",
                     )
                 }
             }
