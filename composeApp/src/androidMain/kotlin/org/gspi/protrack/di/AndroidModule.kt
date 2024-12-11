@@ -15,9 +15,11 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
+import org.gspi.protrack.AndroidConnectivityChecker
 import org.gspi.protrack.common.local.AndroidDatabaseDriverFactory
 import org.gspi.protrack.common.local.DatabaseDriverFactory
 import org.gspi.protrack.common.local.UserPreferences
+import org.gspi.protrack.common.network.ConnectivityChecker
 import org.gspi.protrack.createDataStore
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -61,4 +63,5 @@ val androidModule = module {
         createDataStore(androidContext())
     }
     single<DatabaseDriverFactory> { AndroidDatabaseDriverFactory(androidContext()) }
+    single<ConnectivityChecker> { AndroidConnectivityChecker(get()) }
 }

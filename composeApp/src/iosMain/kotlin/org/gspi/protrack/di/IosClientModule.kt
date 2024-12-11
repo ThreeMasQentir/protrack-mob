@@ -10,9 +10,11 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.header
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import org.gspi.protrack.IOSConnectivityChecker
 import org.gspi.protrack.common.local.DatabaseDriverFactory
 import org.gspi.protrack.common.local.IOSDatabaseDriverFactory
 import org.gspi.protrack.common.local.UserPreferences
+import org.gspi.protrack.common.network.ConnectivityChecker
 import org.gspi.protrack.createDataStoreIos
 import org.koin.dsl.module
 
@@ -40,4 +42,5 @@ val iosModule = module {
         createDataStoreIos()
     }
     single<DatabaseDriverFactory> { IOSDatabaseDriverFactory() }
+    single<ConnectivityChecker> { IOSConnectivityChecker() }
 }

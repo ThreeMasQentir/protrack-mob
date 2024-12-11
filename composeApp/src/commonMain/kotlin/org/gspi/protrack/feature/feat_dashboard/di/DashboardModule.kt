@@ -12,7 +12,7 @@ import org.koin.dsl.module
 val dashboardModule = module {
     single { DashboardLocalDataSource(get()) }
     single { DashboardRemoteDataSource(get()) }
-    single<DashboardRepository> { DashboardRepositoryImpl(get(), get()) }
+    single<DashboardRepository> { DashboardRepositoryImpl(get(), get(), get()) }
     single { GetListProjectUseCase(get()) }
     viewModel { DashboardViewModel(get(), get()) }
 }
