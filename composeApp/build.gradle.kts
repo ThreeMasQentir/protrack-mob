@@ -62,6 +62,7 @@ kotlin {
             implementation(libs.androidx.datastore)
             implementation(libs.androidx.datastore.preferences)
             implementation(libs.sqldelight.coroutines)
+            api("io.github.kevinnzou:compose-webview-multiplatform:1.8.4")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.ios)

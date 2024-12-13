@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,6 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonNull.content
+import org.gspi.protrack.common.media.LaunchFilePicker
+import org.gspi.protrack.common.picker.AllowedFileType
+import org.gspi.protrack.common.picker.FilePickResult
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.DrawerDashboard
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.ItemProjectComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.NewProjectSearchComponent
@@ -95,3 +101,26 @@ fun DashboardScreen(
         }
     )
 }
+/*
+this is example for using
+LaunchFilePicker(
+allowedType = AllowedFileType.ANY,
+onResult = {
+    when(it){
+        FilePickResult.Cancelled -> {
+            println("FilePickResult.Cancelled")
+        }
+        is FilePickResult.Success -> {
+            println("FilePickResult.Success ${it.data?.size}")
+        }
+        is FilePickResult.Error -> {
+            println("FilePickResult.Error ${it.message}")
+        }
+    }
+},
+content = {
+    Button(onClick = it) {
+        Text("Pick File")
+    }
+}
+)*/

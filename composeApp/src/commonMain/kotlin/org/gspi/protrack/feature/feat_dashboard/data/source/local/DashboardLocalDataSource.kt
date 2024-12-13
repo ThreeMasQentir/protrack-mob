@@ -46,7 +46,7 @@ class DashboardLocalDataSource(db: ProjectDatabase) {
             }
     }
 
-    suspend fun deleteAllProjects() {
+    fun deleteAllProjects() {
         queries.deleteAllProjects()
     }
 }
