@@ -38,34 +38,33 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun App() {
     val navController = rememberNavController()
     Box {
-        NavHost(navController = navController, startDestination = Routes.Dashboard.route) {
-            composable(route = Routes.Login.route) {
-                LoginScreen(onLoginSuccess = {
-                    navController.navigate(Routes.Dashboard.route){
-                        popUpTo(Routes.Dashboard.route){
-                            inclusive = true
-                        }
-                    }
-                })
-            }
-            composable(route = Routes.Dashboard.route) {
-                DashboardScreen()
-            }
-        }
-        LoadingDialog()
-        ErrorToast()
-        SuccessToast()
-
-//        val webViewHandler = getWebViewHandler()
-//
-//        Column(
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//            modifier = Modifier.fillMaxWidth().height(300.dp)
-//        ) {
-//            webViewHandler.LoadUrl("https://gspi-protrack.my.id/api/maps?id=7")
+//        NavHost(navController = navController, startDestination = Routes.Dashboard.route) {
+//            composable(route = Routes.Login.route) {
+//                LoginScreen(onLoginSuccess = {
+//                    navController.navigate(Routes.Dashboard.route){
+//                        popUpTo(Routes.Dashboard.route){
+//                            inclusive = true
+//                        }
+//                    }
+//                })
+//            }
+//            composable(route = Routes.Dashboard.route) {
+//                DashboardScreen()
+//            }
 //        }
+//        LoadingDialog()
+//        ErrorToast()
+//        SuccessToast()
 
+        val webViewHandler = getWebViewHandler()
 
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth().height(300.dp)
+        ) {
+            webViewHandler.LoadUrl("https://www.google.com/")
+//            webViewHandler.LoadUrl("https://gspi-protrack.my.id/api/maps?id=7")
+        }
     }
 
 }

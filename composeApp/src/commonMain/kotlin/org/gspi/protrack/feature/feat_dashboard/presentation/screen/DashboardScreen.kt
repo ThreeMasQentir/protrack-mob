@@ -30,6 +30,7 @@ import org.gspi.protrack.feature.feat_dashboard.presentation.component.DrawerDas
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.ItemProjectComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.NewProjectSearchComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.ProTrackHeaderComponent
+import org.gspi.protrack.feature.feat_dashboard.presentation.dialog.AddEditProjectComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
 import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.DashboardViewModel
 import org.gspi.protrack.feature.feat_login.presentation.eventstate.LoginEvent
@@ -55,6 +56,12 @@ fun DashboardScreen(
             viewModel.onEvent(DashboardEvent.ClearError)
         }
     }
+//    AddEditProjectComponent(
+//        isDialogVisible = true,
+//        onDismissRequest = {
+//
+//        }
+//    )
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
