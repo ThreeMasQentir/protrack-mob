@@ -11,23 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import gspiprotrack.composeapp.generated.resources.Res
-import gspiprotrack.composeapp.generated.resources.ic_account_blue
-import gspiprotrack.composeapp.generated.resources.ic_account_red
-import gspiprotrack.composeapp.generated.resources.ic_delete_red
-import gspiprotrack.composeapp.generated.resources.ic_edit_white
 import gspiprotrack.composeapp.generated.resources.ic_users
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.ItemUserComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.NewProjectSearchComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.dialog.AddEditUserComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
 import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.DashboardViewModel
-import org.gspi.protrack.gspidesign.confirmation.Confirmation
+import org.gspi.protrack.gspidesign.confirmation.ConfirmationDialog
 import org.gspi.protrack.gspidesign.font.PoppinsFontFamily
-import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun UsersContent(modifier: Modifier = Modifier,
@@ -70,7 +64,7 @@ fun UsersContent(modifier: Modifier = Modifier,
                 joinDate = "23/09/2013", // Join date field
                 fontFamily = PoppinsFontFamily(), // Custom font (optional)
                 onEditClick = {
-                    Confirmation.show(
+                    ConfirmationDialog.show(
                         title = "Edit User",
                         message = "Are you sure you want to edit this user?",
                         onYesClick = {
@@ -79,7 +73,7 @@ fun UsersContent(modifier: Modifier = Modifier,
                     )
                 },
                 onDeleteClick = {
-                    Confirmation.show(
+                    ConfirmationDialog.show(
                         title = "Delete User",
                         message = "Are you sure you want to delete this user?",
                         onYesClick = {
@@ -88,7 +82,7 @@ fun UsersContent(modifier: Modifier = Modifier,
                     )
                 },
                 onStatusClick = {
-                    Confirmation.show(
+                    ConfirmationDialog.show(
                         title = "Change User Status",
                         message = "Are you sure you want to change this user status?",
                         onYesClick = {
@@ -108,7 +102,7 @@ fun UsersContent(modifier: Modifier = Modifier,
                 joinDate = "23/09/2013", // Join date field
                 fontFamily = PoppinsFontFamily(), // Custom font (optional)
                 onEditClick = {
-                    Confirmation.show(
+                    ConfirmationDialog.show(
                         title = "Edit User",
                         message = "Are you sure you want to edit this user?",
                         onYesClick = {
@@ -117,7 +111,7 @@ fun UsersContent(modifier: Modifier = Modifier,
                     )
                 },
                 onDeleteClick = {
-                    Confirmation.show(
+                    ConfirmationDialog.show(
                         title = "Delete User",
                         message = "Are you sure you want to delete this user?",
                         onYesClick = {
@@ -126,7 +120,7 @@ fun UsersContent(modifier: Modifier = Modifier,
                     )
                 },
                 onStatusClick = {
-                    Confirmation.show(
+                    ConfirmationDialog.show(
                         title = "Change User Status",
                         message = "Are you sure you want to change this user status?",
                         onYesClick = {

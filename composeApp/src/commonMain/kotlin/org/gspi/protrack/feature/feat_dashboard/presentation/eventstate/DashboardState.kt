@@ -9,5 +9,15 @@ data class DashboardState (
     val searchValue: String = "",
     val listProject: List<ProjectResponseItem> = emptyList(),
     val isDialogVisible: Boolean = false,
-    val contentType : ContentType = ContentType.PROJECTS
+    val contentType : ContentType = ContentType.PROJECTS,
+
+    //new project dialog
+    val projectName: String = "",
+    val startDate: String = "",
+    val endDate: String = "",
+    val aoiFileName: String = "",
+    val aoiByteArray: ByteArray? = null,
+    val rencanaTitikControlFileName: String = "",
+    val rencanaTitikControlByteArray: ByteArray? = null,
+
 )

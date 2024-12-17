@@ -46,6 +46,13 @@ class DashboardViewModel(
             is DashboardEvent.OnContentTypeChange -> {
                 updateUiState(_uiState.value.copy(contentType = event.contentType))
             }
+
+            is DashboardEvent.OnAoiChange -> TODO()
+            is DashboardEvent.OnEndDateChange -> TODO()
+            is DashboardEvent.OnProjectNameChange -> TODO()
+            is DashboardEvent.OnRencanaTitikControlChange -> TODO()
+            is DashboardEvent.OnSaveProjectClick -> TODO()
+            is DashboardEvent.OnStartDateChange -> TODO()
         }
     }
 
