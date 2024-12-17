@@ -13,12 +13,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import gspiprotrack.composeapp.generated.resources.Res
 import gspiprotrack.composeapp.generated.resources.ic_logout
+import gspiprotrack.composeapp.generated.resources.ic_project_map
 import gspiprotrack.composeapp.generated.resources.ic_users
 import org.gspi.protrack.gspidesign.button.GspiButtonLeftIconFull
 
 @Composable
 fun DrawerDashboard(
     onUserClick: () -> Unit,
+    onProjectClick: () -> Unit,
     onLogOutClick: () -> Unit,
 ) {
     Column(
@@ -34,6 +36,17 @@ fun DrawerDashboard(
 
         // Other Buttons
         GspiButtonLeftIconFull(
+            text = "Projects",
+            icon = Res.drawable.ic_project_map,
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                onProjectClick()
+            },
+            buttonColor = Color(0xFFFFEFC4),
+            textColor = Color(0xFF113F3F)
+        )
+        Spacer(modifier = Modifier.padding(8.dp))
+        GspiButtonLeftIconFull(
             text = "Users",
             icon = Res.drawable.ic_users,
             modifier = Modifier.fillMaxWidth(),
@@ -43,6 +56,7 @@ fun DrawerDashboard(
             buttonColor = Color(0xFFFFEFC4),
             textColor = Color(0xFF113F3F)
         )
+
 
         // Spacer to push content above and Log Out button to the bottom
         Spacer(modifier = Modifier.weight(1f))

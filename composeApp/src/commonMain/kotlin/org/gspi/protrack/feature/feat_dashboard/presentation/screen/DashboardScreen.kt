@@ -1,12 +1,18 @@
 package org.gspi.protrack.feature.feat_dashboard.presentation.screen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
@@ -18,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -34,8 +41,10 @@ import org.gspi.protrack.feature.feat_dashboard.presentation.component.NewProjec
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.ProTrackHeaderComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.dialog.AddEditProjectComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
+import org.gspi.protrack.feature.feat_dashboard.presentation.model.ContentType
 import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.DashboardViewModel
 import org.gspi.protrack.feature.feat_login.presentation.eventstate.LoginEvent
+import org.gspi.protrack.gspidesign.confirmation.Confirmation
 import org.gspi.protrack.gspidesign.error.Error
 import org.gspi.protrack.gspidesign.loading.Loading
 import org.koin.compose.viewmodel.koinViewModel
@@ -78,18 +87,39 @@ fun DashboardScreen(
                 onUserClick = {
                     scope.launch {
                         drawerState.close()
+                        viewModel.onEvent(DashboardEvent.OnContentTypeChange(ContentType.USERS))
                     }
+                },
+                onProjectClick = {
+                    scope.launch {
+                        drawerState.close()
+                        viewModel.onEvent(DashboardEvent.OnContentTypeChange(ContentType.PROJECTS))
+                        }
                 },
                 onLogOutClick = {
                     scope.launch {
+                        Confirmation.show(
+                            title = "Logout",
+                            message = "Are you sure you want to logout?",
+                            onYesClick = {
+                                viewModel.onEvent(DashboardEvent.OnLogout)
+                            },
+                        )
                         drawerState.close()
                     }
                 }
             )
         },
         content = {
-            Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+            // Root Column with Modifier to fill screen
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                // Header Component - Fixed at the Top
                 ProTrackHeaderComponent(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
                     isDashboard = true,
                     onHamburgerClick = {
                         scope.launch {
@@ -97,27 +127,30 @@ fun DashboardScreen(
                         }
                     }
                 )
-                Spacer(modifier = Modifier.padding(8.dp))
-                NewProjectSearchComponent(
-                    searchValue = uiState.searchValue,
-                    onValueChange = {
-                        viewModel.onEvent(DashboardEvent.OnSearchValueChange(it))
-                    },
-                    onButtonClick = {
-                        viewModel.onEvent(DashboardEvent.OnAddProjectClick(true))
-                    }
-                )
-                uiState.listProject.forEach { project ->
-//                    val progressPercent = project.gpsCurrent / project.gpsTotal * 100
-                    ItemProjectComponent(
-                        projectName = project.projectName,
-                        progress = 45,
-                        timeline = "${project.startDate} - ${project.deadlineDate}",
-                        timeLeft = "10 days left",
-                        onClick = {
-                            navController.navigate(Routes.DetailProject.route)
+
+                // Scrollable Content Below Header
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f) // Allows the Box to take up remaining space
+                        .padding(top = 8.dp) // Adds spacing below the header
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp)
+                    ) {
+                        when (uiState.contentType) {
+                            ContentType.PROJECTS -> DashboardContent(
+                                navController = navController,
+                                viewModel = viewModel
+                            )
+                            ContentType.USERS -> UsersContent(
+                                navController = navController,
+                                viewModel = viewModel
+                            )
                         }
-                    )
+                    }
                 }
             }
         }

@@ -34,6 +34,7 @@ import com.techieroid.webviewapplication.getWebViewHandler
 import org.gspi.protrack.feature.feat_detail_project.presentation.screen.DetailProjectScreen
 import org.gspi.protrack.feature.feat_detail_project.sub.feat_document.presentation.screen.DocumentDetailScreen
 import org.gspi.protrack.feature.feat_detail_project.sub.feat_log.presentation.screen.LogDetailScreen
+import org.gspi.protrack.gspidesign.confirmation.ConfirmationDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -41,7 +42,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun App() {
     val navController = rememberNavController()
     Box {
-        NavHost(navController = navController, startDestination = Routes.DetailProject.route) {
+        NavHost(navController = navController, startDestination = Routes.Dashboard.route) {
             composable(route = Routes.Login.route) {
                 LoginScreen(onLoginSuccess = {
                     navController.navigate(Routes.Dashboard.route){
@@ -68,7 +69,7 @@ fun App() {
         LoadingDialog()
         ErrorToast()
         SuccessToast()
-
+        ConfirmationDialog()
     }
 
 }

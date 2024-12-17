@@ -38,7 +38,10 @@ import org.jetbrains.compose.resources.painterResource
 fun NewProjectSearchComponent(
     searchValue: String,
     onValueChange: (String) -> Unit,
-    onButtonClick: () -> Unit
+    onButtonClick: () -> Unit,
+    title: String = "Projects",
+    buttonText: String = "New Project",
+    icon: DrawableResource = Res.drawable.ic_project_map
 ) {
     Column {
         Row(
@@ -47,13 +50,13 @@ fun NewProjectSearchComponent(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             ProjectTitle(
-                text = "Projects",
-                icon = Res.drawable.ic_project_map,
+                text = title,
+                icon = icon,
                 modifier = Modifier.padding(start = 16.dp).weight(1.5f)
             )
             GspiButtonLeftIcon(
                 modifier = Modifier.wrapContentWidth().weight(1f),
-                text = "New Project",
+                text = buttonText,
                 icon = Res.drawable.ic_edit,
                 onClick = {
                     onButtonClick()

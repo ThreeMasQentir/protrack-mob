@@ -1,6 +1,7 @@
 package org.gspi.protrack.gspidesign.textfield
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -11,6 +12,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -30,31 +32,30 @@ fun GspiTextFieldText(
             Text(
                 text = placeholder,
                 color = Color(0xFFA59C9C), // Placeholder text color
-                style = MaterialTheme.typography.bodySmall.copy(fontSize = 16.sp) // Adjusting placeholder text size
+                style = TextStyle(fontSize = 14.sp) // Placeholder text size
             )
         },
         keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Text,
+            keyboardType = KeyboardType.Text
         ),
-        visualTransformation = VisualTransformation.None,
+        textStyle = TextStyle(
+            fontSize = 14.sp, // Adjusted text size
+            color = Color(0xFFA59C9C) // Text color
+        ),
         colors = TextFieldDefaults.colors(
-            focusedTextColor = Color(0xFFA59C9C), // Font color when focused
-            unfocusedTextColor = Color(0xFFA59C9C), // Font color when not focused
-            disabledTextColor = Color(0xFFA59C9C), // Font color when disabled
-            focusedContainerColor = Color.Transparent, // Transparent inside background
-            unfocusedContainerColor = Color.Transparent, // Transparent inside background
-            disabledContainerColor = Color.Transparent, // Transparent inside background
-            focusedIndicatorColor = Color(0xFFFFC130), // Border color when focused
-            unfocusedIndicatorColor = Color(0xFFFFC130), // Border color when not focused
-            disabledIndicatorColor = Color(0xFFFFC130), // Border color when disabled
+            focusedTextColor = Color(0xFFA59C9C), // Text color when focused
+            unfocusedTextColor = Color(0xFFA59C9C), // Text color when not focused
+            focusedIndicatorColor = Color(0xFFFFC130), // Focused border color
+            unfocusedIndicatorColor = Color(0xFFFFC130), // Unfocused border color
             cursorColor = Color(0xFFA59C9C), // Cursor color
-            focusedPlaceholderColor = Color(0xFFA59C9C), // Placeholder text color when focused
-            unfocusedPlaceholderColor = Color(0xFFA59C9C), // Placeholder text color when not focused
-            disabledPlaceholderColor = Color(0xFFA59C9C) // Placeholder text color when disabled
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent
         ),
-        textStyle = MaterialTheme.typography.bodySmall.copy(fontSize = 16.sp), // Adjusting text size
-        shape = RoundedCornerShape(8.dp), // 8dp rounded corners
-        singleLine = true,
-        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+        shape = RoundedCornerShape(8.dp), // Rounded border
+        singleLine = true, // Keeps it single line
+        modifier = modifier
+            .height(48.dp) // Fixed height
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
     )
 }
