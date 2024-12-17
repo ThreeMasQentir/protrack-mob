@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.sqlDelight)
+    alias(libs.plugins.swiftklib)
 }
 
 kotlin {
@@ -27,6 +28,14 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = false
             linkerOpts.add("-lsqlite3")
+        }
+        iosTarget.compilations {
+            val main by getting {
+               cinterops {
+                   create("hello")
+                   create("webview")
+               }
+            }
         }
     }
     
@@ -68,6 +77,17 @@ kotlin {
             implementation(libs.ktor.client.ios)
             implementation(libs.sqldelight.native)
         }
+    }
+}
+
+swiftklib {
+    create("hello") {
+        path = file("../iosApp/iosApp/hello")
+        packageName = "org.gspi.protrack.hello"
+    }
+    create("webview") {
+        path = file("../iosApp/iosApp/webview")
+        packageName = "org.gspi.protrack.webview"
     }
 }
 

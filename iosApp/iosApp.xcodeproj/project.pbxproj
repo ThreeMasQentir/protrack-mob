@@ -10,7 +10,9 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
-		671084532D032E20006D8B06 /* CustomSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671084522D032E20006D8B06 /* CustomSwiftUIView.swift */; };
+		675DB3142D0FDBF500E66089 /* WebViewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675DB3132D0FDBF500E66089 /* WebViewContent.swift */; };
+		675DB31A2D0FF30300E66089 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675DB3192D0FF30300E66089 /* MapView.swift */; };
+		675DB31C2D0FF34B00E66089 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675DB31B2D0FF34B00E66089 /* MapViewController.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -18,7 +20,10 @@
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
-		671084522D032E20006D8B06 /* CustomSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSwiftUIView.swift; sourceTree = "<group>"; };
+		675DB3132D0FDBF500E66089 /* WebViewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewContent.swift; sourceTree = "<group>"; };
+		675DB3192D0FF30300E66089 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		675DB31B2D0FF34B00E66089 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		6767AE742D0EF1CF001E54BA /* iosApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iosApp.entitlements; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* GSPI Protrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GSPI Protrack.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -51,6 +56,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		675DB3182D0FF2BB00E66089 /* webview */ = {
+			isa = PBXGroup;
+			children = (
+				675DB3192D0FF30300E66089 /* MapView.swift */,
+				675DB31B2D0FF34B00E66089 /* MapViewController.swift */,
+			);
+			path = webview;
+			sourceTree = "<group>";
+		};
 		7555FF72242A565900829871 = {
 			isa = PBXGroup;
 			children = (
@@ -72,12 +86,14 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				675DB3182D0FF2BB00E66089 /* webview */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF82242A565900829871 /* ContentView.swift */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
-				671084522D032E20006D8B06 /* CustomSwiftUIView.swift */,
+				6767AE742D0EF1CF001E54BA /* iosApp.entitlements */,
+				675DB3132D0FDBF500E66089 /* WebViewContent.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -188,8 +204,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
-				671084532D032E20006D8B06 /* CustomSwiftUIView.swift in Sources */,
+				675DB31A2D0FF30300E66089 /* MapView.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
+				675DB31C2D0FF34B00E66089 /* MapViewController.swift in Sources */,
+				675DB3142D0FDBF500E66089 /* WebViewContent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,7 +341,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "${TEAM_ID}";
+				DEVELOPMENT_TEAM = JQJ4P9XV69;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -350,7 +368,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "${TEAM_ID}";
+				DEVELOPMENT_TEAM = JQJ4P9XV69;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

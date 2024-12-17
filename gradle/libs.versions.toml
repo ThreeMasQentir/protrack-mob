@@ -22,6 +22,8 @@ chucker = "4.0.0"
 navigationCompose = "2.7.0-alpha07"
 sqldelight = "2.0.1"
 sqliter = "1.2.0"
+swiftklib = "0.6.3"
+
 
 [libraries]
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastoreVersion" }
@@ -69,3 +71,4 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
+swiftklib = { id = "io.github.ttypic.swiftklib", version.ref = "swiftklib" }

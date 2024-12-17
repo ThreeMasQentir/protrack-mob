@@ -38,6 +38,10 @@ class DashboardViewModel(
             is DashboardEvent.OnSearchValueChange -> {
                 updateUiState(_uiState.value.copy(searchValue = event.searchValue))
             }
+
+            is DashboardEvent.OnAddProjectClick -> {
+                updateUiState(_uiState.value.copy(isDialogVisible = event.isDialogVisible))
+            }
         }
     }
 

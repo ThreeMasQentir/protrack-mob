@@ -31,6 +31,9 @@ import com.multiplatform.webview.web.WebView
 import com.multiplatform.webview.web.rememberWebViewNavigator
 import com.multiplatform.webview.web.rememberWebViewState
 import com.techieroid.webviewapplication.getWebViewHandler
+import org.gspi.protrack.feature.feat_detail_project.presentation.screen.DetailProjectScreen
+import org.gspi.protrack.feature.feat_detail_project.sub.feat_document.presentation.screen.DocumentDetailScreen
+import org.gspi.protrack.feature.feat_detail_project.sub.feat_log.presentation.screen.LogDetailScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -38,33 +41,34 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun App() {
     val navController = rememberNavController()
     Box {
-//        NavHost(navController = navController, startDestination = Routes.Dashboard.route) {
-//            composable(route = Routes.Login.route) {
-//                LoginScreen(onLoginSuccess = {
-//                    navController.navigate(Routes.Dashboard.route){
-//                        popUpTo(Routes.Dashboard.route){
-//                            inclusive = true
-//                        }
-//                    }
-//                })
-//            }
-//            composable(route = Routes.Dashboard.route) {
-//                DashboardScreen()
-//            }
-//        }
-//        LoadingDialog()
-//        ErrorToast()
-//        SuccessToast()
+        NavHost(navController = navController, startDestination = Routes.DetailProject.route) {
+            composable(route = Routes.Login.route) {
+                LoginScreen(onLoginSuccess = {
+                    navController.navigate(Routes.Dashboard.route){
+                        popUpTo(Routes.Dashboard.route){
+                            inclusive = true
+                        }
+                    }
+                })
+            }
+            composable(route = Routes.Dashboard.route) {
+                DashboardScreen(navController = navController)
+            }
+            composable(route = Routes.DetailProject.route) {
+                DetailProjectScreen(navController = navController)
+            }
+            composable(route = Routes.DocumentDetail.route) {
+                DocumentDetailScreen(navController = navController)
+            }
+            composable(route = Routes.LogDetail.route) {
+                LogDetailScreen(navController = navController)
+            }
 
-        val webViewHandler = getWebViewHandler()
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth().height(300.dp)
-        ) {
-            webViewHandler.LoadUrl("https://www.google.com/")
-//            webViewHandler.LoadUrl("https://gspi-protrack.my.id/api/maps?id=7")
         }
+        LoadingDialog()
+        ErrorToast()
+        SuccessToast()
+
     }
 
 }

@@ -1,4 +1,4 @@
-package org.gspi.protrack.feature.feat_dashboard.presentation.dialog
+package org.gspi.protrack.feature.feat_detail_project.sub.feat_log.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,16 +34,12 @@ import org.jetbrains.compose.resources.painterResource
 import kotlin.contracts.contract
 
 @Composable
-fun AddEditProjectComponent(
+fun UploadDocumentComponent(
     modifier: Modifier = Modifier,
     isDialogVisible: Boolean,
     onDialogVisibleChange: (Boolean) -> Unit,
     projectName: String,
     onProjectNameChange: (String) -> Unit,
-    startDate: String,
-    onStartDateChange: (String) -> Unit,
-    endDate: String,
-    onEndDateChange: (String) -> Unit,
 ) {
     if (isDialogVisible) {
         Dialog(
@@ -59,7 +55,7 @@ fun AddEditProjectComponent(
                     .background(Color.White, shape = RoundedCornerShape(8.dp))
             ) {
                 Text(
-                    text = "New Project",
+                    text = "Upload",
                     modifier = Modifier.padding(16.dp),
                     style = TextStyle(
                         fontFamily = PoppinsFontFamily(),
@@ -68,50 +64,13 @@ fun AddEditProjectComponent(
                         color = Color(0xFF113F3F)
                     )
                 )
-                GspiTextLabel("Project Name", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
+                GspiTextLabel("Document Name", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
                 GspiTextFieldText(
                     value = "",
                     onValueChange = { },
-                    placeholder = "Project Name"
+                    placeholder = "Document Name"
                 )
-                GspiTextLabel("Start Date", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
-                Row (
-                    verticalAlignment = Alignment.CenterVertically,
-                ){
-                    Image(
-                        painter = painterResource(Res.drawable.ic_calendar),
-                        contentDescription = "Calendar Icon",
-                        modifier = Modifier.padding(start = 16.dp).size(48.dp)
-                    )
-                    GspiTextFieldText(
-                        value = "",
-                        onValueChange = { },
-                        placeholder = "Project Name"
-                    )
-                }
-
-                GspiTextLabel("End Date", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
-                Row (
-                    verticalAlignment = Alignment.CenterVertically,
-                ){
-                    Image(
-                        painter = painterResource(Res.drawable.ic_calendar),
-                        contentDescription = "Calendar Icon",
-                        modifier = Modifier.padding(start = 16.dp).size(48.dp)
-                    )
-                    GspiTextFieldText(
-                        value = "",
-                        onValueChange = { },
-                        placeholder = "Project Name"
-                    )
-                }
-                GspiTextLabel("Area of Interest (AOI)", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
-                GspiButtonPickFile(
-                    text = "Select File",
-                    onClick = { },
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-                GspiTextLabel("Rencana Titik Kontrol", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
+                GspiTextLabel("Document", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
                 GspiButtonPickFile(
                     text = "Select File",
                     onClick = { },

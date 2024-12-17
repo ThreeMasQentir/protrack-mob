@@ -6,5 +6,6 @@ data class DashboardState (
     val isLoading: Boolean = false,
     val errorMessage: String?= null,
     val searchValue: String = "",
-    val listProject: List<ProjectResponseItem> = emptyList()
+    val listProject: List<ProjectResponseItem> = emptyList(),
+    val isDialogVisible: Boolean = false,
 )

@@ -1,4 +1,4 @@
-package org.gspi.protrack.feature.feat_dashboard.presentation.component
+package org.gspi.protrack.feature.feat_detail_project.sub.feat_log.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,6 +15,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -26,10 +27,8 @@ import org.gspi.protrack.gspidesign.progress.GspiProgress
 import org.gspi.protrack.gspidesign.text.GspiTextLabel
 
 @Composable
-fun ItemProjectComponent(
+fun ItemLogComponent(
     projectName: String,
-    progress: Int,
-    timeline: String,
     timeLeft: String,
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier
@@ -87,33 +86,6 @@ fun ItemProjectComponent(
                             fontSize = 10.sp,
                             color = Color(0xFFA59C9C) // Gray color
                         )
-                    )
-                }
-
-                GspiProgress(
-                    progress = progress,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-                ) {
-                    GspiTextLabel(
-                        text = "Timeline",
-                        modifier = Modifier
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = timeline,
-                        style = TextStyle(
-                            fontFamily = PoppinsFontFamily(),
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 10.sp,
-                            color = Color(0xFFA59C9C) // Gray color
-                        ),
-                        modifier = Modifier.padding(top = 4.dp)
                     )
                 }
 

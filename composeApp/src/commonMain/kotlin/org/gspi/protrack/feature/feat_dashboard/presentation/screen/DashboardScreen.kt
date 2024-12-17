@@ -20,10 +20,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonNull.content
 import org.gspi.protrack.common.media.LaunchFilePicker
+import org.gspi.protrack.common.navigation.Routes
 import org.gspi.protrack.common.picker.AllowedFileType
 import org.gspi.protrack.common.picker.FilePickResult
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.DrawerDashboard
@@ -41,7 +43,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun DashboardScreen(
     modifier: Modifier = Modifier,
-    viewModel: DashboardViewModel = koinViewModel()
+    viewModel: DashboardViewModel = koinViewModel(),
+    navController: NavController
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -56,12 +59,18 @@ fun DashboardScreen(
             viewModel.onEvent(DashboardEvent.ClearError)
         }
     }
-//    AddEditProjectComponent(
-//        isDialogVisible = true,
-//        onDismissRequest = {
-//
-//        }
-//    )
+    AddEditProjectComponent(
+        isDialogVisible = uiState.isDialogVisible,
+        onDialogVisibleChange = {
+            viewModel.onEvent(DashboardEvent.OnAddProjectClick(it))
+        },
+        projectName = "",
+        onProjectNameChange = {},
+        startDate = "",
+        onStartDateChange = {},
+        endDate = "",
+        onEndDateChange = {},
+    )
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -93,6 +102,9 @@ fun DashboardScreen(
                     searchValue = uiState.searchValue,
                     onValueChange = {
                         viewModel.onEvent(DashboardEvent.OnSearchValueChange(it))
+                    },
+                    onButtonClick = {
+                        viewModel.onEvent(DashboardEvent.OnAddProjectClick(true))
                     }
                 )
                 uiState.listProject.forEach { project ->
@@ -102,6 +114,9 @@ fun DashboardScreen(
                         progress = 45,
                         timeline = "${project.startDate} - ${project.deadlineDate}",
                         timeLeft = "10 days left",
+                        onClick = {
+                            navController.navigate(Routes.DetailProject.route)
+                        }
                     )
                 }
             }

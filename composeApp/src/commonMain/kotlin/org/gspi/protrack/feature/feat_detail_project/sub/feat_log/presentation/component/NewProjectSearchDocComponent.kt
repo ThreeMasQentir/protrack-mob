@@ -1,4 +1,4 @@
-package org.gspi.protrack.feature.feat_dashboard.presentation.component
+package org.gspi.protrack.feature.feat_detail_project.sub.feat_log.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +27,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import gspiprotrack.composeapp.generated.resources.Res
+import gspiprotrack.composeapp.generated.resources.ic_document_title
 import gspiprotrack.composeapp.generated.resources.ic_edit
+import gspiprotrack.composeapp.generated.resources.ic_log_title
 import gspiprotrack.composeapp.generated.resources.ic_project_map
 import org.gspi.protrack.gspidesign.button.GspiButtonLeftIcon
 import org.gspi.protrack.gspidesign.font.PoppinsFontFamily
@@ -35,7 +37,7 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun NewProjectSearchComponent(
+fun NewProjectLogSearchComponent(
     searchValue: String,
     onValueChange: (String) -> Unit,
     onButtonClick: () -> Unit
@@ -43,21 +45,13 @@ fun NewProjectSearchComponent(
     Column {
         Row(
             modifier = Modifier
-                .fillMaxWidth().padding(end = 16.dp),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             ProjectTitle(
-                text = "Projects",
-                icon = Res.drawable.ic_project_map,
+                text = "Log",
+                icon = Res.drawable.ic_log_title,
                 modifier = Modifier.padding(start = 16.dp).weight(1.5f)
-            )
-            GspiButtonLeftIcon(
-                modifier = Modifier.wrapContentWidth().weight(1f),
-                text = "New Project",
-                icon = Res.drawable.ic_edit,
-                onClick = {
-                    onButtonClick()
-                }
             )
         }
         SearchComponent(
