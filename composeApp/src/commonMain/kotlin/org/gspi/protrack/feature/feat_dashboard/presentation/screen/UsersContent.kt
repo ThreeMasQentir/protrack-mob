@@ -114,7 +114,7 @@ fun UsersContent(
                     viewModel.onEvent(DashboardEvent.OnSearchValueChange(it))
                 },
                 onButtonClick = {
-                    viewModel.onEvent(DashboardEvent.OnAddProjectClick(true))
+                    viewModel.onEvent(DashboardEvent.OnAddUserClick(true))
                 }
             )
             uiState.listUsers.forEach { item ->

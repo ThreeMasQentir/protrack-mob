@@ -55,6 +55,7 @@ fun AddEditUserComponent(
     onEditClick: () -> Unit,
     isEdit : Boolean
 ) {
+    print("AddEditUserComponent: $isEdit")
     if (isDialogVisible) {
         Dialog(
             onDismissRequest = { onDialogVisibleChange(false) },

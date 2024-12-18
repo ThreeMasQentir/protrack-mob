@@ -38,6 +38,7 @@ class DashboardViewModel(
             DashboardEvent.LoadListUser -> {
                 updateUiState(_uiState.value.copy(
                     isDialogVisible = false,
+                    userIsEdit = false,
                     projectName = "", projectstartDate = "", projectEndDate = "", projectAoiFileName = "Select File", projectAoiByteArray = null, projectRencanaTitikControlFileName = "Select File", projectRencanaTitikControlByteArray = null, metaCreateUser = null))
                 getAllUsers()
             }
@@ -81,11 +82,6 @@ class DashboardViewModel(
             is DashboardEvent.OnStartDateChange -> {
                 updateUiState(_uiState.value.copy(projectstartDate = event.startDate))
             }
-            DashboardEvent.ClearSaveUserState -> {
-                updateUiState(_uiState.value.copy(
-                    isDialogVisible = false,
-                    userName = "", userUsername = "", userPassword = "", userEmail = "", userPhoneNumber = ""))
-            }
             is DashboardEvent.OnDeleteUserClick -> {
                 //todo: call api function
             }
@@ -120,6 +116,14 @@ class DashboardViewModel(
                     isDialogVisible = true,
                     userId = event.id,
                     userName = event.userName, userUsername = event.userUsername, userPassword = event.userPassword, userEmail = event.userEmail, userPhoneNumber = event.userPhoneNumber))
+            }
+
+            is DashboardEvent.OnAddUserClick -> {
+                updateUiState(_uiState.value.copy(
+                    isDialogVisible = event.isDialogVisible,
+                    userIsEdit = false,
+                    userName = "", userUsername = "", userPassword = "", userEmail = "", userPhoneNumber = ""
+                ))
             }
         }
     }

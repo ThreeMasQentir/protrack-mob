@@ -20,6 +20,7 @@ sealed class DashboardEvent {
     data class OnSaveProjectClick(val projectName: String, val startDate: String, val endDate: String, val aoiByteArray: ByteArray, val rencanaTitikControlByteArray: ByteArray) : DashboardEvent()
 
     //user dialog
+    data class OnAddUserClick(val isDialogVisible: Boolean) : DashboardEvent()
     data class OnUserNameChange(val userName: String) : DashboardEvent()
     data class OnUserUsernameChange(val userUsername: String) : DashboardEvent()
     data class OnUserPasswordChange(val userPassword: String) : DashboardEvent()
@@ -29,6 +30,5 @@ sealed class DashboardEvent {
     data object OnEditUserClick : DashboardEvent()
     data class OnDeleteUserClick(val userName: String) : DashboardEvent()
     data class OnUserStateChange(val isActive: Boolean) : DashboardEvent()
-    data object ClearSaveUserState : DashboardEvent()
     data class ShowEditUserDialog(val id: Int, val userName: String, val userUsername: String, val userPassword: String, val userEmail: String, val userPhoneNumber: String) : DashboardEvent()
 }
