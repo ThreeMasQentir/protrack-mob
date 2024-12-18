@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.first
 import org.gspi.protrack.common.model.BaseResponse
 import org.gspi.protrack.common.model.Meta
 import org.gspi.protrack.common.network.ConnectivityChecker
+import org.gspi.protrack.feature.feat_dashboard.data.model.request.AddUpdateUserRequest
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.ProjectResponseItem
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.UserResponseItem
 import org.gspi.protrack.feature.feat_dashboard.data.source.local.DashboardLocalDataSource
@@ -70,6 +71,21 @@ class DashboardRepositoryImpl(
                 )
             }
 
+        }
+    }
+
+    override suspend fun postCreateUser(request: AddUpdateUserRequest): Result<Meta> {
+        return runCatching {
+            remoteDataSource.postCreateUser(request)
+        }
+    }
+
+    override suspend fun postUpdateUser(
+        id: Int,
+        request: AddUpdateUserRequest
+    ): Result<Meta> {
+        return runCatching {
+            remoteDataSource.postUpdateUser(id, request)
         }
     }
 }

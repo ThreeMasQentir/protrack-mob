@@ -6,6 +6,8 @@ import org.gspi.protrack.feature.feat_dashboard.data.source.remote.DashboardRemo
 import org.gspi.protrack.feature.feat_dashboard.domain.DashboardRepository
 import org.gspi.protrack.feature.feat_dashboard.domain.GetListProjectUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.GetListUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.PostCreateUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.PostUpdateUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.DashboardViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -16,5 +18,7 @@ val dashboardModule = module {
     single<DashboardRepository> { DashboardRepositoryImpl(get(), get(), get()) }
     single { GetListProjectUseCase(get()) }
     single { GetListUserUseCase(get()) }
-    viewModel { DashboardViewModel(get(), get(), get()) }
+    single { PostCreateUserUseCase(get()) }
+    single { PostUpdateUserUseCase(get()) }
+    viewModel { DashboardViewModel(get(), get(), get(), get(), get()) }
 }

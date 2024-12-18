@@ -1,5 +1,6 @@
 package org.gspi.protrack.feature.feat_dashboard.presentation.eventstate
 
+import org.gspi.protrack.common.model.Meta
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.ProjectResponseItem
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.UserResponseItem
 import org.gspi.protrack.feature.feat_dashboard.presentation.model.ContentType
@@ -23,12 +24,14 @@ data class DashboardState (
     val projectRencanaTitikControlByteArray: ByteArray? = null,
 
     //user dialog
+    val userId: Int = 0,
     val userName: String = "",
     val userUsername: String = "",
     val userPassword: String = "",
     val userEmail: String = "",
     val userPhoneNumber: String = "",
     val userIsActive: Boolean = true,
-    val userIsEdit : Boolean = false
+    val userIsEdit : Boolean = false,
+    val metaCreateUser: Meta? = null
 
 )

@@ -28,6 +28,7 @@ import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.Dashboard
 import org.gspi.protrack.gspidesign.confirmation.ConfirmationDialog
 import org.gspi.protrack.gspidesign.error.Error
 import org.gspi.protrack.gspidesign.loading.Loading
+import org.gspi.protrack.gspidesign.success.Success
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -105,9 +106,9 @@ fun DashboardScreen(
                     uiState.projectRencanaTitikControlByteArray!!
                 )
             )
-            viewModel.onEvent(DashboardEvent.ClearSaveProjectState)
         }
     )
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {

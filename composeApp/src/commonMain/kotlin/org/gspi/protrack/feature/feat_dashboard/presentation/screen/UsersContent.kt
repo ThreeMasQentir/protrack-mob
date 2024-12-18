@@ -24,16 +24,28 @@ import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.Dashboard
 import org.gspi.protrack.gspidesign.confirmation.ConfirmationDialog
 import org.gspi.protrack.gspidesign.error.Error
 import org.gspi.protrack.gspidesign.font.PoppinsFontFamily
+import org.gspi.protrack.gspidesign.success.Success
 
 @Composable
-fun UsersContent(modifier: Modifier = Modifier,
-                 viewModel: DashboardViewModel
+fun UsersContent(
+    modifier: Modifier = Modifier,
+    viewModel: DashboardViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.onEvent(DashboardEvent.LoadListUser)
     }
 
+    LaunchedEffect(uiState.metaCreateUser) {
+        uiState.metaCreateUser?.let {
+            if (it.code == 200) {
+                Success.show("Project Created Successfully")
+                viewModel.onEvent(DashboardEvent.LoadListUser)
+            } else {
+                Error.show("Failed to create project")
+            }
+        }
+    }
     Box(modifier = modifier.fillMaxSize()) {
 
         AddEditUserComponent(
@@ -68,10 +80,9 @@ fun UsersContent(modifier: Modifier = Modifier,
                     uiState.userPassword.isNotEmpty() &&
                     uiState.userEmail.isNotEmpty() &&
                     uiState.userPhoneNumber.isNotEmpty()
-                ){
+                ) {
                     viewModel.onEvent(DashboardEvent.OnEditUserClick)
-                    viewModel.onEvent(DashboardEvent.ClearSaveUserState)
-                }else {
+                } else {
                     Error.show("Please fill all fields")
                 }
 
@@ -83,10 +94,9 @@ fun UsersContent(modifier: Modifier = Modifier,
                     uiState.userPassword.isNotEmpty() &&
                     uiState.userEmail.isNotEmpty() &&
                     uiState.userPhoneNumber.isNotEmpty()
-                ){
-                viewModel.onEvent(DashboardEvent.OnSaveUserClick)
-                viewModel.onEvent(DashboardEvent.ClearSaveUserState)
-                }else {
+                ) {
+                    viewModel.onEvent(DashboardEvent.OnSaveUserClick)
+                } else {
                     Error.show("Please fill all fields")
                 }
             },
@@ -118,13 +128,16 @@ fun UsersContent(modifier: Modifier = Modifier,
                     joinDate = item.dateCreated,
                     fontFamily = PoppinsFontFamily(),
                     onEditClick = {
-                        viewModel.onEvent(DashboardEvent.ShowEditUserDialog(
-                            userName = item.name,
-                            userUsername = item.password,
-                            userPassword = item.password,
-                            userEmail = item.email,
-                            userPhoneNumber = item.phone
-                        ))
+                        viewModel.onEvent(
+                            DashboardEvent.ShowEditUserDialog(
+                                id = item.id,
+                                userName = item.name,
+                                userUsername = item.password,
+                                userPassword = item.password,
+                                userEmail = item.email,
+                                userPhoneNumber = item.phone
+                            )
+                        )
                     },
                     onDeleteClick = {
                         ConfirmationDialog.show(

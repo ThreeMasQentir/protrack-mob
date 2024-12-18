@@ -7,15 +7,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.gspi.protrack.common.local.UserPreferences
 import org.gspi.protrack.common.utils.handleApiResponse
+import org.gspi.protrack.common.utils.handleApiResponseMeta
 import org.gspi.protrack.feature.feat_dashboard.domain.GetListProjectUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.GetListUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.PostCreateUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.PostUpdateUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardState
 
 class DashboardViewModel(
     private val userPreferences: UserPreferences,
     private val getListProjectUseCase: GetListProjectUseCase,
-    private val getListUserUseCase: GetListUserUseCase
+    private val getListUserUseCase: GetListUserUseCase,
+    private val postCreateUserUseCase: PostCreateUserUseCase,
+    private val postUpdateUserUseCase: PostUpdateUserUseCase
     ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DashboardState())
@@ -31,6 +36,9 @@ class DashboardViewModel(
                 getAllProjects()
             }
             DashboardEvent.LoadListUser -> {
+                updateUiState(_uiState.value.copy(
+                    isDialogVisible = false,
+                    projectName = "", projectstartDate = "", projectEndDate = "", projectAoiFileName = "Select File", projectAoiByteArray = null, projectRencanaTitikControlFileName = "Select File", projectRencanaTitikControlByteArray = null, metaCreateUser = null))
                 getAllUsers()
             }
             is DashboardEvent.ClearError -> {
@@ -65,16 +73,11 @@ class DashboardViewModel(
                 updateUiState(_uiState.value.copy(projectRencanaTitikControlFileName = event.rencanaTitikControlFileName, projectRencanaTitikControlByteArray = event.rencanaTitikControlByteArray))
             }
             is DashboardEvent.OnSaveProjectClick -> {
-                //todo: call api function
                 updateUiState(_uiState.value.copy(isDialogVisible = false))
             }
             is DashboardEvent.OnStartDateChange -> {
                 updateUiState(_uiState.value.copy(projectstartDate = event.startDate))
             }
-            DashboardEvent.ClearSaveProjectState -> {
-                updateUiState(_uiState.value.copy(projectName = "", projectstartDate = "", projectEndDate = "", projectAoiFileName = "Select File", projectAoiByteArray = null, projectRencanaTitikControlFileName = "Select File", projectRencanaTitikControlByteArray = null))
-            }
-
             DashboardEvent.ClearSaveUserState -> {
                 updateUiState(_uiState.value.copy(
                     isDialogVisible = false,
@@ -84,11 +87,11 @@ class DashboardViewModel(
                 //todo: call api function
             }
             DashboardEvent.OnEditUserClick -> {
-                //todo: call api function
-
+                updateUser()
             }
             DashboardEvent.OnSaveUserClick -> {
-                //todo: call api function
+                updateUiState(_uiState.value.copy(isDialogVisible = false))
+                createUser()
             }
             is DashboardEvent.OnUserEmailChange -> {
                 updateUiState(_uiState.value.copy(userEmail = event.userEmail))
@@ -110,7 +113,9 @@ class DashboardViewModel(
             }
             is DashboardEvent.ShowEditUserDialog -> {
                 updateUiState(_uiState.value.copy(
+                    userIsEdit = true,
                     isDialogVisible = true,
+                    userId = event.id,
                     userName = event.userName, userUsername = event.userUsername, userPassword = event.userPassword, userEmail = event.userEmail, userPhoneNumber = event.userPhoneNumber))
             }
         }
@@ -151,6 +156,51 @@ class DashboardViewModel(
                 onError = { error ->
                     println("errorload: $error")
                     updateUiState(_uiState.value.copy(isLoading = false, errorMessage = error))
+                }
+            )
+        }
+    }
+
+    private fun createUser() {
+        updateUiState(_uiState.value.copy(isLoading = true))
+        viewModelScope.launch {
+            handleApiResponseMeta(
+                apiCall = {
+                    postCreateUserUseCase.execute(
+                        name = _uiState.value.userName,
+                        password = _uiState.value.userPassword,
+                        email = _uiState.value.userEmail,
+                        phoneNumber = _uiState.value.userPhoneNumber
+                    )
+                },
+                onSuccess = { response ->
+                    updateUiState(_uiState.value.copy(isLoading = false, metaCreateUser = response))
+                },
+                onError = { error ->
+                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = error.message))
+                }
+            )
+        }
+    }
+
+    private fun updateUser(){
+        updateUiState(_uiState.value.copy(isLoading = true))
+        viewModelScope.launch {
+            handleApiResponseMeta(
+                apiCall = {
+                    postUpdateUserUseCase.execute(
+                        id = _uiState.value.userId,
+                        name = _uiState.value.userName,
+                        password = _uiState.value.userPassword,
+                        email = _uiState.value.userEmail,
+                        phoneNumber = _uiState.value.userPhoneNumber
+                    )
+                },
+                onSuccess = { response ->
+                    updateUiState(_uiState.value.copy(isLoading = false, metaCreateUser = response))
+                },
+                onError = { error ->
+                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = error.message))
                 }
             )
         }

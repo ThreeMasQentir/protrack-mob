@@ -18,7 +18,6 @@ sealed class DashboardEvent {
     data class OnAoiChange(val aoiFileName: String, val aoiByteArray: ByteArray?) : DashboardEvent()
     data class OnRencanaTitikControlChange(val rencanaTitikControlFileName: String, val rencanaTitikControlByteArray: ByteArray?) : DashboardEvent()
     data class OnSaveProjectClick(val projectName: String, val startDate: String, val endDate: String, val aoiByteArray: ByteArray, val rencanaTitikControlByteArray: ByteArray) : DashboardEvent()
-    data object ClearSaveProjectState : DashboardEvent()
 
     //user dialog
     data class OnUserNameChange(val userName: String) : DashboardEvent()
@@ -31,5 +30,5 @@ sealed class DashboardEvent {
     data class OnDeleteUserClick(val userName: String) : DashboardEvent()
     data class OnUserStateChange(val isActive: Boolean) : DashboardEvent()
     data object ClearSaveUserState : DashboardEvent()
-    data class ShowEditUserDialog(val userName: String, val userUsername: String, val userPassword: String, val userEmail: String, val userPhoneNumber: String) : DashboardEvent()
+    data class ShowEditUserDialog(val id: Int, val userName: String, val userUsername: String, val userPassword: String, val userEmail: String, val userPhoneNumber: String) : DashboardEvent()
 }

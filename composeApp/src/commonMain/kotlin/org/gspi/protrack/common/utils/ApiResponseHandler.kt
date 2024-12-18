@@ -60,20 +60,16 @@ suspend fun <T> handleApiResponse(
     }
 }
 
-suspend fun <T> handleApiResponseMeta(
-    apiCall: suspend () -> Result<BaseResponse<T>>, onSuccess: (T) -> Unit, onError: (Meta) -> Unit
+suspend fun handleApiResponseMeta(
+    apiCall: suspend () -> Result<Meta>, onSuccess: (Meta) -> Unit, onError: (Meta) -> Unit
 ) {
     try {
         val result = apiCall()
-        result.onSuccess { baseResponse ->
-            if (baseResponse.meta.code == 200) {
-                baseResponse.data?.let {
-                    onSuccess(it)
-                } ?: run {
-                    onError(baseResponse.meta)
-                }
+        result.onSuccess { meta ->
+            if (meta.code == 200) {
+                onSuccess(meta)
             } else {
-                onError(baseResponse.meta)
+                onError(meta)
             }
         }.onFailure {
             onError(Meta(message = it.message.orEmpty()))
