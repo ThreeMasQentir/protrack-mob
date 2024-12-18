@@ -56,6 +56,5 @@ fun GspiTextFieldText(
         modifier = modifier
             .height(48.dp) // Fixed height
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
     )
 }

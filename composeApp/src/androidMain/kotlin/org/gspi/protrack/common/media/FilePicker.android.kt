@@ -1,5 +1,6 @@
 package org.gspi.protrack.common.media
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 import org.gspi.protrack.common.picker.AllowedFileType
 import org.gspi.protrack.common.picker.FilePickResult
 
+@SuppressLint("Range")
 @Composable
 actual fun LaunchFilePicker(
     allowedType: AllowedFileType,
@@ -30,7 +32,11 @@ actual fun LaunchFilePicker(
                 val byteArray = context.contentResolver.openInputStream(it)?.use { inputStream ->
                     inputStream.readBytes()
                 }
-                onResult(FilePickResult.Success(byteArray))
+                val fileName = context.contentResolver.query(it, null, null, null, null)?.use { cursor ->
+                    cursor.moveToFirst()
+                    cursor.getString(cursor.getColumnIndex("_display_name"))
+                }
+                onResult(FilePickResult.Success(byteArray, fileName ?: "aoi.zip"))
             } ?: run {
                 onResult(FilePickResult.Error("No file selected"))
             }

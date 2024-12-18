@@ -15,9 +15,9 @@ data class DashboardState (
     val projectName: String = "",
     val startDate: String = "",
     val endDate: String = "",
-    val aoiFileName: String = "",
+    val aoiFileName: String = "Select File",
     val aoiByteArray: ByteArray? = null,
-    val rencanaTitikControlFileName: String = "",
+    val rencanaTitikControlFileName: String = "Select File",
     val rencanaTitikControlByteArray: ByteArray? = null,
 
 )

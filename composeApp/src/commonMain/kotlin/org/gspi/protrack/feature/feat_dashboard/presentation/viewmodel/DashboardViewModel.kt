@@ -47,12 +47,28 @@ class DashboardViewModel(
                 updateUiState(_uiState.value.copy(contentType = event.contentType))
             }
 
-            is DashboardEvent.OnAoiChange -> TODO()
-            is DashboardEvent.OnEndDateChange -> TODO()
-            is DashboardEvent.OnProjectNameChange -> TODO()
-            is DashboardEvent.OnRencanaTitikControlChange -> TODO()
-            is DashboardEvent.OnSaveProjectClick -> TODO()
-            is DashboardEvent.OnStartDateChange -> TODO()
+            is DashboardEvent.OnAoiChange -> {
+                updateUiState(_uiState.value.copy(aoiFileName = event.aoiFileName, aoiByteArray = event.aoiByteArray))
+            }
+            is DashboardEvent.OnEndDateChange -> {
+                updateUiState(_uiState.value.copy(endDate = event.endDate))
+            }
+            is DashboardEvent.OnProjectNameChange -> {
+                updateUiState(_uiState.value.copy(projectName = event.projectName))
+            }
+            is DashboardEvent.OnRencanaTitikControlChange -> {
+                updateUiState(_uiState.value.copy(rencanaTitikControlFileName = event.rencanaTitikControlFileName, rencanaTitikControlByteArray = event.rencanaTitikControlByteArray))
+            }
+            is DashboardEvent.OnSaveProjectClick -> {
+                //todo: call api function
+                updateUiState(_uiState.value.copy(isDialogVisible = false))
+            }
+            is DashboardEvent.OnStartDateChange -> {
+                updateUiState(_uiState.value.copy(startDate = event.startDate))
+            }
+            DashboardEvent.ClearSaveProjectState -> {
+                updateUiState(_uiState.value.copy(projectName = "", startDate = "", endDate = "", aoiFileName = "Select File", aoiByteArray = null, rencanaTitikControlFileName = "Select File", rencanaTitikControlByteArray = null))
+            }
         }
     }
 

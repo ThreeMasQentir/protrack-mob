@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
+import org.gspi.protrack.common.picker.FilePickResult
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.DrawerDashboard
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.ProTrackHeaderComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.dialog.AddEditProjectComponent
@@ -38,7 +39,7 @@ fun DashboardScreen(
     val uiState by viewModel.uiState.collectAsState()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         viewModel.onEvent(DashboardEvent.LoadListProject)
     }
     LaunchedEffect(uiState) {
@@ -50,15 +51,62 @@ fun DashboardScreen(
     }
     AddEditProjectComponent(
         isDialogVisible = uiState.isDialogVisible,
-        onDialogVisibleChange = {
-            viewModel.onEvent(DashboardEvent.OnAddProjectClick(it))
+        projectName = uiState.projectName,
+        onProjectNameChange = {
+            viewModel.onEvent(DashboardEvent.OnProjectNameChange(it))
         },
-        projectName = "",
-        onProjectNameChange = {},
-        startDate = "",
-        onStartDateChange = {},
-        endDate = "",
-        onEndDateChange = {},
+        startDate = uiState.startDate,
+        onStartDateChange = {
+            viewModel.onEvent(DashboardEvent.OnStartDateChange(it))
+        },
+        endDate = uiState.endDate,
+        onEndDateChange = {
+            viewModel.onEvent(DashboardEvent.OnEndDateChange(it))
+        },
+        onDialogDismiss = {
+            viewModel.onEvent(DashboardEvent.OnAddProjectClick(false))
+        },
+        onAoiChange = { file ->
+            when (file) {
+                is FilePickResult.Success -> {
+                    viewModel.onEvent(
+                        DashboardEvent.OnAoiChange(
+                            file.fileName,
+                            file.data
+                        )
+                    )
+                }
+                else -> {}
+            }
+        },
+        onKontrolChange = {
+            when (it) {
+                is FilePickResult.Success -> {
+                    viewModel.onEvent(
+                        DashboardEvent.OnRencanaTitikControlChange(
+                            it.fileName,
+                            it.data
+                        )
+                    )
+                }
+
+                else -> {}
+            }
+        },
+        aoiFileName = uiState.aoiFileName,
+        kontrolFileName = uiState.rencanaTitikControlFileName,
+        onSaveProjectClick = {
+            viewModel.onEvent(
+                DashboardEvent.OnSaveProjectClick(
+                    uiState.projectName,
+                    uiState.startDate,
+                    uiState.endDate,
+                    uiState.aoiByteArray!!,
+                    uiState.rencanaTitikControlByteArray!!
+                )
+            )
+            viewModel.onEvent(DashboardEvent.ClearSaveProjectState)
+        }
     )
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -74,7 +122,7 @@ fun DashboardScreen(
                     scope.launch {
                         drawerState.close()
                         viewModel.onEvent(DashboardEvent.OnContentTypeChange(ContentType.PROJECTS))
-                        }
+                    }
                 },
                 onLogOutClick = {
                     scope.launch {
@@ -125,6 +173,7 @@ fun DashboardScreen(
                                 navController = navController,
                                 viewModel = viewModel
                             )
+
                             ContentType.USERS -> UsersContent(
                                 navController = navController,
                                 viewModel = viewModel
