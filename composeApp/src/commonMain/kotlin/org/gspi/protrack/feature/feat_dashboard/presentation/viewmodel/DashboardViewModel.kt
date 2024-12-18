@@ -11,7 +11,9 @@ import org.gspi.protrack.common.utils.handleApiResponseMeta
 import org.gspi.protrack.feature.feat_dashboard.domain.DeleteUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.GetListProjectUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.GetListUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.PostActiveUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.PostCreateUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.PostDeactiveUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.PostUpdateUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardState
@@ -22,7 +24,9 @@ class DashboardViewModel(
     private val getListUserUseCase: GetListUserUseCase,
     private val postCreateUserUseCase: PostCreateUserUseCase,
     private val postUpdateUserUseCase: PostUpdateUserUseCase,
-    private val deleteUserUseCase: DeleteUserUseCase
+    private val deleteUserUseCase: DeleteUserUseCase,
+    private val postDeactiveUserUseCase: PostDeactiveUserUseCase,
+    private val postActiveUserUseCase: PostActiveUserUseCase
     ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DashboardState())
@@ -107,7 +111,7 @@ class DashboardViewModel(
                 updateUiState(_uiState.value.copy(userPhoneNumber = event.userPhoneNumber))
             }
             is DashboardEvent.OnUserStateChange -> {
-                updateUiState(_uiState.value.copy(userIsActive = event.isActive))
+                changeUserStatus(event.id, event.isActive)
             }
             is DashboardEvent.OnUserUsernameChange -> {
                 updateUiState(_uiState.value.copy(userUsername = event.userUsername))
@@ -126,6 +130,10 @@ class DashboardViewModel(
                     userIsEdit = false,
                     userName = "", userUsername = "", userPassword = "", userEmail = "", userPhoneNumber = ""
                 ))
+            }
+
+            is DashboardEvent.OnSearchUserValueChange -> {
+
             }
         }
     }
@@ -223,6 +231,27 @@ class DashboardViewModel(
                     deleteUserUseCase.execute(
                         id = id
                     )
+                },
+                onSuccess = { response ->
+                    updateUiState(_uiState.value.copy(isLoading = false, metaCreateUser = response))
+                },
+                onError = { error ->
+                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = error.message))
+                }
+            )
+        }
+    }
+
+    private fun changeUserStatus(id: Int, isActive: Boolean){
+        updateUiState(_uiState.value.copy(isLoading = true))
+        viewModelScope.launch {
+            handleApiResponseMeta(
+                apiCall = {
+                    if(!isActive){
+                        postActiveUserUseCase.execute(id)
+                    }else{
+                        postDeactiveUserUseCase.execute(id)
+                    }
                 },
                 onSuccess = { response ->
                     updateUiState(_uiState.value.copy(isLoading = false, metaCreateUser = response))

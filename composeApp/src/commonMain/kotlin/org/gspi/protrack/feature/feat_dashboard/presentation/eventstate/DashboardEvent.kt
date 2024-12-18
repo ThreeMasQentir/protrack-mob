@@ -4,6 +4,7 @@ import org.gspi.protrack.feature.feat_dashboard.presentation.model.ContentType
 
 sealed class DashboardEvent {
     data class OnSearchValueChange(val searchValue: String) : DashboardEvent()
+    data class OnSearchUserValueChange(val searchValue: String) : DashboardEvent()
     data object OnLogout : DashboardEvent()
     data object ClearError : DashboardEvent()
     data object LoadListProject : DashboardEvent()
@@ -29,6 +30,6 @@ sealed class DashboardEvent {
     data object OnSaveUserClick : DashboardEvent()
     data object OnEditUserClick : DashboardEvent()
     data class OnDeleteUserClick(val id: Int) : DashboardEvent()
-    data class OnUserStateChange(val isActive: Boolean) : DashboardEvent()
+    data class OnUserStateChange(val isActive: Boolean, val id: Int) : DashboardEvent()
     data class ShowEditUserDialog(val id: Int, val userName: String, val userUsername: String, val userPassword: String, val userEmail: String, val userPhoneNumber: String) : DashboardEvent()
 }

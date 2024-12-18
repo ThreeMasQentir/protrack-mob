@@ -153,6 +153,7 @@ fun UsersContent(
                             title = "Change User Status",
                             message = "Are you sure you want to change this user status?",
                             onYesClick = {
+                                viewModel.onEvent(DashboardEvent.OnUserStateChange(item.isActivated == 1, item.id))
                             },
                         )
                     })

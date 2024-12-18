@@ -7,7 +7,9 @@ import org.gspi.protrack.feature.feat_dashboard.domain.DashboardRepository
 import org.gspi.protrack.feature.feat_dashboard.domain.DeleteUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.GetListProjectUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.GetListUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.PostActiveUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.PostCreateUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.PostDeactiveUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.PostUpdateUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.DashboardViewModel
 import org.koin.core.module.dsl.viewModel
@@ -22,5 +24,7 @@ val dashboardModule = module {
     single { PostCreateUserUseCase(get()) }
     single { PostUpdateUserUseCase(get()) }
     single { DeleteUserUseCase(get()) }
-    viewModel { DashboardViewModel(get(), get(), get(), get(), get(), get()) }
+    single { PostDeactiveUserUseCase(get()) }
+    single { PostActiveUserUseCase(get()) }
+    viewModel { DashboardViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
 }

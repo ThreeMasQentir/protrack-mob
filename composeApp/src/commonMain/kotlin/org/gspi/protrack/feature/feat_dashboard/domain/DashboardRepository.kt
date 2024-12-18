@@ -12,4 +12,6 @@ interface DashboardRepository {
     suspend fun postCreateUser(request: AddUpdateUserRequest): Result<Meta>
     suspend fun postUpdateUser(id: Int, request: AddUpdateUserRequest): Result<Meta>
     suspend fun deleteUser(id: Int): Result<Meta>
+    suspend fun activateUser(id: Int): Result<Meta>
+    suspend fun deactivateUser(id: Int): Result<Meta>
 }

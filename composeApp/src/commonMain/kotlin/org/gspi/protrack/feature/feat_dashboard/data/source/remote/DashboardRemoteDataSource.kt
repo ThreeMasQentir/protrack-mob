@@ -70,5 +70,23 @@ class DashboardRemoteDataSource(private val client: HttpClient) {
         }
     }
 
+    suspend fun deactivateUser(id: Int): Meta {
+        return runCatching {
+            client.post("$baseUrl/user/deactivate/$id") {
+            }.body<Meta>()
+        }.getOrElse { exception ->
+            throw exception
+        }
+    }
+
+    suspend fun activateUser(id: Int): Meta {
+        return runCatching {
+            client.post("$baseUrl/user/activate/$id") {
+            }.body<Meta>()
+        }.getOrElse { exception ->
+            throw exception
+        }
+    }
+
 
 }

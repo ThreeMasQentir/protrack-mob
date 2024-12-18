@@ -94,4 +94,16 @@ class DashboardRepositoryImpl(
             remoteDataSource.deleteUser(id)
         }
     }
+
+    override suspend fun activateUser(id: Int): Result<Meta> {
+        return runCatching {
+            remoteDataSource.activateUser(id)
+        }
+    }
+
+    override suspend fun deactivateUser(id: Int): Result<Meta> {
+        return runCatching {
+            remoteDataSource.deactivateUser(id)
+        }
+    }
 }
