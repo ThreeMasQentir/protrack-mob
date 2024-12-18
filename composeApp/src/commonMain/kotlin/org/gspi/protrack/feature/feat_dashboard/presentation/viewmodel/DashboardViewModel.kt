@@ -133,6 +133,18 @@ class DashboardViewModel(
             }
 
             is DashboardEvent.OnSearchUserValueChange -> {
+                val searchValue = event.searchValue
+                if (searchValue.isEmpty()) {
+                    getAllUsers()
+                    updateUiState(_uiState.value.copy(searchValue = searchValue))
+                    return
+                }else{
+                    val filteredList = _uiState.value.listUsers.filter {
+                        it.name.contains(searchValue, ignoreCase = true) ||
+                                it.email.contains(searchValue, ignoreCase = true)
+                    }
+                    updateUiState(_uiState.value.copy(listUsers = filteredList, searchValue = searchValue))
+                }
 
             }
         }

@@ -111,7 +111,7 @@ fun UsersContent(
                 searchValue = uiState.searchValue,
                 icon = Res.drawable.ic_users,
                 onValueChange = {
-                    viewModel.onEvent(DashboardEvent.OnSearchValueChange(it))
+                    viewModel.onEvent(DashboardEvent.OnSearchUserValueChange(it))
                 },
                 onButtonClick = {
                     viewModel.onEvent(DashboardEvent.OnAddUserClick(true))
