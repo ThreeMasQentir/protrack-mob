@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.gspi.protrack.common.local.UserPreferences
 import org.gspi.protrack.common.utils.handleApiResponse
 import org.gspi.protrack.common.utils.handleApiResponseMeta
+import org.gspi.protrack.feature.feat_dashboard.domain.DeleteUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.GetListProjectUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.GetListUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.PostCreateUserUseCase
@@ -20,7 +21,8 @@ class DashboardViewModel(
     private val getListProjectUseCase: GetListProjectUseCase,
     private val getListUserUseCase: GetListUserUseCase,
     private val postCreateUserUseCase: PostCreateUserUseCase,
-    private val postUpdateUserUseCase: PostUpdateUserUseCase
+    private val postUpdateUserUseCase: PostUpdateUserUseCase,
+    private val deleteUserUseCase: DeleteUserUseCase
     ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DashboardState())
@@ -83,7 +85,7 @@ class DashboardViewModel(
                 updateUiState(_uiState.value.copy(projectstartDate = event.startDate))
             }
             is DashboardEvent.OnDeleteUserClick -> {
-                //todo: call api function
+                deleteUser(event.id)
             }
             DashboardEvent.OnEditUserClick -> {
                 updateUser()
@@ -201,6 +203,25 @@ class DashboardViewModel(
                         password = _uiState.value.userPassword,
                         email = _uiState.value.userEmail,
                         phoneNumber = _uiState.value.userPhoneNumber
+                    )
+                },
+                onSuccess = { response ->
+                    updateUiState(_uiState.value.copy(isLoading = false, metaCreateUser = response))
+                },
+                onError = { error ->
+                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = error.message))
+                }
+            )
+        }
+    }
+
+    private fun deleteUser(id: Int){
+        updateUiState(_uiState.value.copy(isLoading = true))
+        viewModelScope.launch {
+            handleApiResponseMeta(
+                apiCall = {
+                    deleteUserUseCase.execute(
+                        id = id
                     )
                 },
                 onSuccess = { response ->

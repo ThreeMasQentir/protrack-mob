@@ -88,4 +88,10 @@ class DashboardRepositoryImpl(
             remoteDataSource.postUpdateUser(id, request)
         }
     }
+
+    override suspend fun deleteUser(id: Int): Result<Meta> {
+        return runCatching {
+            remoteDataSource.deleteUser(id)
+        }
+    }
 }

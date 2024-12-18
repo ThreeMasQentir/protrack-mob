@@ -2,6 +2,7 @@ package org.gspi.protrack.feature.feat_dashboard.data.source.remote
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -36,7 +37,6 @@ class DashboardRemoteDataSource(private val client: HttpClient) {
         }
     }
 
-    //post user/userId
     suspend fun postCreateUser(request: AddUpdateUserRequest): Meta {
         return runCatching {
             client.post("$baseUrl/user/") {
@@ -53,6 +53,17 @@ class DashboardRemoteDataSource(private val client: HttpClient) {
             client.post("$baseUrl/user/$id") {
                 contentType(ContentType.Application.Json)
                 setBody(request)
+            }.body<Meta>()
+        }.getOrElse { exception ->
+            throw exception
+        }
+    }
+
+    //delete user
+    suspend fun deleteUser(id: Int): Meta {
+        return runCatching {
+            client.delete("$baseUrl/user/$id") {
+                contentType(ContentType.Application.Json)
             }.body<Meta>()
         }.getOrElse { exception ->
             throw exception

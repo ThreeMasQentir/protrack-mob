@@ -39,7 +39,7 @@ fun UsersContent(
     LaunchedEffect(uiState.metaCreateUser) {
         uiState.metaCreateUser?.let {
             if (it.code == 200) {
-                Success.show("Project Created Successfully")
+                Success.show("Berhasil")
                 viewModel.onEvent(DashboardEvent.LoadListUser)
             } else {
                 Error.show("Failed to create project")
@@ -144,7 +144,7 @@ fun UsersContent(
                             title = "Delete User",
                             message = "Are you sure you want to delete this user?",
                             onYesClick = {
-                                viewModel.onEvent(DashboardEvent.OnDeleteUserClick(item.name))
+                                viewModel.onEvent(DashboardEvent.OnDeleteUserClick(item.id))
                             },
                         )
                     },

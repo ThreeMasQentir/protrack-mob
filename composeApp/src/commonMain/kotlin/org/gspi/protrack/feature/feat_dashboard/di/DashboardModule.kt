@@ -4,6 +4,7 @@ import org.gspi.protrack.feature.feat_dashboard.data.repository.DashboardReposit
 import org.gspi.protrack.feature.feat_dashboard.data.source.local.DashboardLocalDataSource
 import org.gspi.protrack.feature.feat_dashboard.data.source.remote.DashboardRemoteDataSource
 import org.gspi.protrack.feature.feat_dashboard.domain.DashboardRepository
+import org.gspi.protrack.feature.feat_dashboard.domain.DeleteUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.GetListProjectUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.GetListUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.domain.PostCreateUserUseCase
@@ -20,5 +21,6 @@ val dashboardModule = module {
     single { GetListUserUseCase(get()) }
     single { PostCreateUserUseCase(get()) }
     single { PostUpdateUserUseCase(get()) }
-    viewModel { DashboardViewModel(get(), get(), get(), get(), get()) }
+    single { DeleteUserUseCase(get()) }
+    viewModel { DashboardViewModel(get(), get(), get(), get(), get(), get()) }
 }

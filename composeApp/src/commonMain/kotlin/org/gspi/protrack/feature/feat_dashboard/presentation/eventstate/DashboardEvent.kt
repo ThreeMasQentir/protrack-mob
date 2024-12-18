@@ -28,7 +28,7 @@ sealed class DashboardEvent {
     data class OnUserPhoneNumberChange(val userPhoneNumber: String) : DashboardEvent()
     data object OnSaveUserClick : DashboardEvent()
     data object OnEditUserClick : DashboardEvent()
-    data class OnDeleteUserClick(val userName: String) : DashboardEvent()
+    data class OnDeleteUserClick(val id: Int) : DashboardEvent()
     data class OnUserStateChange(val isActive: Boolean) : DashboardEvent()
     data class ShowEditUserDialog(val id: Int, val userName: String, val userUsername: String, val userPassword: String, val userEmail: String, val userPhoneNumber: String) : DashboardEvent()
 }
