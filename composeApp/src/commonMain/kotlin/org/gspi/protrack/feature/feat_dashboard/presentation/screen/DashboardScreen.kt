@@ -184,26 +184,3 @@ fun DashboardScreen(
         }
     )
 }
-/*
-this is example for using
-LaunchFilePicker(
-allowedType = AllowedFileType.ANY,
-onResult = {
-    when(it){
-        FilePickResult.Cancelled -> {
-            println("FilePickResult.Cancelled")
-        }
-        is FilePickResult.Success -> {
-            println("FilePickResult.Success ${it.data?.size}")
-        }
-        is FilePickResult.Error -> {
-            println("FilePickResult.Error ${it.message}")
-        }
-    }
-},
-content = {
-    Button(onClick = it) {
-        Text("Pick File")
-    }
-}
-)*/

@@ -1,6 +1,7 @@
 package org.gspi.protrack.feature.feat_dashboard.presentation.eventstate
 
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.ProjectResponseItem
+import org.gspi.protrack.feature.feat_dashboard.data.model.response.UserResponseItem
 import org.gspi.protrack.feature.feat_dashboard.presentation.model.ContentType
 
 data class DashboardState (
@@ -8,6 +9,7 @@ data class DashboardState (
     val errorMessage: String?= null,
     val searchValue: String = "",
     val listProject: List<ProjectResponseItem> = emptyList(),
+    val listUsers: List<UserResponseItem> = emptyList(),
     val isDialogVisible: Boolean = false,
     val contentType : ContentType = ContentType.PROJECTS,
 

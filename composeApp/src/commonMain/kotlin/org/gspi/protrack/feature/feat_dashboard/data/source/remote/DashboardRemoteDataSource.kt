@@ -7,6 +7,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import org.gspi.protrack.common.model.BaseResponse
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.ProjectResponseItem
+import org.gspi.protrack.feature.feat_dashboard.data.model.response.UserResponseItem
 
 class DashboardRemoteDataSource(private val client: HttpClient) {
     private val baseUrl = "https://gspi-protrack.my.id/api"
@@ -16,6 +17,16 @@ class DashboardRemoteDataSource(private val client: HttpClient) {
             client.get("$baseUrl/project/lists/") {
                 contentType(ContentType.Application.Json)
             }.body<BaseResponse<List<ProjectResponseItem>>>()
+        }.getOrElse { exception ->
+            throw exception
+        }
+    }
+
+    suspend fun getUserList(): BaseResponse<List<UserResponseItem>>{
+        return runCatching {
+            client.get("$baseUrl/user/") {
+                contentType(ContentType.Application.Json)
+            }.body<BaseResponse<List<UserResponseItem>>>()
         }.getOrElse { exception ->
             throw exception
         }

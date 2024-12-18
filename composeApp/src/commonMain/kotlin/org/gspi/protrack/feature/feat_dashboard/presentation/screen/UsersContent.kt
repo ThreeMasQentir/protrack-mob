@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -29,6 +30,9 @@ fun UsersContent(modifier: Modifier = Modifier,
                  viewModel: DashboardViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.onEvent(DashboardEvent.LoadListUser)
+    }
 
     Box(modifier = modifier.fillMaxSize()) {
 
@@ -103,81 +107,43 @@ fun UsersContent(modifier: Modifier = Modifier,
                     viewModel.onEvent(DashboardEvent.OnAddProjectClick(true))
                 }
             )
-
-            ItemUserComponent(
-                isActivated = true, // true for active (green), false for inactive (gray)
-                userName = "PM Yogyakarta", // Title in the green/gray background
-                name = "Akhtar", // Name field
-                password = "Akhtar123", // Password field
-                email = "Akhtar@gmail.com", // Email field
-                phoneNumber = "09876544567", // Phone number field
-                joinDate = "23/09/2013", // Join date field
-                fontFamily = PoppinsFontFamily(), // Custom font (optional)
-                onEditClick = {
-                    viewModel.onEvent(DashboardEvent.ShowEditUserDialog(
-                        userName = "Akhtar",
-                        userUsername = "Akhtar123",
-                        userPassword = "Akhtar123",
-                        userEmail = "akhtar@gmail.com",
-                        userPhoneNumber = "09876544567"
-                    ))
-                },
-                onDeleteClick = {
-                    ConfirmationDialog.show(
-                        title = "Delete User",
-                        message = "Are you sure you want to delete this user?",
-                        onYesClick = {
-                            viewModel.onEvent(DashboardEvent.OnDeleteUserClick("Akhtar"))
-                        },
-                    )
-                },
-                onStatusClick = {
-                    ConfirmationDialog.show(
-                        title = "Change User Status",
-                        message = "Are you sure you want to change this user status?",
-                        onYesClick = {
-                        },
-                    )
-                }
-            )
-
-            ItemUserComponent(
-                isActivated = false, // true for active (green), false for inactive (gray)
-                userName = "PM Yogyakarta", // Title in the green/gray background
-                name = "Akhtar", // Name field
-                password = "Akhtar123", // Password field
-                email = "Akhtar@gmail.com", // Email field
-                phoneNumber = "09876544567", // Phone number field
-                joinDate = "23/09/2013", // Join date field
-                fontFamily = PoppinsFontFamily(), // Custom font (optional)
-                onEditClick = {
-                    viewModel.onEvent(DashboardEvent.ShowEditUserDialog(
-                        userName = "Akhtar",
-                        userUsername = "Akhtar123",
-                        userPassword = "Akhtar123",
-                        userEmail = "akhtar@gmail.com",
-                        userPhoneNumber = "09876544567"
-                    ))
-                },
-                onDeleteClick = {
-                    ConfirmationDialog.show(
-                        title = "Delete User",
-                        message = "Are you sure you want to delete this user?",
-                        onYesClick = {
-                            println()
-                        },
-                    )
-                },
-                onStatusClick = {
-                    ConfirmationDialog.show(
-                        title = "Change User Status",
-                        message = "Are you sure you want to change this user status?",
-                        onYesClick = {
-                            println()
-                        },
-                    )
-                }
-            )
+            uiState.listUsers.forEach { item ->
+                ItemUserComponent(
+                    isActivated = item.isActivated == 1,
+                    userName = item.name,
+                    name = item.name,
+                    password = item.password,
+                    email = item.email,
+                    phoneNumber = item.phone,
+                    joinDate = item.dateCreated,
+                    fontFamily = PoppinsFontFamily(),
+                    onEditClick = {
+                        viewModel.onEvent(DashboardEvent.ShowEditUserDialog(
+                            userName = item.name,
+                            userUsername = item.password,
+                            userPassword = item.password,
+                            userEmail = item.email,
+                            userPhoneNumber = item.phone
+                        ))
+                    },
+                    onDeleteClick = {
+                        ConfirmationDialog.show(
+                            title = "Delete User",
+                            message = "Are you sure you want to delete this user?",
+                            onYesClick = {
+                                viewModel.onEvent(DashboardEvent.OnDeleteUserClick(item.name))
+                            },
+                        )
+                    },
+                    onStatusClick = {
+                        ConfirmationDialog.show(
+                            title = "Change User Status",
+                            message = "Are you sure you want to change this user status?",
+                            onYesClick = {
+                            },
+                        )
+                    })
+            }
 
         }
     }

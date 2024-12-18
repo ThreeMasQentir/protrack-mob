@@ -7,6 +7,7 @@ sealed class DashboardEvent {
     data object OnLogout : DashboardEvent()
     data object ClearError : DashboardEvent()
     data object LoadListProject : DashboardEvent()
+    data object LoadListUser : DashboardEvent()
 
     //project dialog
     data class OnAddProjectClick(val isDialogVisible: Boolean) : DashboardEvent()

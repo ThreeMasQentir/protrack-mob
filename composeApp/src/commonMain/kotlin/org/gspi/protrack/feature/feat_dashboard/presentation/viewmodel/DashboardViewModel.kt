@@ -8,12 +8,14 @@ import kotlinx.coroutines.launch
 import org.gspi.protrack.common.local.UserPreferences
 import org.gspi.protrack.common.utils.handleApiResponse
 import org.gspi.protrack.feature.feat_dashboard.domain.GetListProjectUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.GetListUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardState
 
 class DashboardViewModel(
     private val userPreferences: UserPreferences,
-    private val getListProjectUseCase: GetListProjectUseCase
+    private val getListProjectUseCase: GetListProjectUseCase,
+    private val getListUserUseCase: GetListUserUseCase
     ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DashboardState())
@@ -25,8 +27,11 @@ class DashboardViewModel(
 
     fun onEvent(event: DashboardEvent) {
         when (event) {
-            is DashboardEvent.LoadListProject -> {
+            DashboardEvent.LoadListProject -> {
                 getAllProjects()
+            }
+            DashboardEvent.LoadListUser -> {
+                getAllUsers()
             }
             is DashboardEvent.ClearError -> {
                 updateUiState(_uiState.value.copy(errorMessage = null))
@@ -125,6 +130,23 @@ class DashboardViewModel(
                 onSuccess = { response ->
                     println("response: $response")
                     updateUiState(_uiState.value.copy(isLoading = false, listProject = response))
+                },
+                onError = { error ->
+                    println("errorload: $error")
+                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = error))
+                }
+            )
+        }
+    }
+
+    private fun getAllUsers() {
+        updateUiState(_uiState.value.copy(isLoading = true))
+        viewModelScope.launch {
+            handleApiResponse(
+                apiCall = { getListUserUseCase.execute() },
+                onSuccess = { response ->
+                    println("response: $response")
+                    updateUiState(_uiState.value.copy(isLoading = false, listUsers = response))
                 },
                 onError = { error ->
                     println("errorload: $error")

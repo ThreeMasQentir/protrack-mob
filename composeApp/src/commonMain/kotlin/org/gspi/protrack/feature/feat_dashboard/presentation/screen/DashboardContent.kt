@@ -26,7 +26,6 @@ fun DashboardContent(modifier: Modifier = Modifier,
     val uiState by viewModel.uiState.collectAsState()
 
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-
         Spacer(modifier = Modifier.padding(8.dp))
         NewProjectSearchComponent(
             searchValue = uiState.searchValue,

@@ -5,6 +5,7 @@ import org.gspi.protrack.common.model.BaseResponse
 import org.gspi.protrack.common.model.Meta
 import org.gspi.protrack.common.network.ConnectivityChecker
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.ProjectResponseItem
+import org.gspi.protrack.feature.feat_dashboard.data.model.response.UserResponseItem
 import org.gspi.protrack.feature.feat_dashboard.data.source.local.DashboardLocalDataSource
 import org.gspi.protrack.feature.feat_dashboard.data.source.remote.DashboardRemoteDataSource
 import org.gspi.protrack.feature.feat_dashboard.domain.DashboardRepository
@@ -12,13 +13,11 @@ import org.gspi.protrack.feature.feat_dashboard.domain.DashboardRepository
 class DashboardRepositoryImpl(
     private val remoteDataSource: DashboardRemoteDataSource,
     private val localDataSource: DashboardLocalDataSource,
-    private val connectivityChecker: ConnectivityChecker
+    connectivityChecker: ConnectivityChecker
 ) : DashboardRepository {
 
+    val isNetworkAvailable = connectivityChecker.isConnected()
     override suspend fun getProjectList(): Result<BaseResponse<List<ProjectResponseItem>>> {
-        val isNetworkAvailable = connectivityChecker.isConnected()
-        println("isNetworkAvailable: $isNetworkAvailable")
-
         return if (isNetworkAvailable) {
             runCatching {
                 val response = remoteDataSource.getProjectList()
@@ -38,7 +37,10 @@ class DashboardRepositoryImpl(
             }.recoverCatching {
                 val localProjects = localDataSource.getAllProjects().first()
                 BaseResponse(
-                    meta = Meta(code = 500, message = "Error fetching from remote, showing local data"),
+                    meta = Meta(
+                        code = 500,
+                        message = "Error fetching from remote, showing local data"
+                    ),
                     data = localProjects
                 )
             }
@@ -50,6 +52,24 @@ class DashboardRepositoryImpl(
                     data = localProjects
                 )
             }
+        }
+    }
+
+    override suspend fun getUserList(): Result<BaseResponse<List<UserResponseItem>>> {
+        return runCatching {
+            if (!isNetworkAvailable) {
+                BaseResponse(
+                    meta = Meta(code = 500, message = "No internet connection"),
+                    data = null
+                )
+            } else {
+                val response = remoteDataSource.getUserList()
+                BaseResponse(
+                    meta = Meta(code = response.meta.code, message = response.meta.message),
+                    data = response.data
+                )
+            }
+
         }
     }
 }
