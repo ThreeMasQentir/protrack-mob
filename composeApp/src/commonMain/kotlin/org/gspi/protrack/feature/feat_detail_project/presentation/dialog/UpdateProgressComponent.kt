@@ -31,6 +31,7 @@ import androidx.compose.ui.window.DialogProperties
 import gspiprotrack.composeapp.generated.resources.Res
 import gspiprotrack.composeapp.generated.resources.ic_calendar
 import gspiprotrack.composeapp.generated.resources.ic_calendar_outline
+import kotlinx.datetime.toLocalDateTime
 import org.gspi.protrack.gspidesign.button.GspiButtonOutline
 import org.gspi.protrack.gspidesign.button.GspiButtonPickFile
 import org.gspi.protrack.gspidesign.button.GspiButtonPrimary
@@ -42,13 +43,27 @@ import kotlin.contracts.contract
 
 @Composable
 fun UpdateProgressComponent(
-    modifier: Modifier = Modifier,
     isDialogVisible: Boolean,
-    onDialogVisibleChange: (Boolean) -> Unit,
+    currentTitikControl: String,
+    onCurrentTitikControlChange: (String) -> Unit,
+    totalTitikControl: String,
+    onTotalTitikControlChange: (String) -> Unit,
+    currentFotoUdara: String,
+    onCurrentFotoUdaraChange: (String) -> Unit,
+    totalFotoUdara: String,
+    onTotalFotoUdaraChange: (String) -> Unit,
+    currentPengolahanData: String,
+    onCurrentPengolahanDataChange: (String) -> Unit,
+    totalPengolahanData: String,
+    onTotalPengolahanDataChange: (String) -> Unit,
+    onCancelButtonClicked: () -> Unit,
+    onSaveButtonClicked: () -> Unit,
 ) {
     if (isDialogVisible) {
         Dialog(
-            onDismissRequest = { onDialogVisibleChange(false) },
+            onDismissRequest = {
+                onCancelButtonClicked()
+            },
             properties = DialogProperties(
                 dismissOnBackPress = false,
                 dismissOnClickOutside = false
@@ -59,8 +74,48 @@ fun UpdateProgressComponent(
                     .fillMaxWidth()
                     .background(Color.White, shape = RoundedCornerShape(8.dp))
             ) {
-                UpdateProgressTitle()
-                ItemUpdateComponent()
+                UpdateProgressTitle(
+                    date = getCurrentDate(),
+                )
+                GspiLabeledTextFieldRow(
+                    label = "Progress Akuisisi Titik Kontrol",
+                    firstPlaceholder = "Current",
+                    firstFieldValue = currentTitikControl,
+                    onFirstFieldValueChange = {
+                        onCurrentTitikControlChange(it)
+                    },
+                    secondPlaceholder = "Total",
+                    secondFieldValue = totalTitikControl,
+                    onSecondFieldValueChange = {
+                        onTotalTitikControlChange(it)
+                    },
+                )
+                GspiLabeledTextFieldRow(
+                    label = "Progress Akuisisi Foto Udara",
+                    firstFieldValue = currentFotoUdara,
+                    firstPlaceholder = "Current",
+                    onFirstFieldValueChange = {
+                        onCurrentFotoUdaraChange(it)
+                    },
+                    secondFieldValue = totalFotoUdara,
+                    secondPlaceholder = "Total",
+                    onSecondFieldValueChange = {
+                        onTotalFotoUdaraChange(it)
+                    },
+                )
+                GspiLabeledTextFieldRow(
+                    label = "Progress Pengolahan Data",
+                    firstFieldValue = currentPengolahanData,
+                    firstPlaceholder = "Current",
+                    onFirstFieldValueChange = {
+                        onCurrentPengolahanDataChange(it)
+                    },
+                    secondFieldValue = totalPengolahanData,
+                    secondPlaceholder = "Total",
+                    onSecondFieldValueChange = {
+                        onTotalPengolahanDataChange(it)
+                    },
+                )
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                 ) {
@@ -68,14 +123,14 @@ fun UpdateProgressComponent(
                     GspiButtonOutline(
                         text = "Cancel",
                         onClick = {
-                            onDialogVisibleChange(false)
+                            onCancelButtonClicked()
                         },
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     GspiButtonPrimary(
                         text = "Save",
                         onClick = {
-                            onDialogVisibleChange(false)
+                            onSaveButtonClicked()
                         },
                     )
                 }
@@ -127,3 +182,13 @@ fun UpdateProgressTitle(
     }
 }
 
+fun getCurrentDate(): String {
+    val currentDate = kotlinx.datetime.Clock.System.now()
+    val date = currentDate.toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault()).date
+
+    val day = date.dayOfMonth.toString().padStart(2, '0') // Ensure 2-digit day
+    val month = date.monthNumber.toString().padStart(2, '0') // Ensure 2-digit month
+    val year = date.year.toString()
+
+    return "$day/$month/$year"
+}

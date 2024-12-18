@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -71,6 +72,7 @@ kotlin {
             implementation(libs.androidx.datastore)
             implementation(libs.androidx.datastore.preferences)
             implementation(libs.sqldelight.coroutines)
+            implementation (libs.kotlinx.datetime)
             api("io.github.kevinnzou:compose-webview-multiplatform:1.8.4")
         }
         iosMain.dependencies {

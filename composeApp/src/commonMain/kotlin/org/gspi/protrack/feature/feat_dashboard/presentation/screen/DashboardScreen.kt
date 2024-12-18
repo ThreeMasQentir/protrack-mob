@@ -55,11 +55,11 @@ fun DashboardScreen(
         onProjectNameChange = {
             viewModel.onEvent(DashboardEvent.OnProjectNameChange(it))
         },
-        startDate = uiState.startDate,
+        startDate = uiState.projectstartDate,
         onStartDateChange = {
             viewModel.onEvent(DashboardEvent.OnStartDateChange(it))
         },
-        endDate = uiState.endDate,
+        endDate = uiState.projectEndDate,
         onEndDateChange = {
             viewModel.onEvent(DashboardEvent.OnEndDateChange(it))
         },
@@ -93,16 +93,16 @@ fun DashboardScreen(
                 else -> {}
             }
         },
-        aoiFileName = uiState.aoiFileName,
-        kontrolFileName = uiState.rencanaTitikControlFileName,
+        aoiFileName = uiState.projectAoiFileName,
+        kontrolFileName = uiState.projectRencanaTitikControlFileName,
         onSaveProjectClick = {
             viewModel.onEvent(
                 DashboardEvent.OnSaveProjectClick(
                     uiState.projectName,
-                    uiState.startDate,
-                    uiState.endDate,
-                    uiState.aoiByteArray!!,
-                    uiState.rencanaTitikControlByteArray!!
+                    uiState.projectstartDate,
+                    uiState.projectEndDate,
+                    uiState.projectAoiByteArray!!,
+                    uiState.projectRencanaTitikControlByteArray!!
                 )
             )
             viewModel.onEvent(DashboardEvent.ClearSaveProjectState)
@@ -175,7 +175,6 @@ fun DashboardScreen(
                             )
 
                             ContentType.USERS -> UsersContent(
-                                navController = navController,
                                 viewModel = viewModel
                             )
                         }

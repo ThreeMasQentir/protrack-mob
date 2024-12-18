@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,6 +27,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import gspiprotrack.composeapp.generated.resources.Res
 import gspiprotrack.composeapp.generated.resources.ic_calendar
+import org.gspi.protrack.common.media.LaunchFilePicker
+import org.gspi.protrack.common.picker.AllowedFileType
+import org.gspi.protrack.common.picker.FilePickResult
 import org.gspi.protrack.gspidesign.button.GspiButtonOutline
 import org.gspi.protrack.gspidesign.button.GspiButtonPickFile
 import org.gspi.protrack.gspidesign.button.GspiButtonPrimary
@@ -37,19 +41,24 @@ import kotlin.contracts.contract
 
 @Composable
 fun SettingProjectComponent(
-    modifier: Modifier = Modifier,
     isDialogVisible: Boolean,
-    onDialogVisibleChange: (Boolean) -> Unit,
     projectName: String,
     onProjectNameChange: (String) -> Unit,
     startDate: String,
     onStartDateChange: (String) -> Unit,
     endDate: String,
+    aoiFileName: String,
+    onAoiFileChange: (FilePickResult) -> Unit,
+    rencanaTitikControlFileName: String,
+    onRencanaTitikControlFileChange: (FilePickResult) -> Unit,
     onEndDateChange: (String) -> Unit,
+    onDeleteProject: (String) -> Unit,
+    onCancelButtonClicked: () -> Unit,
+    onSaveButtonClicked: () -> Unit,
 ) {
     if (isDialogVisible) {
         Dialog(
-            onDismissRequest = { onDialogVisibleChange(false) },
+            onDismissRequest = { onCancelButtonClicked() },
             properties = DialogProperties(
                 dismissOnBackPress = false,
                 dismissOnClickOutside = false
@@ -72,29 +81,40 @@ fun SettingProjectComponent(
                 )
                 GspiTextLabel("Project Name", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
                 GspiTextFieldText(
-                    value = "",
-                    onValueChange = { },
-                    placeholder = "Project Name"
+                    value = projectName,
+                    onValueChange = {
+                        onProjectNameChange(it)
+                    },
+                    placeholder = "Project Name",
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
                 GspiTextLabel("Start Date", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 Row (
                     verticalAlignment = Alignment.CenterVertically,
-                ){
+                    modifier = Modifier.fillMaxWidth().padding(end = 16.dp),
+
+                    ){
                     Image(
                         painter = painterResource(Res.drawable.ic_calendar),
                         contentDescription = "Calendar Icon",
                         modifier = Modifier.padding(start = 16.dp).size(48.dp)
                     )
                     GspiTextFieldText(
-                        value = "",
-                        onValueChange = { },
-                        placeholder = "Project Name"
+                        value = startDate,
+                        onValueChange = {
+                            onStartDateChange(it)
+                        },
+                        placeholder = "Select Date"
                     )
                 }
+                Spacer(modifier = Modifier.height(8.dp))
 
                 GspiTextLabel("End Date", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 Row (
                     verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth().padding(end = 16.dp),
                 ){
                     Image(
                         painter = painterResource(Res.drawable.ic_calendar),
@@ -102,25 +122,54 @@ fun SettingProjectComponent(
                         modifier = Modifier.padding(start = 16.dp).size(48.dp)
                     )
                     GspiTextFieldText(
-                        value = "",
-                        onValueChange = { },
-                        placeholder = "Project Name"
+                        value = endDate,
+                        onValueChange = {
+                            onEndDateChange(it)
+                        },
+                        placeholder = "Select Date"
                     )
                 }
+                Spacer(modifier = Modifier.height(8.dp))
                 GspiTextLabel("Area of Interest (AOI)", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
-                GspiButtonPickFile(
-                    text = "Select File",
-                    onClick = { },
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                ) {
+                    LaunchFilePicker(
+                        allowedType = AllowedFileType.ZIP,
+                        onResult = { file ->
+                            onAoiFileChange(file)
+                        },
+                        content = {
+                            GspiButtonPickFile(
+                                text = aoiFileName,
+                                onClick = { it.invoke() }
+                            )
+                        },
+                    )
+                }
                 GspiTextLabel("Rencana Titik Kontrol", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
-                GspiButtonPickFile(
-                    text = "Select File",
-                    onClick = { },
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                ) {
+                LaunchFilePicker(
+                    allowedType = AllowedFileType.ZIP,
+                    onResult = { file ->
+                        onRencanaTitikControlFileChange(file)
+                    },
+                    content = {
+                        GspiButtonPickFile(
+                            text = rencanaTitikControlFileName,
+                            onClick = { it.invoke() }
+                        )
+                    }
                 )
+                    }
+
                 TextButton(
-                    onClick = {},
+                    onClick = {
+                        onDeleteProject(projectName)
+                    },
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
@@ -138,14 +187,14 @@ fun SettingProjectComponent(
                     GspiButtonOutline(
                         text = "Cancel",
                         onClick = {
-                            onDialogVisibleChange(false)
+                            onCancelButtonClicked()
                         },
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     GspiButtonPrimary(
                         text = "Save",
                         onClick = {
-                            onDialogVisibleChange(false)
+                            onSaveButtonClicked()
                         },
                     )
                 }

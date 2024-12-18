@@ -48,26 +48,65 @@ class DashboardViewModel(
             }
 
             is DashboardEvent.OnAoiChange -> {
-                updateUiState(_uiState.value.copy(aoiFileName = event.aoiFileName, aoiByteArray = event.aoiByteArray))
+                updateUiState(_uiState.value.copy(projectAoiFileName = event.aoiFileName, projectAoiByteArray = event.aoiByteArray))
             }
             is DashboardEvent.OnEndDateChange -> {
-                updateUiState(_uiState.value.copy(endDate = event.endDate))
+                updateUiState(_uiState.value.copy(projectEndDate = event.endDate))
             }
             is DashboardEvent.OnProjectNameChange -> {
                 updateUiState(_uiState.value.copy(projectName = event.projectName))
             }
             is DashboardEvent.OnRencanaTitikControlChange -> {
-                updateUiState(_uiState.value.copy(rencanaTitikControlFileName = event.rencanaTitikControlFileName, rencanaTitikControlByteArray = event.rencanaTitikControlByteArray))
+                updateUiState(_uiState.value.copy(projectRencanaTitikControlFileName = event.rencanaTitikControlFileName, projectRencanaTitikControlByteArray = event.rencanaTitikControlByteArray))
             }
             is DashboardEvent.OnSaveProjectClick -> {
                 //todo: call api function
                 updateUiState(_uiState.value.copy(isDialogVisible = false))
             }
             is DashboardEvent.OnStartDateChange -> {
-                updateUiState(_uiState.value.copy(startDate = event.startDate))
+                updateUiState(_uiState.value.copy(projectstartDate = event.startDate))
             }
             DashboardEvent.ClearSaveProjectState -> {
-                updateUiState(_uiState.value.copy(projectName = "", startDate = "", endDate = "", aoiFileName = "Select File", aoiByteArray = null, rencanaTitikControlFileName = "Select File", rencanaTitikControlByteArray = null))
+                updateUiState(_uiState.value.copy(projectName = "", projectstartDate = "", projectEndDate = "", projectAoiFileName = "Select File", projectAoiByteArray = null, projectRencanaTitikControlFileName = "Select File", projectRencanaTitikControlByteArray = null))
+            }
+
+            DashboardEvent.ClearSaveUserState -> {
+                updateUiState(_uiState.value.copy(
+                    isDialogVisible = false,
+                    userName = "", userUsername = "", userPassword = "", userEmail = "", userPhoneNumber = ""))
+            }
+            is DashboardEvent.OnDeleteUserClick -> {
+                //todo: call api function
+            }
+            DashboardEvent.OnEditUserClick -> {
+                //todo: call api function
+
+            }
+            DashboardEvent.OnSaveUserClick -> {
+                //todo: call api function
+            }
+            is DashboardEvent.OnUserEmailChange -> {
+                updateUiState(_uiState.value.copy(userEmail = event.userEmail))
+            }
+            is DashboardEvent.OnUserNameChange -> {
+                updateUiState(_uiState.value.copy(userName = event.userName))
+            }
+            is DashboardEvent.OnUserPasswordChange -> {
+                updateUiState(_uiState.value.copy(userPassword = event.userPassword))
+            }
+            is DashboardEvent.OnUserPhoneNumberChange -> {
+                updateUiState(_uiState.value.copy(userPhoneNumber = event.userPhoneNumber))
+            }
+            is DashboardEvent.OnUserStateChange -> {
+                updateUiState(_uiState.value.copy(userIsActive = event.isActive))
+            }
+            is DashboardEvent.OnUserUsernameChange -> {
+                updateUiState(_uiState.value.copy(userUsername = event.userUsername))
+            }
+            is DashboardEvent.ShowEditUserDialog -> {
+                updateUiState(_uiState.value.copy(
+                    isDialogVisible = true,
+                    userName = event.userName, userUsername = event.userUsername, userPassword = event.userPassword, userEmail = event.userEmail, userPhoneNumber = event.userPhoneNumber))
             }
         }
     }

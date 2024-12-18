@@ -3,6 +3,7 @@ package org.gspi.protrack.feature.feat_detail_project.presentation.dialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,49 +22,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.gspi.protrack.gspidesign.text.GspiTextLabel
 
-@Composable
-fun ItemUpdateComponent(modifier: Modifier = Modifier) {
-    Column(
-        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
-    ){
-        GspiLabeledTextFieldRow(
-            label = "Project Name",
-            firstFieldValue = "Project Name",
-            onFirstFieldValueChange = {},
-            secondFieldValue = "Project Name",
-            onSecondFieldValueChange = {},
-        )
-        GspiLabeledTextFieldRow(
-            label = "Project Name",
-            firstFieldValue = "Project Name",
-            onFirstFieldValueChange = {},
-            secondFieldValue = "Project Name",
-            onSecondFieldValueChange = {},
-        )
-        GspiLabeledTextFieldRow(
-            label = "Project Name",
-            firstFieldValue = "Project Name",
-            onFirstFieldValueChange = {},
-            secondFieldValue = "Project Name",
-            onSecondFieldValueChange = {},
-        )
-    }
-}
 
 @Composable
 fun GspiLabeledTextFieldRow(
     label: String,
     firstFieldValue: String,
+    firstPlaceholder: String = "",
     onFirstFieldValueChange: (String) -> Unit,
     secondFieldValue: String,
+    secondPlaceholder: String = "",
     onSecondFieldValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         // Label
         GspiTextLabel(label, modifier = Modifier.padding(bottom = 4.dp))
-
-        // Row of Text Fields
+        Spacer(modifier = Modifier.height(8.dp))
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxWidth()
@@ -71,13 +45,13 @@ fun GspiLabeledTextFieldRow(
             TextFieldProgress(
                 value = firstFieldValue,
                 onValueChange = onFirstFieldValueChange,
-                placeholder = "",
+                placeholder = firstPlaceholder,
                 modifier = Modifier.weight(1f)
             )
             TextFieldProgress(
                 value = secondFieldValue,
                 onValueChange = onSecondFieldValueChange,
-                placeholder = "",
+                placeholder = secondPlaceholder,
                 modifier = Modifier.weight(1f)
             )
         }

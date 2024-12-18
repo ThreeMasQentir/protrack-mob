@@ -46,7 +46,8 @@ actual fun LaunchFilePicker(
                 try {
                     val fileData: NSData? = NSData.dataWithContentsOfURL(didPickDocumentAtURL)
                     val byteArray = fileData?.let { it.bytes?.readBytes(it.length.toInt()) }
-                    onResult(FilePickResult.Success(data = byteArray))
+                    val fileName = didPickDocumentAtURL.lastPathComponent
+                    onResult(FilePickResult.Success(data = byteArray, fileName = fileName ?: "file"))
                 } catch (e: Exception) {
                     // Pass error result
                     onResult(FilePickResult.Error(message = "Error reading file: ${e.message}"))

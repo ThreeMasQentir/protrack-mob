@@ -11,13 +11,22 @@ data class DashboardState (
     val isDialogVisible: Boolean = false,
     val contentType : ContentType = ContentType.PROJECTS,
 
-    //new project dialog
+    //project dialog
     val projectName: String = "",
-    val startDate: String = "",
-    val endDate: String = "",
-    val aoiFileName: String = "Select File",
-    val aoiByteArray: ByteArray? = null,
-    val rencanaTitikControlFileName: String = "Select File",
-    val rencanaTitikControlByteArray: ByteArray? = null,
+    val projectstartDate: String = "",
+    val projectEndDate: String = "",
+    val projectAoiFileName: String = "Select File",
+    val projectAoiByteArray: ByteArray? = null,
+    val projectRencanaTitikControlFileName: String = "Select File",
+    val projectRencanaTitikControlByteArray: ByteArray? = null,
+
+    //user dialog
+    val userName: String = "",
+    val userUsername: String = "",
+    val userPassword: String = "",
+    val userEmail: String = "",
+    val userPhoneNumber: String = "",
+    val userIsActive: Boolean = true,
+    val userIsEdit : Boolean = false
 
 )

@@ -36,7 +36,7 @@ actual fun LaunchFilePicker(
                     cursor.moveToFirst()
                     cursor.getString(cursor.getColumnIndex("_display_name"))
                 }
-                onResult(FilePickResult.Success(byteArray, fileName ?: "aoi.zip"))
+                onResult(FilePickResult.Success(byteArray, fileName ?: "file.zip"))
             } ?: run {
                 onResult(FilePickResult.Error("No file selected"))
             }

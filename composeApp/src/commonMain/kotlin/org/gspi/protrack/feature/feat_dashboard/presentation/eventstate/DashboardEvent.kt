@@ -7,6 +7,8 @@ sealed class DashboardEvent {
     data object OnLogout : DashboardEvent()
     data object ClearError : DashboardEvent()
     data object LoadListProject : DashboardEvent()
+
+    //project dialog
     data class OnAddProjectClick(val isDialogVisible: Boolean) : DashboardEvent()
     data class OnContentTypeChange(val contentType: ContentType) : DashboardEvent()
     data class OnProjectNameChange(val projectName: String) : DashboardEvent()
@@ -16,4 +18,17 @@ sealed class DashboardEvent {
     data class OnRencanaTitikControlChange(val rencanaTitikControlFileName: String, val rencanaTitikControlByteArray: ByteArray?) : DashboardEvent()
     data class OnSaveProjectClick(val projectName: String, val startDate: String, val endDate: String, val aoiByteArray: ByteArray, val rencanaTitikControlByteArray: ByteArray) : DashboardEvent()
     data object ClearSaveProjectState : DashboardEvent()
+
+    //user dialog
+    data class OnUserNameChange(val userName: String) : DashboardEvent()
+    data class OnUserUsernameChange(val userUsername: String) : DashboardEvent()
+    data class OnUserPasswordChange(val userPassword: String) : DashboardEvent()
+    data class OnUserEmailChange(val userEmail: String) : DashboardEvent()
+    data class OnUserPhoneNumberChange(val userPhoneNumber: String) : DashboardEvent()
+    data object OnSaveUserClick : DashboardEvent()
+    data object OnEditUserClick : DashboardEvent()
+    data class OnDeleteUserClick(val userName: String) : DashboardEvent()
+    data class OnUserStateChange(val isActive: Boolean) : DashboardEvent()
+    data object ClearSaveUserState : DashboardEvent()
+    data class ShowEditUserDialog(val userName: String, val userUsername: String, val userPassword: String, val userEmail: String, val userPhoneNumber: String) : DashboardEvent()
 }

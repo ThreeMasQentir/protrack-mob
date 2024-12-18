@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -38,10 +39,21 @@ import kotlin.contracts.contract
 
 @Composable
 fun AddEditUserComponent(
-    modifier: Modifier = Modifier,
     isDialogVisible: Boolean,
     onDialogVisibleChange: (Boolean) -> Unit,
-
+    userName: String,
+    onUserNameChange: (String) -> Unit,
+    userUserName: String,
+    onUserUserNameChange: (String) -> Unit,
+    userPassword: String,
+    onUserPasswordChange: (String) -> Unit,
+    userEmail: String,
+    onUserEmailChange: (String) -> Unit,
+    userPhoneNumber: String,
+    onUserPhoneNumberChange: (String) -> Unit,
+    onSaveClick: () -> Unit,
+    onEditClick: () -> Unit,
+    isEdit : Boolean
 ) {
     if (isDialogVisible) {
         Dialog(
@@ -54,11 +66,12 @@ fun AddEditUserComponent(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
                     .background(Color.White, shape = RoundedCornerShape(8.dp))
             ) {
                 Text(
-                    text = "New Project",
-                    modifier = Modifier.padding(16.dp),
+                    text = "Add User",
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     style = TextStyle(
                         fontFamily = PoppinsFontFamily(),
                         fontSize = 16.sp,
@@ -66,34 +79,44 @@ fun AddEditUserComponent(
                         color = Color(0xFF113F3F)
                     )
                 )
-                GspiTextLabel("Name", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
-                GspiTextFieldText(
-                    value = "",
-                    onValueChange = { },
+                LabeledTextField(
+                    label = "Name",
+                    value = userName,
+                    onValueChange = {
+                        onUserNameChange(it)
+                    },
                     placeholder = "Name"
                 )
-                GspiTextLabel("Username", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
-                GspiTextFieldText(
-                    value = "",
-                    onValueChange = { },
+                LabeledTextField(
+                    label = "Username",
+                    value = userUserName,
+                    onValueChange = {
+                        onUserUserNameChange(it)
+                    },
                     placeholder = "Username"
                 )
-                GspiTextLabel("Password", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
-                GspiTextFieldText(
-                    value = "",
-                    onValueChange = { },
+                LabeledTextField(
+                    label = "Password",
+                    value = userPassword,
+                    onValueChange = {
+                        onUserPasswordChange(it)
+                    },
                     placeholder = "Password"
                 )
-                GspiTextLabel("Email", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
-                GspiTextFieldText(
-                    value = "",
-                    onValueChange = { },
+                LabeledTextField(
+                    label = "Email",
+                    value = userEmail,
+                    onValueChange = {
+                        onUserEmailChange(it)
+                    },
                     placeholder = "Email"
                 )
-                GspiTextLabel("Phone Number", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
-                GspiTextFieldText(
-                    value = "",
-                    onValueChange = { },
+                LabeledTextField(
+                    label = "Phone Number",
+                    value = userPhoneNumber,
+                    onValueChange = {
+                        onUserPhoneNumberChange(it)
+                    },
                     placeholder = "Phone Number"
                 )
 
@@ -111,12 +134,37 @@ fun AddEditUserComponent(
                     GspiButtonPrimary(
                         text = "Save",
                         onClick = {
-                            onDialogVisibleChange(false)
+                            if (isEdit) {
+                                onEditClick()
+                            } else {
+                                onSaveClick()
+                            }
                         },
                     )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun LabeledTextField(
+    label: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        GspiTextLabel(label, modifier = Modifier.align(Alignment.Start).padding(start = 16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
+        GspiTextFieldText(
+            value = value,
+            onValueChange = onValueChange,
+            placeholder = placeholder,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 
