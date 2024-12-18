@@ -53,7 +53,10 @@ class DashboardViewModel(
             }
 
             is DashboardEvent.OnAddProjectClick -> {
-                updateUiState(_uiState.value.copy(isDialogVisible = event.isDialogVisible))
+                updateUiState(_uiState.value.copy(
+                    isDialogVisible = event.isDialogVisible,
+                    userName = "", userUsername = "", userPassword = "", userEmail = "", userPhoneNumber = ""
+                ))
             }
 
             is DashboardEvent.OnContentTypeChange -> {
