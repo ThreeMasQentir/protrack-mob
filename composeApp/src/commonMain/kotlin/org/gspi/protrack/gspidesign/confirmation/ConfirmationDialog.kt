@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import org.gspi.protrack.gspidesign.font.PoppinsFontFamily
 
 object ConfirmationDialog {
     private val _isVisible = mutableStateOf(false)
@@ -76,15 +77,16 @@ object ConfirmationDialog {
                             .padding(16.dp)
                             .fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(12.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.Start
                     ) {
                         // Title
                         Text(
                             text = ConfirmationDialog.title,
                             style = TextStyle(
                                 fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.SemiBold
                             ),
+                            fontFamily = PoppinsFontFamily(),
                             color = Color.Black
                         )
 
@@ -93,7 +95,8 @@ object ConfirmationDialog {
                             text = ConfirmationDialog.message,
                             style = TextStyle(fontSize = 14.sp),
                             color = Color.Gray,
-                            textAlign = TextAlign.Center
+                            fontFamily = PoppinsFontFamily(),
+                            textAlign = TextAlign.Justify
                         )
 
                         // Buttons
@@ -104,16 +107,17 @@ object ConfirmationDialog {
                             TextButton(onClick = { ConfirmationDialog.hide() }) {
                                 Text(
                                     color = Color(0xFF113F3F),
-                                    text = ConfirmationDialog.noLabel.uppercase()
+                                    text = ConfirmationDialog.noLabel.uppercase(),
+                                    fontFamily = PoppinsFontFamily(),
                                 )
                             }
-                            Spacer(modifier = Modifier.width(8.dp))
                             TextButton(onClick = {
                                 ConfirmationDialog.onYesClick?.invoke()
                                 ConfirmationDialog.hide()
                             }) {
                                 Text(
                                     color = Color(0xFF113F3F),
+                                    fontFamily = PoppinsFontFamily(),
                                     text = ConfirmationDialog.yesLabel.uppercase()
                                 )
                             }
