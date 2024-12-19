@@ -22,7 +22,7 @@ import com.techieroid.webviewapplication.getWebViewHandler
 import org.gspi.protrack.common.navigation.Routes
 import org.gspi.protrack.common.picker.FilePickResult
 import org.gspi.protrack.common.utils.getBackStackEntryData
-import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
+import org.gspi.protrack.common.utils.toIndonesianDateFormat
 import org.gspi.protrack.feature.feat_detail_project.presentation.component.FormComponent
 import org.gspi.protrack.feature.feat_detail_project.presentation.component.HeaderProjectComponent
 import org.gspi.protrack.feature.feat_detail_project.presentation.component.OtherComponent
@@ -33,6 +33,7 @@ import org.gspi.protrack.feature.feat_detail_project.presentation.dialog.Setting
 import org.gspi.protrack.feature.feat_detail_project.presentation.dialog.UpdateProgressComponent
 import org.gspi.protrack.feature.feat_detail_project.presentation.eventstate.DetailProjectEvent
 import org.gspi.protrack.feature.feat_detail_project.presentation.viewmodel.DetailProjectViewModel
+import org.gspi.protrack.gspidesign.confirmation.ConfirmationDialog
 import org.gspi.protrack.gspidesign.error.Error
 import org.gspi.protrack.gspidesign.loading.Loading
 import org.gspi.protrack.gspidesign.success.Success
@@ -125,11 +126,11 @@ fun DetailProjectScreen(
             onProjectNameChange = {
                 viewModel.onEvent(DetailProjectEvent.OnProjectNameChange(it))
             },
-            startDate = uiState.settingProjectState.startDate,
+            startDate = uiState.settingProjectState.startDate.toIndonesianDateFormat(),
             onStartDateChange = {
                 viewModel.onEvent(DetailProjectEvent.OnStartDateChange(it))
             },
-            endDate = uiState.settingProjectState.endDate,
+            endDate = uiState.settingProjectState.endDate.toIndonesianDateFormat(),
             onEndDateChange = {
                 viewModel.onEvent(DetailProjectEvent.OnEndDateChange(it))
             },
@@ -170,24 +171,30 @@ fun DetailProjectScreen(
                 viewModel.onEvent(DetailProjectEvent.OnSaveSettingProject)
             },
             onDeleteProject = {
-                viewModel.onEvent(DetailProjectEvent.OnDeleteProject(it))
+                ConfirmationDialog.show(
+                    title = "Delete Project",
+                    message = "Are you sure want to delete this project?",
+                    onYesClick = {
+                        viewModel.onEvent(DetailProjectEvent.OnDeleteProject)
+                        navController.popBackStack()
+                    }
+                )
             }
 
 
         )
         Column {
-            // Fixed Header Component
             HeaderProjectComponent(
                 title = uiState.detailProject?.projectName.orEmpty(),
                 onSettingsClick = {
                     viewModel.onEvent(
                         DetailProjectEvent.OnSettingProjectClick(
                             true,
-                            "Proyek Foto Tegak BPN  Kabupaten Demak",
-                            "10/12/2023",
-                            "10/12/2024",
-                            "Dokumen AOI.pdf",
-                            "Titik Kontrol.pdf"
+                            projectName =  uiState.detailProject?.projectName.orEmpty(),
+                            startDate = uiState.detailProject?.startDate?.toIndonesianDateFormat().orEmpty(),
+                            endDate = uiState.detailProject?.deadlineDate?.toIndonesianDateFormat().orEmpty(),
+                            aoiFileName = uiState.detailProject?.aoiFileName.orEmpty(),
+                            rencanaTitikControlFileName = uiState.detailProject?.titikKontrolFileName.orEmpty()
                         )
                     )
                 },
@@ -228,10 +235,10 @@ fun DetailProjectScreen(
                 totalPengolahanData = uiState.detailProject?.processTotal ?: 0
             )
             TimelineComponent(
-                startDate = uiState.detailProject?.startDate?.ifEmpty{
+                startDate = uiState.detailProject?.startDate?.toIndonesianDateFormat()?.ifEmpty{
                     "-"
                 }.toString(),
-                endDate = uiState.detailProject?.deadlineDate?.ifEmpty{
+                endDate = uiState.detailProject?.deadlineDate?.toIndonesianDateFormat()?.ifEmpty{
                     "-"
                 }.toString(),
                 daysRemaining = "120"

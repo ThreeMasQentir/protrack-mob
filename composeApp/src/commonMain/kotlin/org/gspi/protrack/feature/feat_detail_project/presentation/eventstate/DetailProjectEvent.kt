@@ -37,7 +37,7 @@ sealed class DetailProjectEvent {
     ) : DetailProjectEvent()
     data object OnSaveSettingProject: DetailProjectEvent()
     data object OnCancelSettingProject: DetailProjectEvent()
-    data class OnDeleteProject(val projectId: String) : DetailProjectEvent()
+    data object OnDeleteProject : DetailProjectEvent()
     data class OnProjectNameChange(val projectName: String) : DetailProjectEvent()
     data class OnStartDateChange(val startDate: String) : DetailProjectEvent()
     data class OnEndDateChange(val endDate: String) : DetailProjectEvent()
@@ -45,5 +45,17 @@ sealed class DetailProjectEvent {
     data class OnRencanaTitikControlFileChange(val rencanaTitikControlFileName: String, val rencanaTitikControlByteArray: ByteArray?) : DetailProjectEvent()
     data object OnClearSettingProject : DetailProjectEvent()
 
+    //document
+    data object LoadDocumentList : DetailProjectEvent()
+    data class OnAddDocumentClick(val isDialogVisible: Boolean) : DetailProjectEvent()
+    data object OnSaveDocument : DetailProjectEvent()
+    data object OnCancelDocument : DetailProjectEvent()
+    data class OnDocumentNameChange(val documentName: String) : DetailProjectEvent()
+    data class OnDocumentFileChange(val documentByteArray: ByteArray?) : DetailProjectEvent()
+    data class OnDeleteDocument(val documentId: Int) : DetailProjectEvent()
+    data object OnDownloadDocument : DetailProjectEvent()
+
+    //log
+    data object LoadLogList : DetailProjectEvent()
 
 }

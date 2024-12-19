@@ -2,6 +2,7 @@ package org.gspi.protrack.feature.feat_detail_project.presentation.dialog
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,9 +31,11 @@ import gspiprotrack.composeapp.generated.resources.ic_calendar
 import org.gspi.protrack.common.media.LaunchFilePicker
 import org.gspi.protrack.common.picker.AllowedFileType
 import org.gspi.protrack.common.picker.FilePickResult
+import org.gspi.protrack.feature.feat_dashboard.presentation.dialog.GspiTextFieldDatePicker
 import org.gspi.protrack.gspidesign.button.GspiButtonOutline
 import org.gspi.protrack.gspidesign.button.GspiButtonPickFile
 import org.gspi.protrack.gspidesign.button.GspiButtonPrimary
+import org.gspi.protrack.gspidesign.datepicker.DatePickerDialog
 import org.gspi.protrack.gspidesign.font.PoppinsFontFamily
 import org.gspi.protrack.gspidesign.text.GspiTextLabel
 import org.gspi.protrack.gspidesign.textfield.GspiTextFieldText
@@ -90,43 +93,58 @@ fun SettingProjectComponent(
                 )
                 GspiTextLabel("Start Date", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
                 Spacer(modifier = Modifier.height(8.dp))
-                Row (
+                Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth().padding(end = 16.dp),
-
-                    ){
+                ) {
                     Image(
                         painter = painterResource(Res.drawable.ic_calendar),
                         contentDescription = "Calendar Icon",
-                        modifier = Modifier.padding(start = 16.dp).size(48.dp)
+                        modifier = Modifier
+                            .size(48.dp).clickable {
+                                DatePickerDialog.show { selectedDate ->
+                                    onStartDateChange(selectedDate)
+                                }
+                            }
                     )
-                    GspiTextFieldText(
+                    Spacer(modifier = Modifier.width(8.dp))
+                    GspiTextFieldDatePicker(
                         value = startDate,
                         onValueChange = {
                             onStartDateChange(it)
                         },
-                        placeholder = "Select Date"
+                        placeholder = "Select Start Date",
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            println("Start Date Clicked")
+                        }
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
 
                 GspiTextLabel("End Date", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
                 Spacer(modifier = Modifier.height(8.dp))
-                Row (
+                Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth().padding(end = 16.dp),
-                ){
+                ) {
                     Image(
                         painter = painterResource(Res.drawable.ic_calendar),
                         contentDescription = "Calendar Icon",
-                        modifier = Modifier.padding(start = 16.dp).size(48.dp)
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clickable {
+                                DatePickerDialog.show { selectedDate ->
+                                    onEndDateChange(selectedDate)
+                                }
+                            }
                     )
-                    GspiTextFieldText(
+                    Spacer(modifier = Modifier.width(8.dp))
+                    GspiTextFieldDatePicker(
                         value = endDate,
                         onValueChange = {
                             onEndDateChange(it)
                         },
-                        placeholder = "Select Date"
+                        placeholder = "Select End Date",
+                        modifier = Modifier.weight(1f)
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))

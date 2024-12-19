@@ -1,4 +1,4 @@
-package org.gspi.protrack.feature.feat_detail_project.domain.usecase
+package org.gspi.protrack.feature.feat_detail_project.domain.usecase.project
 
 import org.gspi.protrack.common.model.Meta
 import org.gspi.protrack.feature.feat_detail_project.data.model.request.UpdateProjectRequest
