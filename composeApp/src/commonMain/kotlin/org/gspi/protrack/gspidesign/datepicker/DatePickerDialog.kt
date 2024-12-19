@@ -1,21 +1,29 @@
 package org.gspi.protrack.gspidesign.datepicker
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.toLocalDateTime
 
 object DatePickerDialog {
     private val _isVisible = mutableStateOf(false)
     val isVisible: State<Boolean> get() = _isVisible
 
     private var onDateSelected: ((String) -> Unit)? = null
-
-    private var year = 2024
-    private var monthIndex = 9 // Index for October (0-based)
-    private var day = 20
+    private var selectedDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
     private val monthNames = listOf(
         "Januari", "Februari", "Maret", "April", "Mei", "Juni",
@@ -31,119 +39,55 @@ object DatePickerDialog {
         _isVisible.value = false
     }
 
+    private fun formatDate(date: LocalDate): String {
+        val day = date.dayOfMonth
+        val month = monthNames[date.monthNumber - 1] // Month is 1-based
+        val year = date.year
+        return "$day $month $year"
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun Content() {
         if (isVisible.value) {
-            Dialog(onDismissRequest = { hide() }) {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth() // Full width
-                        .padding(horizontal = 16.dp), // 16dp horizontal margin
-                    shape = MaterialTheme.shapes.medium,
-                    color = MaterialTheme.colorScheme.surface
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        Text("Pilih Tanggal", style = MaterialTheme.typography.headlineSmall)
-
-                        // Row for Day, Month, and Year pickers
-                        Row(horizontalArrangement = Arrangement.Center) {
-                            // Day Picker
-                            NumberPicker(
-                                range = 1..31,
-                                value = day,
-                                onValueChange = { day = it },
-                                modifier = Modifier.weight(1f)
-                            )
-
-                            // Month Picker
-                            MonthPicker(
-                                monthNames = monthNames,
-                                currentIndex = monthIndex,
-                                onValueChange = { monthIndex = it },
-                                modifier = Modifier.weight(1f)
-                            )
-
-                            // Year Picker
-                            NumberPicker(
-                                range = 2000..2050,
-                                value = year,
-                                onValueChange = { year = it },
-                                modifier = Modifier.weight(1f)
-                            )
+            val datePickerState = rememberDatePickerState(
+                initialSelectedDateMillis = selectedDate.atStartOfDayIn(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+            )
+            val primaryColor = Color(0xFFFFC130)
+            val customDatePickerColors = DatePickerDefaults.colors(
+                containerColor = Color.White,
+                selectedDayContainerColor = primaryColor, // Change purple to this
+                selectedDayContentColor = Color.White, // Text color inside selected day
+                todayDateBorderColor = primaryColor, // Border for today's date
+                selectedYearContainerColor = primaryColor, // Year highlight
+                dayInSelectionRangeContainerColor = primaryColor.copy(alpha = 0.3f), // Range highlight
+                dayInSelectionRangeContentColor = primaryColor
+            )
+            DatePickerDialog(
+                colors = customDatePickerColors,
+                onDismissRequest = { hide() },
+                confirmButton = {
+                    TextButton(onClick = {
+                        val selectedMillis = datePickerState.selectedDateMillis
+                        if (selectedMillis != null) {
+                            val selectedLocalDate = Instant.fromEpochMilliseconds(selectedMillis)
+                                .toLocalDateTime(TimeZone.currentSystemDefault()).date
+                            val formattedDate = formatDate(selectedLocalDate)
+                            onDateSelected?.invoke(formattedDate)
                         }
-
-                        // Action Buttons
-                        Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                            TextButton(onClick = { hide() }) {
-                                Text("Cancel")
-                            }
-                            TextButton(onClick = {
-                                val selectedDate = "$day ${monthNames[monthIndex]} $year"
-                                onDateSelected?.invoke(selectedDate)
-                                hide()
-                            }) {
-                                Text("OK")
-                            }
-                        }
+                        hide()
+                    }) {
+                        Text("OK")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { hide() }) {
+                        Text("Cancel")
                     }
                 }
+            ) {
+                DatePicker(state = datePickerState)
             }
-        }
-    }
-}
-
-@Composable
-fun NumberPicker(
-    range: IntRange,
-    value: Int,
-    onValueChange: (Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    var currentValue by remember { mutableStateOf(value) }
-    Column(
-        modifier = modifier,
-        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
-        IconButton(onClick = { if (currentValue < range.last) onValueChange(++currentValue) }) {
-            Text("▲")
-        }
-        Text(currentValue.toString(), style = MaterialTheme.typography.bodyLarge)
-        IconButton(onClick = { if (currentValue > range.first) onValueChange(--currentValue) }) {
-            Text("▼")
-        }
-    }
-}
-
-@Composable
-fun MonthPicker(
-    modifier: Modifier = Modifier,
-    monthNames: List<String>,
-    currentIndex: Int,
-    onValueChange: (Int) -> Unit
-) {
-    var currentMonthIndex by remember { mutableStateOf(currentIndex) }
-
-    Column(
-        modifier = modifier,
-        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
-        IconButton(onClick = {
-            if (currentMonthIndex < monthNames.lastIndex) {
-                currentMonthIndex++
-                onValueChange(currentMonthIndex)
-            }
-        }) {
-            Text("▲")
-        }
-        Text(monthNames[currentMonthIndex], style = MaterialTheme.typography.bodyLarge)
-        IconButton(onClick = {
-            if (currentMonthIndex > 0) {
-                currentMonthIndex--
-                onValueChange(currentMonthIndex)
-            }
-        }) {
-            Text("▼")
         }
     }
 }

@@ -3,19 +3,24 @@ package org.gspi.protrack.feature.feat_dashboard.data.source.remote
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
+import io.ktor.client.request.forms.formData
+import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import org.gspi.protrack.common.model.BaseResponse
 import org.gspi.protrack.common.model.Meta
+import org.gspi.protrack.feature.feat_dashboard.data.model.request.AddEditProjectRequest
 import org.gspi.protrack.feature.feat_dashboard.data.model.request.AddUpdateUserRequest
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.ProjectResponseItem
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.UserResponseItem
 
 class DashboardRemoteDataSource(private val client: HttpClient) {
-    private val baseUrl = "https://gspi-protrack.my.id/api"
+    private val baseUrl = "https://gspi-protrack.my.id/api-dev"
 
     suspend fun getProjectList(): BaseResponse<List<ProjectResponseItem>>{
         return runCatching {
@@ -59,7 +64,6 @@ class DashboardRemoteDataSource(private val client: HttpClient) {
         }
     }
 
-    //delete user
     suspend fun deleteUser(id: Int): Meta {
         return runCatching {
             client.delete("$baseUrl/user/$id") {
@@ -83,6 +87,28 @@ class DashboardRemoteDataSource(private val client: HttpClient) {
         return runCatching {
             client.post("$baseUrl/user/activate/$id") {
             }.body<Meta>()
+        }.getOrElse { exception ->
+            throw exception
+        }
+    }
+
+    suspend fun postCreateProject(request: AddEditProjectRequest): Meta {
+        return runCatching {
+            val response = client.submitFormWithBinaryData(
+                url = "$baseUrl/project/create",
+                formData = formData {
+                    append("project_name", request.projectName)
+                    append("start_date", request.startDate)
+                    append("deadline_date", request.deadlineDate)
+                    append("aoi", request.aoi!!, Headers.build {
+                        append(HttpHeaders.ContentDisposition, "filename=aoi${request.projectName}.zip")
+                    })
+                    append("rencana_titik_control", request.rencanaTitikControl!!, Headers.build {
+                        append(HttpHeaders.ContentDisposition, "filename=rtk${request.projectName}.zip")
+                    })
+                }
+            )
+            response.body<Meta>()
         }.getOrElse { exception ->
             throw exception
         }

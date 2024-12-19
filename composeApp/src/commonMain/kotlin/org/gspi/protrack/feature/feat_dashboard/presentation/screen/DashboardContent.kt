@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -17,6 +18,8 @@ import org.gspi.protrack.feature.feat_dashboard.presentation.component.ItemProje
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.NewProjectSearchComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
 import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.DashboardViewModel
+import org.gspi.protrack.gspidesign.error.Error
+import org.gspi.protrack.gspidesign.success.Success
 
 @Composable
 fun DashboardContent(modifier: Modifier = Modifier,
@@ -24,6 +27,16 @@ fun DashboardContent(modifier: Modifier = Modifier,
                      viewModel: DashboardViewModel
                      ) {
     val uiState by viewModel.uiState.collectAsState()
+    LaunchedEffect(uiState.metaResponse) {
+        uiState.metaResponse?.let {
+            if (it.code == 200) {
+                Success.show("Berhasil")
+                viewModel.onEvent(DashboardEvent.LoadListProject)
+            } else {
+                Error.show("Failed to create project")
+            }
+        }
+    }
 
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         Spacer(modifier = Modifier.padding(8.dp))

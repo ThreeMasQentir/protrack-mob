@@ -3,17 +3,19 @@ package org.gspi.protrack.feature.feat_dashboard.di
 import org.gspi.protrack.feature.feat_dashboard.data.repository.DashboardRepositoryImpl
 import org.gspi.protrack.feature.feat_dashboard.data.source.local.DashboardLocalDataSource
 import org.gspi.protrack.feature.feat_dashboard.data.source.remote.DashboardRemoteDataSource
-import org.gspi.protrack.feature.feat_dashboard.domain.DashboardRepository
-import org.gspi.protrack.feature.feat_dashboard.domain.DeleteUserUseCase
-import org.gspi.protrack.feature.feat_dashboard.domain.GetListProjectUseCase
-import org.gspi.protrack.feature.feat_dashboard.domain.GetListUserUseCase
-import org.gspi.protrack.feature.feat_dashboard.domain.PostActiveUserUseCase
-import org.gspi.protrack.feature.feat_dashboard.domain.PostCreateUserUseCase
-import org.gspi.protrack.feature.feat_dashboard.domain.PostDeactiveUserUseCase
-import org.gspi.protrack.feature.feat_dashboard.domain.PostUpdateUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.projectsusecase.CreateProjectUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.repository.DashboardRepository
+import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.DeleteUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.projectsusecase.GetListProjectUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.GetListUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.PostActiveUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.PostCreateUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.PostDeactiveUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.PostUpdateUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.DashboardViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
+import kotlin.math.sin
 
 val dashboardModule = module {
     single { DashboardLocalDataSource(get()) }
@@ -26,5 +28,6 @@ val dashboardModule = module {
     single { DeleteUserUseCase(get()) }
     single { PostDeactiveUserUseCase(get()) }
     single { PostActiveUserUseCase(get()) }
-    viewModel { DashboardViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+    single { CreateProjectUseCase(get()) }
+    viewModel { DashboardViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
 }

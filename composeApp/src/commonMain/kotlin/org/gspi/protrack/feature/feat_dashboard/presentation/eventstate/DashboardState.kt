@@ -13,6 +13,8 @@ data class DashboardState (
     val listUsers: List<UserResponseItem> = emptyList(),
     val isDialogVisible: Boolean = false,
     val contentType : ContentType = ContentType.PROJECTS,
+    val metaResponse: Meta? = null,
+
 
     //project dialog
     val projectName: String = "",
@@ -32,6 +34,5 @@ data class DashboardState (
     val userPhoneNumber: String = "",
     val userIsActive: Boolean = true,
     val userIsEdit : Boolean = false,
-    val metaCreateUser: Meta? = null
 
 )

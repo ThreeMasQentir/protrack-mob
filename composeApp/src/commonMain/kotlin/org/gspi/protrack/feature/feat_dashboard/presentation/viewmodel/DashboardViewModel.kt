@@ -8,13 +8,14 @@ import kotlinx.coroutines.launch
 import org.gspi.protrack.common.local.UserPreferences
 import org.gspi.protrack.common.utils.handleApiResponse
 import org.gspi.protrack.common.utils.handleApiResponseMeta
-import org.gspi.protrack.feature.feat_dashboard.domain.DeleteUserUseCase
-import org.gspi.protrack.feature.feat_dashboard.domain.GetListProjectUseCase
-import org.gspi.protrack.feature.feat_dashboard.domain.GetListUserUseCase
-import org.gspi.protrack.feature.feat_dashboard.domain.PostActiveUserUseCase
-import org.gspi.protrack.feature.feat_dashboard.domain.PostCreateUserUseCase
-import org.gspi.protrack.feature.feat_dashboard.domain.PostDeactiveUserUseCase
-import org.gspi.protrack.feature.feat_dashboard.domain.PostUpdateUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.projectsusecase.CreateProjectUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.DeleteUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.projectsusecase.GetListProjectUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.GetListUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.PostActiveUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.PostCreateUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.PostDeactiveUserUseCase
+import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.PostUpdateUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardState
 
@@ -26,9 +27,9 @@ class DashboardViewModel(
     private val postUpdateUserUseCase: PostUpdateUserUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
     private val postDeactiveUserUseCase: PostDeactiveUserUseCase,
-    private val postActiveUserUseCase: PostActiveUserUseCase
-    ) : ViewModel() {
-
+    private val postActiveUserUseCase: PostActiveUserUseCase,
+    private val createProjectUseCase: CreateProjectUseCase
+) : ViewModel() {
     private val _uiState = MutableStateFlow(DashboardState())
     val uiState: StateFlow<DashboardState> = _uiState
 
@@ -39,31 +40,73 @@ class DashboardViewModel(
     fun onEvent(event: DashboardEvent) {
         when (event) {
             DashboardEvent.LoadListProject -> {
+                updateUiState(
+                    _uiState.value.copy(
+                        isDialogVisible = false,
+                        projectName = "",
+                        projectstartDate = "",
+                        projectEndDate = "",
+                        projectAoiFileName = "Select File",
+                        projectAoiByteArray = null,
+                        projectRencanaTitikControlFileName = "Select File",
+                        projectRencanaTitikControlByteArray = null,
+                        metaResponse = null
+                    )
+                )
                 getAllProjects()
             }
+
             DashboardEvent.LoadListUser -> {
-                updateUiState(_uiState.value.copy(
-                    isDialogVisible = false,
-                    userIsEdit = false,
-                    projectName = "", projectstartDate = "", projectEndDate = "", projectAoiFileName = "Select File", projectAoiByteArray = null, projectRencanaTitikControlFileName = "Select File", projectRencanaTitikControlByteArray = null, metaCreateUser = null))
+                updateUiState(
+                    _uiState.value.copy(
+                        isDialogVisible = false,
+                        userIsEdit = false,
+                        projectName = "",
+                        projectstartDate = "",
+                        projectEndDate = "",
+                        projectAoiFileName = "Select File",
+                        projectAoiByteArray = null,
+                        projectRencanaTitikControlFileName = "Select File",
+                        projectRencanaTitikControlByteArray = null,
+                        metaResponse = null
+                    )
+                )
                 getAllUsers()
             }
+
             is DashboardEvent.ClearError -> {
                 updateUiState(_uiState.value.copy(errorMessage = null))
             }
+
             is DashboardEvent.OnLogout -> {
                 logout()
             }
 
             is DashboardEvent.OnSearchValueChange -> {
                 updateUiState(_uiState.value.copy(searchValue = event.searchValue))
+                val searchValue = event.searchValue
+                if (searchValue.isEmpty()) {
+                    getAllProjects()
+                    return
+                } else {
+                    val filteredList = _uiState.value.listProject.filter {
+                        it.projectName.contains(searchValue, ignoreCase = true)
+                    }
+                    updateUiState(_uiState.value.copy(listProject = filteredList))
+                }
             }
 
             is DashboardEvent.OnAddProjectClick -> {
-                updateUiState(_uiState.value.copy(
-                    isDialogVisible = event.isDialogVisible,
-                    userName = "", userUsername = "", userPassword = "", userEmail = "", userPhoneNumber = ""
-                ))
+                updateUiState(
+                    _uiState.value.copy(
+                        isDialogVisible = event.isDialogVisible,
+                        userName = "",
+                        userUsername = "",
+                        userPassword = "",
+                        userEmail = "",
+                        userPhoneNumber = ""
+                    )
+                )
             }
 
             is DashboardEvent.OnContentTypeChange -> {
@@ -71,65 +114,104 @@ class DashboardViewModel(
             }
 
             is DashboardEvent.OnAoiChange -> {
-                updateUiState(_uiState.value.copy(projectAoiFileName = event.aoiFileName, projectAoiByteArray = event.aoiByteArray))
+                updateUiState(
+                    _uiState.value.copy(
+                        projectAoiFileName = event.aoiFileName,
+                        projectAoiByteArray = event.aoiByteArray
+                    )
+                )
             }
+
             is DashboardEvent.OnEndDateChange -> {
                 updateUiState(_uiState.value.copy(projectEndDate = event.endDate))
             }
+
             is DashboardEvent.OnProjectNameChange -> {
                 updateUiState(_uiState.value.copy(projectName = event.projectName))
             }
+
             is DashboardEvent.OnRencanaTitikControlChange -> {
-                updateUiState(_uiState.value.copy(projectRencanaTitikControlFileName = event.rencanaTitikControlFileName, projectRencanaTitikControlByteArray = event.rencanaTitikControlByteArray))
+                updateUiState(
+                    _uiState.value.copy(
+                        projectRencanaTitikControlFileName = event.rencanaTitikControlFileName,
+                        projectRencanaTitikControlByteArray = event.rencanaTitikControlByteArray
+                    )
+                )
             }
+
             is DashboardEvent.OnSaveProjectClick -> {
                 updateUiState(_uiState.value.copy(isDialogVisible = false))
+                createProject()
             }
+
             is DashboardEvent.OnStartDateChange -> {
                 updateUiState(_uiState.value.copy(projectstartDate = event.startDate))
             }
+
             is DashboardEvent.OnDeleteUserClick -> {
                 deleteUser(event.id)
             }
+
             DashboardEvent.OnEditUserClick -> {
                 updateUser()
             }
+
             DashboardEvent.OnSaveUserClick -> {
                 updateUiState(_uiState.value.copy(isDialogVisible = false))
                 createUser()
             }
+
             is DashboardEvent.OnUserEmailChange -> {
                 updateUiState(_uiState.value.copy(userEmail = event.userEmail))
             }
+
             is DashboardEvent.OnUserNameChange -> {
                 updateUiState(_uiState.value.copy(userName = event.userName))
             }
+
             is DashboardEvent.OnUserPasswordChange -> {
                 updateUiState(_uiState.value.copy(userPassword = event.userPassword))
             }
+
             is DashboardEvent.OnUserPhoneNumberChange -> {
                 updateUiState(_uiState.value.copy(userPhoneNumber = event.userPhoneNumber))
             }
+
             is DashboardEvent.OnUserStateChange -> {
                 changeUserStatus(event.id, event.isActive)
             }
+
             is DashboardEvent.OnUserUsernameChange -> {
                 updateUiState(_uiState.value.copy(userUsername = event.userUsername))
             }
+
             is DashboardEvent.ShowEditUserDialog -> {
-                updateUiState(_uiState.value.copy(
-                    userIsEdit = true,
-                    isDialogVisible = true,
-                    userId = event.id,
-                    userName = event.userName, userUsername = event.userUsername, userPassword = event.userPassword, userEmail = event.userEmail, userPhoneNumber = event.userPhoneNumber))
+                updateUiState(
+                    _uiState.value.copy(
+                        userIsEdit = true,
+                        isDialogVisible = true,
+                        userId = event.id,
+                        userName = event.userName,
+                        userUsername = event.userUsername,
+                        userPassword = event.userPassword,
+                        userEmail = event.userEmail,
+                        userPhoneNumber = event.userPhoneNumber
+                    )
+                )
             }
 
             is DashboardEvent.OnAddUserClick -> {
-                updateUiState(_uiState.value.copy(
-                    isDialogVisible = event.isDialogVisible,
-                    userIsEdit = false,
-                    userName = "", userUsername = "", userPassword = "", userEmail = "", userPhoneNumber = ""
-                ))
+                updateUiState(
+                    _uiState.value.copy(
+                        isDialogVisible = event.isDialogVisible,
+                        userIsEdit = false,
+                        userName = "",
+                        userUsername = "",
+                        userPassword = "",
+                        userEmail = "",
+                        userPhoneNumber = ""
+                    )
+                )
             }
 
             is DashboardEvent.OnSearchUserValueChange -> {
@@ -138,12 +220,17 @@ class DashboardViewModel(
                     getAllUsers()
                     updateUiState(_uiState.value.copy(searchValue = searchValue))
                     return
-                }else{
+                } else {
                     val filteredList = _uiState.value.listUsers.filter {
                         it.name.contains(searchValue, ignoreCase = true) ||
                                 it.email.contains(searchValue, ignoreCase = true)
                     }
-                    updateUiState(_uiState.value.copy(listUsers = filteredList, searchValue = searchValue))
+                    updateUiState(
+                        _uiState.value.copy(
+                            listUsers = filteredList,
+                            searchValue = searchValue
+                        )
+                    )
                 }
 
             }
@@ -203,16 +290,21 @@ class DashboardViewModel(
                     )
                 },
                 onSuccess = { response ->
-                    updateUiState(_uiState.value.copy(isLoading = false, metaCreateUser = response))
+                    updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
                 },
                 onError = { error ->
-                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = error.message))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = error.message
+                        )
+                    )
                 }
             )
         }
     }
 
-    private fun updateUser(){
+    private fun updateUser() {
         updateUiState(_uiState.value.copy(isLoading = true))
         viewModelScope.launch {
             handleApiResponseMeta(
@@ -226,16 +318,21 @@ class DashboardViewModel(
                     )
                 },
                 onSuccess = { response ->
-                    updateUiState(_uiState.value.copy(isLoading = false, metaCreateUser = response))
+                    updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
                 },
                 onError = { error ->
-                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = error.message))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = error.message
+                        )
+                    )
                 }
             )
         }
     }
 
-    private fun deleteUser(id: Int){
+    private fun deleteUser(id: Int) {
         updateUiState(_uiState.value.copy(isLoading = true))
         viewModelScope.launch {
             handleApiResponseMeta(
@@ -245,31 +342,69 @@ class DashboardViewModel(
                     )
                 },
                 onSuccess = { response ->
-                    updateUiState(_uiState.value.copy(isLoading = false, metaCreateUser = response))
+                    updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
                 },
                 onError = { error ->
-                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = error.message))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = error.message
+                        )
+                    )
                 }
             )
         }
     }
 
-    private fun changeUserStatus(id: Int, isActive: Boolean){
+    private fun changeUserStatus(id: Int, isActive: Boolean) {
         updateUiState(_uiState.value.copy(isLoading = true))
         viewModelScope.launch {
             handleApiResponseMeta(
                 apiCall = {
-                    if(!isActive){
+                    if (!isActive) {
                         postActiveUserUseCase.execute(id)
-                    }else{
+                    } else {
                         postDeactiveUserUseCase.execute(id)
                     }
                 },
                 onSuccess = { response ->
-                    updateUiState(_uiState.value.copy(isLoading = false, metaCreateUser = response))
+                    updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
                 },
                 onError = { error ->
-                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = error.message))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = error.message
+                        )
+                    )
+                }
+            )
+        }
+    }
+
+    private fun createProject() {
+        updateUiState(_uiState.value.copy(isLoading = true))
+        viewModelScope.launch {
+            handleApiResponseMeta(
+                apiCall = {
+                    createProjectUseCase.execute(
+                        name = _uiState.value.projectName,
+                        startDate = _uiState.value.projectstartDate,
+                        endDate = _uiState.value.projectEndDate,
+                        aoi = _uiState.value.projectAoiByteArray,
+                        rencanaTitikControl = _uiState.value.projectRencanaTitikControlByteArray
+                    )
+                },
+                onSuccess = { response ->
+                    updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
+                },
+                onError = { error ->
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = error.message
+                        )
+                    )
                 }
             )
         }

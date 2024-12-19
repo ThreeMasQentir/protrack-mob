@@ -50,7 +50,6 @@ import kotlin.contracts.contract
 
 @Composable
 fun AddEditProjectComponent(
-    modifier: Modifier = Modifier,
     isDialogVisible: Boolean,
     onDialogDismiss: () -> Unit,
     projectName: String,

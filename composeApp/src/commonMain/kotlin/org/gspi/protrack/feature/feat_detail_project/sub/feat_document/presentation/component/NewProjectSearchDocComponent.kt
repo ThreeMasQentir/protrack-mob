@@ -86,7 +86,7 @@ fun SearchComponent(
             .height(56.dp), // Set the height of the search bar
         placeholder = {
             Text(
-                text = "Search project here",
+                text = "Search here",
                 style = TextStyle(
                     fontFamily = PoppinsFontFamily(),
                     fontWeight = FontWeight.Normal,

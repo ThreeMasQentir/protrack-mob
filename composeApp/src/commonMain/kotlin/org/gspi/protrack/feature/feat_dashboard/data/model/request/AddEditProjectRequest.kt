@@ -12,7 +12,7 @@ data class AddEditProjectRequest (
     @SerialName("deadline_date")
     val deadlineDate: String,
     @SerialName("aoi")
-    val aoi: String,
+    val aoi: ByteArray?,
     @SerialName("rencana_titik_control")
-    val rencanaTitikControl: String,
+    val rencanaTitikControl: ByteArray?,
 )

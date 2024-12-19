@@ -4,12 +4,13 @@ import kotlinx.coroutines.flow.first
 import org.gspi.protrack.common.model.BaseResponse
 import org.gspi.protrack.common.model.Meta
 import org.gspi.protrack.common.network.ConnectivityChecker
+import org.gspi.protrack.feature.feat_dashboard.data.model.request.AddEditProjectRequest
 import org.gspi.protrack.feature.feat_dashboard.data.model.request.AddUpdateUserRequest
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.ProjectResponseItem
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.UserResponseItem
 import org.gspi.protrack.feature.feat_dashboard.data.source.local.DashboardLocalDataSource
 import org.gspi.protrack.feature.feat_dashboard.data.source.remote.DashboardRemoteDataSource
-import org.gspi.protrack.feature.feat_dashboard.domain.DashboardRepository
+import org.gspi.protrack.feature.feat_dashboard.domain.repository.DashboardRepository
 
 class DashboardRepositoryImpl(
     private val remoteDataSource: DashboardRemoteDataSource,
@@ -104,6 +105,12 @@ class DashboardRepositoryImpl(
     override suspend fun deactivateUser(id: Int): Result<Meta> {
         return runCatching {
             remoteDataSource.deactivateUser(id)
+        }
+    }
+
+    override suspend fun createProject(request: AddEditProjectRequest): Result<Meta> {
+        return runCatching {
+            remoteDataSource.postCreateProject(request)
         }
     }
 }

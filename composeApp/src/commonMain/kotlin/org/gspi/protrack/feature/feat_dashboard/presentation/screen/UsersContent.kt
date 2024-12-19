@@ -13,7 +13,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import gspiprotrack.composeapp.generated.resources.Res
 import gspiprotrack.composeapp.generated.resources.ic_users
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.ItemUserComponent
@@ -36,8 +35,8 @@ fun UsersContent(
         viewModel.onEvent(DashboardEvent.LoadListUser)
     }
 
-    LaunchedEffect(uiState.metaCreateUser) {
-        uiState.metaCreateUser?.let {
+    LaunchedEffect(uiState.metaResponse) {
+        uiState.metaResponse?.let {
             if (it.code == 200) {
                 Success.show("Berhasil")
                 viewModel.onEvent(DashboardEvent.LoadListUser)
