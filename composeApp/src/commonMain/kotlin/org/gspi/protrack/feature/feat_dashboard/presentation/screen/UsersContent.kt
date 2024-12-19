@@ -41,7 +41,7 @@ fun UsersContent(
                 Success.show("Berhasil")
                 viewModel.onEvent(DashboardEvent.LoadListUser)
             } else {
-                Error.show("Failed to create project")
+                Error.show("Failed: ${it.message}")
             }
         }
     }

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import org.gspi.protrack.common.navigation.Routes
+import org.gspi.protrack.common.utils.setBackStackEntryData
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.ItemProjectComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.NewProjectSearchComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
@@ -33,7 +34,7 @@ fun DashboardContent(modifier: Modifier = Modifier,
                 Success.show("Berhasil")
                 viewModel.onEvent(DashboardEvent.LoadListProject)
             } else {
-                Error.show("Failed to create project")
+                Error.show("Failed: ${it.message}")
             }
         }
     }
@@ -50,14 +51,16 @@ fun DashboardContent(modifier: Modifier = Modifier,
             }
         )
         uiState.listProject.forEach { project ->
-//                    val progressPercent = project.gpsCurrent / project.gpsTotal * 100
             ItemProjectComponent(
                 projectName = project.projectName,
                 progress = 45,
                 timeline = "${project.startDate} - ${project.deadlineDate}",
                 timeLeft = "10 days left",
                 onClick = {
-                    navController.navigate(Routes.DetailProject.route)
+                    navController.apply {
+                        setBackStackEntryData(Routes.DetailProject().projectIdArg, project.id)
+                        navigate(Routes.DetailProject().route)
+                    }
                 }
             )
         }

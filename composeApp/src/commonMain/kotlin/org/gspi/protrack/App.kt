@@ -36,7 +36,7 @@ fun App() {
             composable(route = Routes.Dashboard.route) {
                 DashboardScreen(navController = navController)
             }
-            composable(route = Routes.DetailProject.route) {
+            composable(route = Routes.DetailProject().route) {
                 DetailProjectScreen(navController = navController)
             }
             composable(route = Routes.DocumentDetail.route) {

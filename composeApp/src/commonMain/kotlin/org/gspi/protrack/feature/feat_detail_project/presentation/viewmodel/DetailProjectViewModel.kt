@@ -1,13 +1,26 @@
 package org.gspi.protrack.feature.feat_detail_project.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import org.gspi.protrack.common.utils.handleApiResponse
+import org.gspi.protrack.common.utils.handleApiResponseMeta
+import org.gspi.protrack.feature.feat_detail_project.domain.usecase.DeleteProjectUseCase
+import org.gspi.protrack.feature.feat_detail_project.domain.usecase.GetDetailProjectUseCase
+import org.gspi.protrack.feature.feat_detail_project.domain.usecase.PostSettingProjectUseCase
+import org.gspi.protrack.feature.feat_detail_project.domain.usecase.PostUpdateProgressUseCase
 import org.gspi.protrack.feature.feat_detail_project.presentation.eventstate.DetailProjectEvent
 import org.gspi.protrack.feature.feat_detail_project.presentation.eventstate.DetailProjectState
 import org.gspi.protrack.feature.feat_detail_project.presentation.eventstate.DetailProjectState.*
 
-class DetailProjectViewModel: ViewModel() {
+class DetailProjectViewModel(
+    private val getDetailProjectUseCase: GetDetailProjectUseCase,
+    private val deleteProjectUseCase: DeleteProjectUseCase,
+    private val postUpdateProgressUseCase: PostUpdateProgressUseCase,
+    private val postSettingProjectUseCase: PostSettingProjectUseCase
+): ViewModel() {
     private val _uiState = MutableStateFlow(DetailProjectState())
     val uiState: StateFlow<DetailProjectState> = _uiState
 
@@ -23,7 +36,11 @@ class DetailProjectViewModel: ViewModel() {
                     isDialogUpdateVisible = event.isDialogVisible,
                     totalTitikKontrol = event.totalTitikControl,
                     totalFotoUdara = event.totalFotoUdara,
-                    totalPengolahanData = event.totalPengolahanData
+                    totalPengolahanData = event.totalPengolahanData,
+                    currentTitikKonrol = event.currentTitikKonrol,
+                    currentFotoUdara = event.currentFotoUdara,
+                    currentPengolahanData = event.currentPengolahanData,
+
                     )))
             }
 
@@ -31,8 +48,8 @@ class DetailProjectViewModel: ViewModel() {
                 updateUiState(_uiState.value.copy(updateProgressState = _uiState.value.updateProgressState.copy(isDialogUpdateVisible = false)))
             }
             DetailProjectEvent.OnSaveUpdateProgress -> {
-                //todo: call api
                 updateUiState(_uiState.value.copy(updateProgressState = _uiState.value.updateProgressState.copy(isDialogUpdateVisible = false)))
+                postUpdateProgress()
             }
             DetailProjectEvent.OnClearProgress -> {
                 updateUiState(_uiState.value.copy(updateProgressState = UpdateProgressState()))
@@ -100,6 +117,96 @@ class DetailProjectViewModel: ViewModel() {
             is DetailProjectEvent.OnStartDateChange -> {
                 updateUiState(_uiState.value.copy(settingProjectState = _uiState.value.settingProjectState.copy(startDate = event.startDate)))
             }
+
+            is DetailProjectEvent.OnGetDetailProject -> {
+                resetState()
+                updateUiState(_uiState.value.copy(idProject = event.projectId.toInt()))
+                getDetailProject()
+            }
+            DetailProjectEvent.ClearError -> {
+                updateUiState(_uiState.value.copy(errorMessage = null))
+            }
+        }
+    }
+
+    private fun resetState() {
+        updateUiState(DetailProjectState())
+    }
+
+    private fun getDetailProject() {
+        updateUiState(_uiState.value.copy(isLoading = true))
+        viewModelScope.launch {
+            handleApiResponse(
+                apiCall = { getDetailProjectUseCase.execute(_uiState.value.idProject) },
+                onSuccess = { response ->
+                    updateUiState(_uiState.value.copy(isLoading = false, detailProject = response))
+                },
+                onError = { errorMessage ->
+                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = errorMessage))
+                }
+            )
+        }
+    }
+
+    private fun deleteProject(id: Int) {
+        updateUiState(_uiState.value.copy(isLoading = true))
+        viewModelScope.launch {
+            handleApiResponseMeta(
+                apiCall = { deleteProjectUseCase.execute(id) },
+                onSuccess = { response ->
+                    updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
+                },
+                onError = { errorMessage ->
+                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = errorMessage.message))
+                }
+            )
+        }
+    }
+
+    private fun postUpdateProgress() {
+        updateUiState(_uiState.value.copy(isLoading = true))
+        viewModelScope.launch {
+            handleApiResponseMeta(
+                apiCall = { postUpdateProgressUseCase.execute(
+                    id = _uiState.value.idProject,
+                    currentTitikControl = _uiState.value.updateProgressState.currentTitikKonrol,
+                    totalTitikControl = _uiState.value.updateProgressState.totalTitikKontrol,
+                    currentFotoUdara = _uiState.value.updateProgressState.currentFotoUdara,
+                    totalFotoUdara = _uiState.value.updateProgressState.totalFotoUdara,
+                    currentPengolahanLahan = _uiState.value.updateProgressState.currentPengolahanData,
+                    totalPengolahanLahan = _uiState.value.updateProgressState.totalPengolahanData
+                    ) },
+                onSuccess = { response ->
+                    updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
+                },
+                onError = { errorMessage ->
+                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = errorMessage.message))
+                }
+            )
+        }
+    }
+
+    private fun postUpdateSettingProject(id: Int) {
+        updateUiState(_uiState.value.copy(isLoading = true))
+        viewModelScope.launch {
+            handleApiResponseMeta(
+                apiCall = { postSettingProjectUseCase.execute(
+                    id = id,
+                    projectName = _uiState.value.settingProjectState.projectName,
+                    startDate = _uiState.value.settingProjectState.startDate,
+                    endDate = _uiState.value.settingProjectState.endDate,
+                    aoiFile = _uiState.value.settingProjectState.aoiByteArray,
+                    aoiFileName = _uiState.value.settingProjectState.aoiFileName,
+                    rencanaTitikControlFileName = _uiState.value.settingProjectState.rencanaTitikControlFileName,
+                    rencanaTitikControlFile = _uiState.value.settingProjectState.rencanaTitikControlByteArray
+                ) },
+                onSuccess = { response ->
+                    updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
+                },
+                onError = { errorMessage ->
+                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = errorMessage.message))
+                }
+            )
         }
     }
 }

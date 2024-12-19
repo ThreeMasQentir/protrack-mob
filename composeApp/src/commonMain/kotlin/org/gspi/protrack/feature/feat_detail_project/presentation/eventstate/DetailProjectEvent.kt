@@ -1,21 +1,29 @@
 package org.gspi.protrack.feature.feat_detail_project.presentation.eventstate
 
 sealed class DetailProjectEvent {
+
+    //get detail project
+    data class OnGetDetailProject(val projectId: String) : DetailProjectEvent()
+    data object ClearError: DetailProjectEvent()
+
     //update progress
     data class OnUpdateButtonClick(
         val isDialogVisible: Boolean,
-        val totalTitikControl: String,
-        val totalFotoUdara: String,
-        val totalPengolahanData: String
+        val totalTitikControl: Int,
+        val totalFotoUdara: Int,
+        val totalPengolahanData: Int,
+        val currentTitikKonrol: Int,
+        val currentFotoUdara: Int,
+        val currentPengolahanData: Int,
     ) : DetailProjectEvent()
     data object OnSaveUpdateProgress: DetailProjectEvent()
     data object OnCancelUpdateProgress: DetailProjectEvent()
-    data class OnCurrentTitikControlChange(val currentTitikControl: String) : DetailProjectEvent()
-    data class OnTotalTitikControlChange(val totalTitikControl: String) : DetailProjectEvent()
-    data class OnCurrentFotoUdaraChange(val fotoUdara: String) : DetailProjectEvent()
-    data class OnTotalFotoUdaraChange(val totalFotoUdara: String) : DetailProjectEvent()
-    data class OnCurrentPengolahanDataChange(val pengolahanData: String) : DetailProjectEvent()
-    data class OnTotalPengolahanDataChange(val totalPengolahanData: String) : DetailProjectEvent()
+    data class OnCurrentTitikControlChange(val currentTitikControl: Int) : DetailProjectEvent()
+    data class OnTotalTitikControlChange(val totalTitikControl: Int) : DetailProjectEvent()
+    data class OnCurrentFotoUdaraChange(val fotoUdara: Int) : DetailProjectEvent()
+    data class OnTotalFotoUdaraChange(val totalFotoUdara: Int) : DetailProjectEvent()
+    data class OnCurrentPengolahanDataChange(val pengolahanData: Int) : DetailProjectEvent()
+    data class OnTotalPengolahanDataChange(val totalPengolahanData: Int) : DetailProjectEvent()
     data object OnClearProgress : DetailProjectEvent()
 
     //setting project
