@@ -30,7 +30,6 @@ fun MainDetailContent(
     webViewHandler: WebViewHandler,
     viewModel: DetailProjectViewModel,
     uiState: DetailProjectState,
-    navController: NavController,
     id: Int?
 ) {
     Column(
@@ -39,7 +38,7 @@ fun MainDetailContent(
             .verticalScroll(rememberScrollState())
     ) {
         Box(modifier = Modifier.height(300.dp)) {
-            webViewHandler.LoadUrl("https://gspi-protrack.my.id/api/maps?id=7")
+            webViewHandler.LoadUrl("https://gspi-protrack.my.id/api-dev/maps?id=$id")
         }
         Spacer(modifier = Modifier.height(16.dp))
         ProgressTitleComponent(onButtonClick = {

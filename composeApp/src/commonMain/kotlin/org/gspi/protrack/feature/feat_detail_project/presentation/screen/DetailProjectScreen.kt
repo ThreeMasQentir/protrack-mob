@@ -64,9 +64,8 @@ fun DetailProjectScreen(
         HeaderContent(uiState, viewModel, navController)
         UpdateProgressDialogContent(uiState, viewModel)
         SettingsDialogContent(uiState, viewModel, navController)
-
         when (uiState.contentType) {
-            DetailProjectState.ContentType.MAINDETAIL -> MainDetailContent(modifier, webViewHandler, viewModel, uiState, navController, id)
+            DetailProjectState.ContentType.MAINDETAIL -> MainDetailContent(modifier, webViewHandler, viewModel, uiState, id)
             DetailProjectState.ContentType.LOG -> LogDetailScreen(uiState,viewModel)
             DetailProjectState.ContentType.DOCUMENT -> DocumentDetailScreen(uiState,viewModel)
         }

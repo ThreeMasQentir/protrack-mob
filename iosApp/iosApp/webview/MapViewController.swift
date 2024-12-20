@@ -5,17 +5,28 @@
 //  Created by ARFDN on 16/12/24.
 //  Copyright © 2024 orgName. All rights reserved.
 //
-
 import UIKit
 import SwiftUI
 
 @objc public class MapViewController: UIViewController {
+    private var urlString: String // Dynamic URL property
+
+    // Initializer to set the dynamic URL
+    @objc public init(urlString: String) {
+        self.urlString = urlString
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    // Required initializer for using @objc
+    @objc required dynamic init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     @objc public override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Create the MapView with the message
-        let mapView = MapView()
+        // Create the MapView with the dynamic URL
+        let mapView = MapView(urlString: urlString)
 
         // Embed MapView in a hosting controller
         let hostingController = UIHostingController(rootView: mapView)

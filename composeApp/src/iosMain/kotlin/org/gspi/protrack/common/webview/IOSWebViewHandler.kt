@@ -28,32 +28,6 @@ import org.gspi.protrack.webview.MapViewController
 
 
 class IOSWebViewHandler : WebViewHandler {
-
-    //    @OptIn(ExperimentalForeignApi::class)
-//    private val frame = CGRectMake(0.0, 0.0, 300.0, 400.0)
-//
-//    @OptIn(ExperimentalForeignApi::class)
-//    @Composable
-//    override fun LoadUrl(url: String) {
-//        val config = WKWebViewConfiguration().apply {
-//            preferences.javaScriptEnabled = true
-//        }
-//
-//        val webView = remember { WKWebView(frame = frame, configuration = config) }
-//
-//        LaunchedEffect(url) {
-//            val nsUrl = NSURL(string = url)
-//            if (true) {
-//                val request = NSURLRequest.requestWithURL(nsUrl)
-//                webView.loadRequest(request)
-//                println("Loading URL: $url")
-//            } else {
-//                println("Loading URL: Invalid URL: $url")
-//            }
-//        }
-//
-//        UIKitView(factory = { webView })
-//    }
     @OptIn(ExperimentalForeignApi::class)
     @Composable
     override fun LoadUrl(url: String) {
@@ -61,7 +35,8 @@ class IOSWebViewHandler : WebViewHandler {
         UIKitView(
             factory = {
                 val containerView = UIView()
-                val mapViewController = MapViewController()
+                val mapViewController = MapViewController(url)
+
                 containerView.addSubview(mapViewController.view)
                 mapViewController.view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -75,7 +50,7 @@ class IOSWebViewHandler : WebViewHandler {
                 )
                 containerView
             },
-            modifier = Modifier.fillMaxSize() // Adjust size as needed
+            modifier = Modifier.fillMaxSize()
         )
 
     }
