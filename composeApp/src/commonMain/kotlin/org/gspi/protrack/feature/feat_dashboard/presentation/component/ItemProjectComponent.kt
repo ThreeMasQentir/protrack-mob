@@ -31,6 +31,7 @@ fun ItemProjectComponent(
     progress: Int,
     timeline: String,
     timeLeft: String,
+    isOverdue: Boolean,
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -85,7 +86,7 @@ fun ItemProjectComponent(
                             fontFamily = PoppinsFontFamily(),
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 10.sp,
-                            color = Color(0xFFA59C9C) // Gray color
+                            color = if (!isOverdue) Color(0xFFA59C9C) else Color(0xFFDA292E)
                         )
                     )
                 }

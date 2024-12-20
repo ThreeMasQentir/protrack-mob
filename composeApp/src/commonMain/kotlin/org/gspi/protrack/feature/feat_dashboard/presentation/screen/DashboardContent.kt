@@ -13,7 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import org.gspi.protrack.common.navigation.Routes
+import org.gspi.protrack.common.utils.calculateTimeLeft
+import org.gspi.protrack.common.utils.isOverdue
 import org.gspi.protrack.common.utils.setBackStackEntryData
+import org.gspi.protrack.common.utils.toIndonesianDateFormat
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.ItemProjectComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.NewProjectSearchComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
@@ -52,9 +55,10 @@ fun DashboardContent(modifier: Modifier = Modifier,
         uiState.listProject.forEach { project ->
             ItemProjectComponent(
                 projectName = project.projectName,
-                progress = 45,
-                timeline = "${project.startDate} - ${project.deadlineDate}",
-                timeLeft = "10 days left",
+                progress = project.progress,
+                timeline = "${project.startDate.toIndonesianDateFormat()} - ${project.deadlineDate.toIndonesianDateFormat()}",
+                timeLeft = calculateTimeLeft(project.deadlineDate),
+                isOverdue = isOverdue(project.deadlineDate),
                 onClick = {
                     navController.apply {
                         setBackStackEntryData(Routes.DetailProject().projectIdArg, project.id)

@@ -21,5 +21,31 @@ data class ProjectResponseItem(
     @SerialName("uav_current")
     val uavCurrent: Int = 0,
     @SerialName("uav_total")
-    val uavTotal: Int = 0
-)
+    val uavTotal: Int = 0,
+    @SerialName("process_current")
+    val processCurrent: Int = 0,
+    @SerialName("process_total")
+    val processTotal: Int = 0
+){
+    val progress: Int
+    get() {
+        val total = gpsTotal + uavTotal + processTotal
+        return if (total == 0) 0 else (gpsCurrent + uavCurrent + processCurrent) * 100 / total
+    }
+
+    val progressUav: Int
+    get() {
+        return if (uavTotal == 0) 0 else uavCurrent * 100 / uavTotal
+    }
+
+    val progressGps: Int
+    get() {
+        return if (gpsTotal == 0) 0 else gpsCurrent * 100 / gpsTotal
+    }
+
+    val progressProcess: Int
+    get() {
+        return if (processTotal == 0) 0 else processCurrent * 100 / processTotal
+    }
+
+}

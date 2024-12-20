@@ -53,6 +53,11 @@ fun LoginScreen(
             onLoginSuccess()
             Loading.hide()
         }
+        viewModel.getToken()?.let {
+            if (it != "") {
+                onLoginSuccess()
+            }
+        }
     }
 
 
