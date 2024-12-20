@@ -95,6 +95,7 @@ fun SettingProjectComponent(
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     Image(
                         painter = painterResource(Res.drawable.ic_calendar),
@@ -125,6 +126,8 @@ fun SettingProjectComponent(
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+
                 ) {
                     Image(
                         painter = painterResource(Res.drawable.ic_calendar),
