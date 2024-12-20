@@ -18,7 +18,7 @@ sealed class DashboardEvent {
     data class OnEndDateChange(val endDate: String) : DashboardEvent()
     data class OnAoiChange(val aoiFileName: String, val aoiByteArray: ByteArray?) : DashboardEvent()
     data class OnRencanaTitikControlChange(val rencanaTitikControlFileName: String, val rencanaTitikControlByteArray: ByteArray?) : DashboardEvent()
-    data class OnSaveProjectClick(val projectName: String, val startDate: String, val endDate: String, val aoiByteArray: ByteArray, val rencanaTitikControlByteArray: ByteArray) : DashboardEvent()
+    data object OnSaveProjectClick : DashboardEvent()
 
     //user dialog
     data class OnAddUserClick(val isDialogVisible: Boolean) : DashboardEvent()

@@ -14,6 +14,7 @@ import org.gspi.protrack.gspidesign.success.SuccessToast
 import org.gspi.protrack.feature.feat_detail_project.presentation.screen.DetailProjectScreen
 import org.gspi.protrack.gspidesign.confirmation.ConfirmationDialog
 import org.gspi.protrack.gspidesign.datepicker.DatePickerDialog
+import org.gspi.protrack.gspidesign.empty.EmptyView
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -43,6 +44,7 @@ fun App() {
         SuccessToast.SuccessToast()
         ConfirmationDialog.Content()
         DatePickerDialog.Content()
+        EmptyView.Content()
     }
 
 }

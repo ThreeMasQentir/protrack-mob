@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -65,7 +66,9 @@ fun GspiButtonPickFile(
                     fontWeight = FontWeight.Medium, // Medium weight for the text
                     fontSize = 16.sp, // Appropriate font size for clarity
                     color = textColor // Color for the text
-                )
+                ),
+                maxLines = 1, // Set maximum lines to 1
+                overflow = TextOverflow.Ellipsis // Ellipsize the overflow text
             )
         }
     }

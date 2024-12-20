@@ -21,6 +21,7 @@ import org.gspi.protrack.feature.feat_dashboard.presentation.component.ItemProje
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.NewProjectSearchComponent
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
 import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.DashboardViewModel
+import org.gspi.protrack.gspidesign.empty.EmptyView
 import org.gspi.protrack.gspidesign.error.Error
 import org.gspi.protrack.gspidesign.success.SuccessToast
 
@@ -52,20 +53,27 @@ fun DashboardContent(modifier: Modifier = Modifier,
                 viewModel.onEvent(DashboardEvent.OnAddProjectClick(true))
             }
         )
-        uiState.listProject.forEach { project ->
-            ItemProjectComponent(
-                projectName = project.projectName,
-                progress = project.progress,
-                timeline = "${project.startDate.toIndonesianDateFormat()} - ${project.deadlineDate.toIndonesianDateFormat()}",
-                timeLeft = calculateTimeLeft(project.deadlineDate),
-                isOverdue = isOverdue(project.deadlineDate),
-                onClick = {
-                    navController.apply {
-                        setBackStackEntryData(Routes.DetailProject().projectIdArg, project.id)
-                        navigate(Routes.DetailProject().route)
+        if (uiState.listProjectFiltered.isNotEmpty()) {
+            EmptyView.hide()
+            uiState.listProjectFiltered.forEach { project ->
+                ItemProjectComponent(
+                    projectName = project.projectName,
+                    progress = project.progress,
+                    timeline = "${project.startDate.toIndonesianDateFormat()} - ${project.deadlineDate.toIndonesianDateFormat()}",
+                    timeLeft = calculateTimeLeft(project.deadlineDate),
+                    isOverdue = isOverdue(project.deadlineDate),
+                    onClick = {
+                        navController.apply {
+                            setBackStackEntryData(Routes.DetailProject().projectIdArg, project.id)
+                            navigate(Routes.DetailProject().route)
+                        }
                     }
-                }
-            )
+                )
+            }
+        } else if (uiState.searchValue.isNotEmpty()) {
+            EmptyView.show("No projects found")
+        } else {
+            EmptyView.show("No projects available")
         }
     }
 }

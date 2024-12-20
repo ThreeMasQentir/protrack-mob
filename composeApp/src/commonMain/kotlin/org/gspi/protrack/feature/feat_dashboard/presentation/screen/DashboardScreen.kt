@@ -97,15 +97,12 @@ fun DashboardScreen(
         kontrolFileName = uiState.projectRencanaTitikControlFileName,
         onSaveProjectClick = {
             viewModel.onEvent(
-                DashboardEvent.OnSaveProjectClick(
-                    uiState.projectName,
-                    uiState.projectstartDate,
-                    uiState.projectEndDate,
-                    uiState.projectAoiByteArray!!,
-                    uiState.projectRencanaTitikControlByteArray!!
-                )
+                DashboardEvent.OnSaveProjectClick
             )
-        }
+        },
+        isButtonEnabled = uiState.projectName.isNotEmpty() &&
+                uiState.projectstartDate.isNotEmpty() &&
+                uiState.projectEndDate.isNotEmpty()
     )
 
     ModalNavigationDrawer(

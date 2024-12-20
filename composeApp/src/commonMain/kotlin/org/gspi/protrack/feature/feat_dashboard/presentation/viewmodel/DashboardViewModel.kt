@@ -83,16 +83,16 @@ class DashboardViewModel(
             }
 
             is DashboardEvent.OnSearchValueChange -> {
-                updateUiState(_uiState.value.copy(searchValue = event.searchValue))
                 val searchValue = event.searchValue
+                updateUiState(_uiState.value.copy(searchValue = searchValue))
+
                 if (searchValue.isEmpty()) {
-                    getAllProjects()
-                    return
+                    updateUiState(_uiState.value.copy(listProjectFiltered = _uiState.value.listProject))
                 } else {
                     val filteredList = _uiState.value.listProject.filter {
                         it.projectName.contains(searchValue, ignoreCase = true)
                     }
-                    updateUiState(_uiState.value.copy(listProject = filteredList))
+                    updateUiState(_uiState.value.copy(listProjectFiltered = filteredList))
                 }
             }
 
@@ -140,7 +140,6 @@ class DashboardViewModel(
             }
 
             is DashboardEvent.OnSaveProjectClick -> {
-                updateUiState(_uiState.value.copy(isDialogVisible = false))
                 createProject()
             }
 
@@ -250,7 +249,7 @@ class DashboardViewModel(
                 apiCall = { getListProjectUseCase.execute() },
                 onSuccess = { response ->
                     println("response: $response")
-                    updateUiState(_uiState.value.copy(isLoading = false, listProject = response))
+                    updateUiState(_uiState.value.copy(isLoading = false, listProject = response, listProjectFiltered = response))
                 },
                 onError = { error ->
                     println("errorload: $error")
@@ -383,7 +382,7 @@ class DashboardViewModel(
     }
 
     private fun createProject() {
-        updateUiState(_uiState.value.copy(isLoading = true))
+        updateUiState(_uiState.value.copy(isLoading = true,isDialogVisible = false))
         viewModelScope.launch {
             handleApiResponseMeta(
                 apiCall = {

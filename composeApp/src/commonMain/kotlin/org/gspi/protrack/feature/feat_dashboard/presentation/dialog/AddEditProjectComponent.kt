@@ -33,11 +33,13 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import gspiprotrack.composeapp.generated.resources.Res
 import gspiprotrack.composeapp.generated.resources.ic_calendar
+import gspiprotrack.composeapp.generated.resources.ic_checklist
 import org.gspi.protrack.common.media.LaunchFilePicker
 import org.gspi.protrack.common.picker.AllowedFileType
 import org.gspi.protrack.common.picker.FilePickResult
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
 import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.DashboardViewModel
+import org.gspi.protrack.gspidesign.button.GspiButtonLeftIcon
 import org.gspi.protrack.gspidesign.button.GspiButtonOutline
 import org.gspi.protrack.gspidesign.button.GspiButtonPickFile
 import org.gspi.protrack.gspidesign.button.GspiButtonPrimary
@@ -62,7 +64,8 @@ fun AddEditProjectComponent(
     onKontrolChange: (FilePickResult) -> Unit,
     aoiFileName: String = "Select File",
     kontrolFileName: String = "Select File",
-    onSaveProjectClick: () -> Unit
+    onSaveProjectClick: () -> Unit,
+    isButtonEnabled: Boolean = false
 ) {
     if (isDialogVisible) {
         Dialog(
@@ -220,7 +223,9 @@ fun AddEditProjectComponent(
                         }
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    GspiButtonPrimary(
+                    GspiButtonLeftIcon(
+                        isEnabled = isButtonEnabled ,
+                        icon = Res.drawable.ic_checklist,
                         text = "Save",
                         onClick = {
                             onSaveProjectClick()

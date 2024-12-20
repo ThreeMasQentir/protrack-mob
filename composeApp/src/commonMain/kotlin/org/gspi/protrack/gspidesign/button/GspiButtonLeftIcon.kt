@@ -34,7 +34,8 @@ fun GspiButtonLeftIcon(
     onClick: () -> Unit,
     buttonColor: Color = Color(0xFF113F3F), // Default button color
     textColor: Color = Color(0xFFFFEFC4), // Default text color
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isEnabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
@@ -45,7 +46,8 @@ fun GspiButtonLeftIcon(
             containerColor = buttonColor, // Parameterized button color
             contentColor = textColor // Parameterized content (text/icon) color
         ),
-        shape = RoundedCornerShape(8.dp) // Rounded corners
+        shape = RoundedCornerShape(8.dp), // Rounded corners
+        enabled = isEnabled
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
