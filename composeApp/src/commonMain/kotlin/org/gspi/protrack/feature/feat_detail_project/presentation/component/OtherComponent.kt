@@ -26,7 +26,7 @@ fun OtherComponent(modifier: Modifier = Modifier,
         modifier = modifier.padding(horizontal = 16.dp)
     ){
         Text(
-            text = "Form",
+            text = "Other",
             fontSize = 18.sp, // Increased by 2px
             color = Color(0xFF113F3F),
             fontWeight = FontWeight.Bold,

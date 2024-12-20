@@ -1,4 +1,4 @@
-package org.gspi.protrack.feature.feat_detail_project.sub.feat_log.presentation.component
+package org.gspi.protrack.feature.feat_detail_project.other.feat_document.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,15 +28,13 @@ import androidx.compose.ui.unit.sp
 import gspiprotrack.composeapp.generated.resources.Res
 import gspiprotrack.composeapp.generated.resources.ic_document_title
 import gspiprotrack.composeapp.generated.resources.ic_edit
-import gspiprotrack.composeapp.generated.resources.ic_log_title
-import gspiprotrack.composeapp.generated.resources.ic_project_map
 import org.gspi.protrack.gspidesign.button.GspiButtonLeftIcon
 import org.gspi.protrack.gspidesign.font.PoppinsFontFamily
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun NewProjectLogSearchComponent(
+fun NewProjectDocSearchComponent(
     searchValue: String,
     onValueChange: (String) -> Unit,
     onButtonClick: () -> Unit
@@ -49,9 +46,17 @@ fun NewProjectLogSearchComponent(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             ProjectTitle(
-                text = "Log",
-                icon = Res.drawable.ic_log_title,
+                text = "Document",
+                icon = Res.drawable.ic_document_title,
                 modifier = Modifier.padding(start = 16.dp).weight(1.5f)
+            )
+            GspiButtonLeftIcon(
+                modifier = Modifier.wrapContentWidth().weight(1f),
+                text = "Upload",
+                icon = Res.drawable.ic_edit,
+                onClick = {
+                    onButtonClick()
+                }
             )
         }
         SearchComponent(

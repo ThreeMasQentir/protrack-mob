@@ -16,10 +16,16 @@ data class DetailProjectState(
     val updateProgressState: UpdateProgressState = UpdateProgressState(),
     val settingProjectState: SettingProjectState = SettingProjectState(),
     val documentState: DocumentState = DocumentState(),
+    val contentType: ContentType = ContentType.MAINDETAIL,
 ){
+    enum class ContentType {
+        MAINDETAIL, LOG, DOCUMENT
+    }
+
     data class DocumentState(
         val isDialogDocumentVisible: Boolean = false,
-        val documentName: String = "Select File",
+        val documentName: String = "",
+        val documentButtonName: String = "Select File",
         val documentByteArray: ByteArray? = null,
     )
 

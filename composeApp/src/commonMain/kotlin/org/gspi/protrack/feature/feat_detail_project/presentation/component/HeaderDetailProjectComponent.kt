@@ -35,7 +35,8 @@ fun HeaderProjectComponent(
     modifier: Modifier = Modifier,
     title: String = "Proyek Foto Tegak BPN Kabupaten Banjar",
     onBackClick: () -> Unit = {},
-    onSettingsClick: () -> Unit = {}
+    onSettingsClick: () -> Unit = {},
+    isSettingsVisible: Boolean
 ) {
     Row(
         modifier = modifier
@@ -73,14 +74,16 @@ fun HeaderProjectComponent(
             )
         }
 
-        // Settings Icon
-        Icon(
-            imageVector = Icons.Default.Settings,
-            contentDescription = "Settings",
-            tint = Color.White,
-            modifier = Modifier
-                .size(24.dp)
-                .clickable { onSettingsClick() }
-        )
+        if (isSettingsVisible) {
+
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = "Settings",
+                tint = Color.White,
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { onSettingsClick() }
+            )
+        }
     }
 }

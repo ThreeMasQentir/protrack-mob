@@ -1,4 +1,4 @@
-package org.gspi.protrack.feature.feat_detail_project.sub.feat_log.presentation.component
+package org.gspi.protrack.feature.feat_detail_project.other.feat_document.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,26 +11,36 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import gspiprotrack.composeapp.generated.resources.Res
+import gspiprotrack.composeapp.generated.resources.ic_delete_red
 import org.gspi.protrack.gspidesign.font.PoppinsFontFamily
-import org.gspi.protrack.gspidesign.progress.GspiProgress
 import org.gspi.protrack.gspidesign.text.GspiTextLabel
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun ItemLogComponent(
+fun ItemDocumentComponent(
     projectName: String,
     timeLeft: String,
     onClick: () -> Unit = {},
+    author: String = "",
+    onDownloadClick: () -> Unit,
+    onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -44,22 +54,42 @@ fun ItemLogComponent(
         Column(
             modifier = Modifier.fillMaxWidth().background(Color.White)
         ) {
-            // Header Background
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0xFF113F3F)) // Dark green background
+                    .background(Color(0xFF113F3F))
                     .padding(16.dp)
             ) {
-                Text(
-                    text = projectName,
-                    style = TextStyle(
-                        fontFamily = PoppinsFontFamily(),
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 12.sp,
-                        color = Color.White
+                Row(){
+                    Text(
+                        text = projectName,
+                        style = TextStyle(
+                            fontFamily = PoppinsFontFamily(),
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.sp,
+                            color = Color.White
+                        )
                     )
-                )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Icon(
+                        imageVector = Icons.Default.Download,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.clickable {
+                            onDownloadClick()
+                        }
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_delete_red),
+                        contentDescription = null,
+                        tint = Color.Red,
+                        modifier = Modifier.clickable {
+                            onDeleteClick()
+                        }
+                    )
+                }
+
             }
 
             // Content
@@ -75,7 +105,7 @@ fun ItemLogComponent(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     GspiTextLabel(
-                        text = "Total Progress",
+                        text = author,
                         modifier = Modifier
                     )
                     Text(

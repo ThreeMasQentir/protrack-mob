@@ -12,8 +12,6 @@ import org.gspi.protrack.gspidesign.error.ErrorToast
 import org.gspi.protrack.gspidesign.loading.LoadingDialog
 import org.gspi.protrack.gspidesign.success.SuccessToast
 import org.gspi.protrack.feature.feat_detail_project.presentation.screen.DetailProjectScreen
-import org.gspi.protrack.feature.feat_detail_project.sub.feat_document.presentation.screen.DocumentDetailScreen
-import org.gspi.protrack.feature.feat_detail_project.sub.feat_log.presentation.screen.LogDetailScreen
 import org.gspi.protrack.gspidesign.confirmation.ConfirmationDialog
 import org.gspi.protrack.gspidesign.datepicker.DatePickerDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -38,12 +36,6 @@ fun App() {
             }
             composable(route = Routes.DetailProject().route) {
                 DetailProjectScreen(navController = navController)
-            }
-            composable(route = Routes.DocumentDetail.route) {
-                DocumentDetailScreen(navController = navController)
-            }
-            composable(route = Routes.LogDetail.route) {
-                LogDetailScreen(navController = navController)
             }
 
         }

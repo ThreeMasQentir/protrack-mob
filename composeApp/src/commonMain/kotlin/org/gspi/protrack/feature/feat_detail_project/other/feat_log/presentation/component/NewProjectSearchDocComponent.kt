@@ -1,4 +1,4 @@
-package org.gspi.protrack.feature.feat_detail_project.sub.feat_document.presentation.component
+package org.gspi.protrack.feature.feat_detail_project.other.feat_log.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -21,22 +20,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import gspiprotrack.composeapp.generated.resources.Res
-import gspiprotrack.composeapp.generated.resources.ic_document_title
-import gspiprotrack.composeapp.generated.resources.ic_edit
-import gspiprotrack.composeapp.generated.resources.ic_project_map
-import org.gspi.protrack.gspidesign.button.GspiButtonLeftIcon
+import gspiprotrack.composeapp.generated.resources.ic_log_title
 import org.gspi.protrack.gspidesign.font.PoppinsFontFamily
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun NewProjectDocSearchComponent(
+fun NewProjectLogSearchComponent(
     searchValue: String,
     onValueChange: (String) -> Unit,
     onButtonClick: () -> Unit
@@ -48,17 +43,9 @@ fun NewProjectDocSearchComponent(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             ProjectTitle(
-                text = "Document",
-                icon = Res.drawable.ic_document_title,
+                text = "Log",
+                icon = Res.drawable.ic_log_title,
                 modifier = Modifier.padding(start = 16.dp).weight(1.5f)
-            )
-            GspiButtonLeftIcon(
-                modifier = Modifier.wrapContentWidth().weight(1f),
-                text = "Upload",
-                icon = Res.drawable.ic_edit,
-                onClick = {
-                    onButtonClick()
-                }
             )
         }
         SearchComponent(

@@ -150,7 +150,7 @@ class DetailProjectViewModel(
             }
             is DetailProjectEvent.OnDocumentFileChange -> {
                 updateUiState(_uiState.value.copy(documentState = _uiState.value.documentState.copy(
-                    documentByteArray = event.documentByteArray
+                    documentByteArray = event.documentByteArray, documentButtonName = event.documentName
                 )))
             }
             is DetailProjectEvent.OnDocumentNameChange -> {
@@ -164,6 +164,10 @@ class DetailProjectViewModel(
             DetailProjectEvent.OnSaveDocument -> {
                 updateUiState(_uiState.value.copy(documentState = _uiState.value.documentState.copy(isDialogDocumentVisible = false)))
                 uploadDocument()
+            }
+
+            is DetailProjectEvent.OnChangeContentType -> {
+                updateUiState(_uiState.value.copy(contentType = event.contentType))
             }
         }
     }

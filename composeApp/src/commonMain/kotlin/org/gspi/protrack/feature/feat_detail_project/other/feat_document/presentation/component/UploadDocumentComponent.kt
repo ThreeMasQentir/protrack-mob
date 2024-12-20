@@ -1,16 +1,13 @@
-package org.gspi.protrack.feature.feat_detail_project.sub.feat_document.presentation.component
+package org.gspi.protrack.feature.feat_detail_project.other.feat_document.presentation.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,24 +19,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import gspiprotrack.composeapp.generated.resources.Res
-import gspiprotrack.composeapp.generated.resources.ic_calendar
+import org.gspi.protrack.common.media.LaunchFilePicker
+import org.gspi.protrack.common.picker.AllowedFileType
+import org.gspi.protrack.common.picker.FilePickResult
 import org.gspi.protrack.gspidesign.button.GspiButtonOutline
 import org.gspi.protrack.gspidesign.button.GspiButtonPickFile
 import org.gspi.protrack.gspidesign.button.GspiButtonPrimary
 import org.gspi.protrack.gspidesign.font.PoppinsFontFamily
 import org.gspi.protrack.gspidesign.text.GspiTextLabel
 import org.gspi.protrack.gspidesign.textfield.GspiTextFieldText
-import org.jetbrains.compose.resources.painterResource
-import kotlin.contracts.contract
 
 @Composable
 fun UploadDocumentComponent(
-    modifier: Modifier = Modifier,
     isDialogVisible: Boolean,
     onDialogVisibleChange: (Boolean) -> Unit,
-    projectName: String,
-    onProjectNameChange: (String) -> Unit,
+    documentName: String,
+    onDocumentNameChange: (String) -> Unit,
+    projectName: String= "Select File",
+    onProjectNameChange: (FilePickResult) -> Unit,
+    onSaveClick: () -> Unit,
 ) {
     if (isDialogVisible) {
         Dialog(
@@ -66,15 +64,24 @@ fun UploadDocumentComponent(
                 )
                 GspiTextLabel("Document Name", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
                 GspiTextFieldText(
-                    value = "",
-                    onValueChange = { },
+                    value = documentName,
+                    onValueChange = {
+                        onDocumentNameChange(it)
+                    },
                     placeholder = "Document Name"
                 )
                 GspiTextLabel("Document", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
-                GspiButtonPickFile(
-                    text = "Select File",
-                    onClick = { },
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                LaunchFilePicker(
+                    allowedType = AllowedFileType.PDF,
+                    onResult = { file ->
+                        onProjectNameChange(file)
+                    },
+                    content = {
+                        GspiButtonPickFile(
+                            text = projectName,
+                            onClick = { it.invoke() }
+                        )
+                    }
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
@@ -91,6 +98,7 @@ fun UploadDocumentComponent(
                         text = "Save",
                         onClick = {
                             onDialogVisibleChange(false)
+                            onSaveClick()
                         },
                     )
                 }

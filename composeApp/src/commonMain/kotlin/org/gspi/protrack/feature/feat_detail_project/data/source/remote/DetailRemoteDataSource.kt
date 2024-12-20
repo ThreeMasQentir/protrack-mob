@@ -8,10 +8,15 @@ import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsChannel
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
+import io.ktor.utils.io.copyAndClose
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
 import org.gspi.protrack.common.model.BaseResponse
 import org.gspi.protrack.common.model.Meta
 import org.gspi.protrack.feature.feat_detail_project.data.model.request.AddDocumentRequest
@@ -129,5 +134,12 @@ class DetailRemoteDataSource(private val client: HttpClient) {
         }.getOrElse { exception ->
             throw exception
         }
+    }
+
+    suspend fun downloadPdf(url: String) {
+        val client = HttpClient()
+        withContext(Dispatchers.IO) {
+        }
+        client.close()
     }
 }

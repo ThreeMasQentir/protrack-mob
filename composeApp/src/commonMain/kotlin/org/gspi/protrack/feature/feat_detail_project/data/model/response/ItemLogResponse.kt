@@ -10,12 +10,6 @@ data class ItemLogResponse(
     @SerialName("jam") val time: String,
     @SerialName("user") val user: String,
     @SerialName("aktivitas") val activity: String,
-    @SerialName("link") val link: Link
-){
-    @Serializable
-    data class Link(
-        @SerialName("process_current") val processCurrent: List<Int>,
-        @SerialName("process_total") val processTotal: List<Int>
-    )
-}
+
+)
 

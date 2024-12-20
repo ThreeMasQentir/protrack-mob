@@ -25,6 +25,7 @@ sealed class DetailProjectEvent {
     data class OnCurrentPengolahanDataChange(val pengolahanData: Int) : DetailProjectEvent()
     data class OnTotalPengolahanDataChange(val totalPengolahanData: Int) : DetailProjectEvent()
     data object OnClearProgress : DetailProjectEvent()
+    data class OnChangeContentType(val contentType: DetailProjectState.ContentType) : DetailProjectEvent()
 
     //setting project
     data class OnSettingProjectClick(
@@ -51,7 +52,7 @@ sealed class DetailProjectEvent {
     data object OnSaveDocument : DetailProjectEvent()
     data object OnCancelDocument : DetailProjectEvent()
     data class OnDocumentNameChange(val documentName: String) : DetailProjectEvent()
-    data class OnDocumentFileChange(val documentByteArray: ByteArray?) : DetailProjectEvent()
+    data class OnDocumentFileChange(val documentByteArray: ByteArray?, val documentName: String) : DetailProjectEvent()
     data class OnDeleteDocument(val documentId: Int) : DetailProjectEvent()
     data object OnDownloadDocument : DetailProjectEvent()
 
