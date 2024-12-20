@@ -24,7 +24,7 @@ import org.gspi.protrack.feature.feat_login.presentation.viewmodel.LoginViewMode
 import org.gspi.protrack.gspidesign.button.GspiButtonPrimary
 import org.gspi.protrack.gspidesign.error.Error
 import org.gspi.protrack.gspidesign.loading.Loading
-import org.gspi.protrack.gspidesign.success.Success
+import org.gspi.protrack.gspidesign.success.SuccessToast
 import org.gspi.protrack.gspidesign.text.GspiTextLabel
 import org.gspi.protrack.gspidesign.text.GspiTextTitle
 import org.gspi.protrack.gspidesign.textfield.GspiTextFieldPassword
@@ -49,7 +49,7 @@ fun LoginScreen(
             viewModel.onEvent(LoginEvent.OnDecoderToken)
         }
         uiState.decoderTokenResponse?.let {
-            Success.show("Login successful")
+            SuccessToast.show("Login successful")
             onLoginSuccess()
             Loading.hide()
         }

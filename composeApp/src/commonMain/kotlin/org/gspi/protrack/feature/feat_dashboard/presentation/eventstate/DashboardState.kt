@@ -7,6 +7,7 @@ import org.gspi.protrack.feature.feat_dashboard.presentation.model.ContentType
 
 data class DashboardState (
     val isLoading: Boolean = false,
+    val token: String = "",
     val errorMessage: String?= null,
     val searchValue: String = "",
     val listProject: List<ProjectResponseItem> = emptyList(),

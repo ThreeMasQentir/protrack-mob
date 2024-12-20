@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -20,7 +19,7 @@ import org.gspi.protrack.feature.feat_dashboard.presentation.component.NewProjec
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
 import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.DashboardViewModel
 import org.gspi.protrack.gspidesign.error.Error
-import org.gspi.protrack.gspidesign.success.Success
+import org.gspi.protrack.gspidesign.success.SuccessToast
 
 @Composable
 fun DashboardContent(modifier: Modifier = Modifier,
@@ -31,7 +30,7 @@ fun DashboardContent(modifier: Modifier = Modifier,
     LaunchedEffect(uiState.metaResponse) {
         uiState.metaResponse?.let {
             if (it.code == 200) {
-                Success.show("Berhasil")
+                SuccessToast.show("Berhasil")
                 viewModel.onEvent(DashboardEvent.LoadListProject)
             } else {
                 Error.show("Failed: ${it.message}")

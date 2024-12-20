@@ -21,7 +21,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun App() {
     val navController = rememberNavController()
     Box {
-        NavHost(navController = navController, startDestination = Routes.Dashboard.route) {
+        NavHost(navController = navController, startDestination = Routes.Login.route) {
             composable(route = Routes.Login.route) {
                 LoginScreen(onLoginSuccess = {
                     navController.navigate(Routes.Dashboard.route){
@@ -37,11 +37,10 @@ fun App() {
             composable(route = Routes.DetailProject().route) {
                 DetailProjectScreen(navController = navController)
             }
-
         }
         LoadingDialog()
         ErrorToast()
-        SuccessToast()
+        SuccessToast.SuccessToast()
         ConfirmationDialog.Content()
         DatePickerDialog.Content()
     }

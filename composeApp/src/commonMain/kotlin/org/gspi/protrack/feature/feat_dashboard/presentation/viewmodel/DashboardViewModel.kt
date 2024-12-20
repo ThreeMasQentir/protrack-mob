@@ -50,7 +50,7 @@ class DashboardViewModel(
                         projectAoiByteArray = null,
                         projectRencanaTitikControlFileName = "Select File",
                         projectRencanaTitikControlByteArray = null,
-                        metaResponse = null
+                        metaResponse = null,
                     )
                 )
                 getAllProjects()

@@ -23,7 +23,7 @@ import org.gspi.protrack.feature.feat_detail_project.other.feat_document.present
 import org.gspi.protrack.feature.feat_detail_project.other.feat_log.presentation.screen.LogDetailScreen
 import org.gspi.protrack.gspidesign.error.Error
 import org.gspi.protrack.gspidesign.loading.Loading
-import org.gspi.protrack.gspidesign.success.Success
+import org.gspi.protrack.gspidesign.success.SuccessToast
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -51,7 +51,7 @@ fun DetailProjectScreen(
     LaunchedEffect(uiState.metaResponse) {
         uiState.metaResponse?.let {
             if (it.code == 200) {
-                Success.show("Sucess")
+                SuccessToast.show("Sucess")
                 id?.let{
                     viewModel.onEvent(DetailProjectEvent.OnGetDetailProject(it.toString()))
                 }

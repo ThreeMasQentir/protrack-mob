@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
+import org.gspi.protrack.common.navigation.Routes
 import org.gspi.protrack.common.picker.FilePickResult
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.DrawerDashboard
 import org.gspi.protrack.feature.feat_dashboard.presentation.component.ProTrackHeaderComponent
@@ -130,6 +131,11 @@ fun DashboardScreen(
                             message = "Are you sure you want to logout?",
                             onYesClick = {
                                 viewModel.onEvent(DashboardEvent.OnLogout)
+                                navController.navigate(Routes.Login.route){
+                                    popUpTo(Routes.Login.route){
+                                        inclusive = true
+                                    }
+                                }
                             },
                         )
                         drawerState.close()

@@ -23,7 +23,7 @@ import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.Dashboard
 import org.gspi.protrack.gspidesign.confirmation.ConfirmationDialog
 import org.gspi.protrack.gspidesign.error.Error
 import org.gspi.protrack.gspidesign.font.PoppinsFontFamily
-import org.gspi.protrack.gspidesign.success.Success
+import org.gspi.protrack.gspidesign.success.SuccessToast
 
 @Composable
 fun UsersContent(
@@ -38,7 +38,7 @@ fun UsersContent(
     LaunchedEffect(uiState.metaResponse) {
         uiState.metaResponse?.let {
             if (it.code == 200) {
-                Success.show("Berhasil")
+                SuccessToast.show("Berhasil")
                 viewModel.onEvent(DashboardEvent.LoadListUser)
             } else {
                 Error.show("Failed: ${it.message}")
