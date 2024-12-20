@@ -28,6 +28,8 @@ import org.gspi.protrack.feature.feat_detail_project.other.feat_document.present
 import org.gspi.protrack.feature.feat_detail_project.other.feat_document.presentation.component.UploadDocumentComponent
 import org.gspi.protrack.feature.feat_detail_project.presentation.eventstate.DetailProjectEvent
 import org.gspi.protrack.gspidesign.confirmation.ConfirmationDialog
+import org.gspi.protrack.gspidesign.error.Error
+import org.gspi.protrack.gspidesign.success.Success
 
 @Composable
 fun DocumentDetailScreen(
@@ -36,6 +38,11 @@ fun DocumentDetailScreen(
     modifier: Modifier = Modifier) {
     LaunchedEffect(Unit){
         viewModel.onEvent(DetailProjectEvent.LoadDocumentList)
+    }
+    LaunchedEffect(uiState.documentState.metaResponseDocument) {
+        uiState.documentState.metaResponseDocument?.let {
+            viewModel.onEvent(DetailProjectEvent.LoadDocumentList)
+        }
     }
     Box{
         UploadDocumentComponent(
@@ -82,7 +89,6 @@ fun DocumentDetailScreen(
                     )
                 }
             )
-            val scope = rememberCoroutineScope()
             uiState.listDocument?.forEach {
                 ItemDocumentComponent(
                     projectName = it.documentName,

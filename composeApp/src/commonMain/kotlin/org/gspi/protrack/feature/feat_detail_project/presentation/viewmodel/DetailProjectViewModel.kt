@@ -312,7 +312,7 @@ class DetailProjectViewModel(
                     documentFile = _uiState.value.documentState.documentByteArray!!
                 ) },
                 onSuccess = { response ->
-                    updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
+                    updateUiState(_uiState.value.copy(isLoading = false, documentState = _uiState.value.documentState.copy(metaResponseDocument = response)))
                 },
                 onError = { errorMessage ->
                     updateUiState(_uiState.value.copy(isLoading = false, errorMessage = errorMessage.message))

@@ -23,6 +23,7 @@ data class DetailProjectState(
     }
 
     data class DocumentState(
+        val metaResponseDocument: Meta? = null,
         val isDialogDocumentVisible: Boolean = false,
         val documentName: String = "",
         val documentButtonName: String = "Select File",
