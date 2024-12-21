@@ -40,7 +40,7 @@ fun GspiButtonPickFile(
         onClick = onClick,
         modifier = modifier
             .height(48.dp)
-            .wrapContentWidth(),
+            .width(160.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = buttonColor, // Use for the button's main background
             contentColor = textColor // Use for text and icon color

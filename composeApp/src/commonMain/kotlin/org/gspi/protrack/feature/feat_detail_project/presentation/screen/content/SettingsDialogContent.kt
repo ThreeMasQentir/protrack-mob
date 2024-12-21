@@ -75,7 +75,24 @@ fun SettingsDialogContent(
                     navController.popBackStack()
                 }
             )
-        }
+        },
+        onDeleteAoiButtonClicked = {
+            ConfirmationDialog.show(
+                title = "Delete AOI",
+                message = "Are you sure want to delete this AOI?",
+                onYesClick = {
+                    viewModel.onEvent(DetailProjectEvent.OnDeleteAoiFileName)
+                }
+            )
+        },
+        onDeleteRencanaTitikControlButtonClicked = {
+            ConfirmationDialog.show(
+                title = "Delete Rencana Titik Control",
+                message = "Are you sure want to delete this Rencana Titik Control?",
+                onYesClick = {
+                    viewModel.onEvent(DetailProjectEvent.OnDeleteRencanaTitikControlFileName)
+                })
+        },
 
 
     )

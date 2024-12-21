@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -28,6 +30,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import gspiprotrack.composeapp.generated.resources.Res
 import gspiprotrack.composeapp.generated.resources.ic_calendar
+import gspiprotrack.composeapp.generated.resources.ic_delete_red
 import org.gspi.protrack.common.media.LaunchFilePicker
 import org.gspi.protrack.common.picker.AllowedFileType
 import org.gspi.protrack.common.picker.FilePickResult
@@ -58,6 +61,8 @@ fun SettingProjectComponent(
     onDeleteProject: (String) -> Unit,
     onCancelButtonClicked: () -> Unit,
     onSaveButtonClicked: () -> Unit,
+    onDeleteAoiButtonClicked: () -> Unit,
+    onDeleteRencanaTitikControlButtonClicked: () -> Unit
 ) {
     if (isDialogVisible) {
         Dialog(
@@ -82,7 +87,10 @@ fun SettingProjectComponent(
                         color = Color(0xFF113F3F)
                     )
                 )
-                GspiTextLabel("Project Name", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
+                GspiTextLabel(
+                    "Project Name",
+                    modifier = Modifier.align(Alignment.Start).padding(start = 16.dp)
+                )
                 GspiTextFieldText(
                     value = projectName,
                     onValueChange = {
@@ -91,7 +99,10 @@ fun SettingProjectComponent(
                     placeholder = "Project Name",
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
-                GspiTextLabel("Start Date", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
+                GspiTextLabel(
+                    "Start Date",
+                    modifier = Modifier.align(Alignment.Start).padding(start = 16.dp)
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -119,10 +130,14 @@ fun SettingProjectComponent(
                             println("Start Date Clicked")
                         }
                     )
+                    //icon delete
                 }
                 Spacer(modifier = Modifier.height(8.dp))
 
-                GspiTextLabel("End Date", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
+                GspiTextLabel(
+                    "End Date",
+                    modifier = Modifier.align(Alignment.Start).padding(start = 16.dp)
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -151,10 +166,15 @@ fun SettingProjectComponent(
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                GspiTextLabel("Area of Interest (AOI)", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
+                GspiTextLabel(
+                    "Area of Interest (AOI)",
+                    modifier = Modifier.align(Alignment.Start).padding(start = 16.dp)
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+
                 ) {
                     LaunchFilePicker(
                         allowedType = AllowedFileType.ZIP,
@@ -163,29 +183,55 @@ fun SettingProjectComponent(
                         },
                         content = {
                             GspiButtonPickFile(
-                                text = aoiFileName,
+                                text = aoiFileName.ifEmpty{ "Select File" },
                                 onClick = { it.invoke() }
                             )
                         },
                     )
-                }
-                GspiTextLabel("Rencana Titik Kontrol", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-                ) {
-                LaunchFilePicker(
-                    allowedType = AllowedFileType.ZIP,
-                    onResult = { file ->
-                        onRencanaTitikControlFileChange(file)
-                    },
-                    content = {
-                        GspiButtonPickFile(
-                            text = rencanaTitikControlFileName,
-                            onClick = { it.invoke() }
+                    Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                    if (aoiFileName.isNotEmpty()) {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_delete_red),
+                            contentDescription = "Delete Icon",
+                            tint = Color.Red,
+                            modifier = Modifier.size(32.dp).widthIn(min = 32.dp).clickable {
+                                onDeleteAoiButtonClicked()
+                            }
                         )
                     }
+                }
+                GspiTextLabel(
+                    "Rencana Titik Kontrol",
+                    modifier = Modifier.align(Alignment.Start).padding(start = 16.dp)
                 )
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    LaunchFilePicker(
+                        allowedType = AllowedFileType.ZIP,
+                        onResult = { file ->
+                            onRencanaTitikControlFileChange(file)
+                        },
+                        content = {
+                            GspiButtonPickFile(
+                                text = rencanaTitikControlFileName.ifEmpty { "Select File" },
+                                onClick = { it.invoke() }
+                            )
+                        }
+                    )
+                    Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                    if (rencanaTitikControlFileName.isNotEmpty()) {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_delete_red),
+                            contentDescription = "Delete Icon",
+                            tint = Color.Red,
+                            modifier = Modifier.size(32.dp).widthIn(min = 32.dp).clickable {
+                                onDeleteRencanaTitikControlButtonClicked()
+                            }
+                        )
                     }
+                }
 
                 TextButton(
                     onClick = {

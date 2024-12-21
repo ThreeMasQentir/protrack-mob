@@ -45,6 +45,8 @@ sealed class DetailProjectEvent {
     data class OnAoiFileChange(val aoiFileName: String, val aoiByteArray: ByteArray?) : DetailProjectEvent()
     data class OnRencanaTitikControlFileChange(val rencanaTitikControlFileName: String, val rencanaTitikControlByteArray: ByteArray?) : DetailProjectEvent()
     data object OnClearSettingProject : DetailProjectEvent()
+    data object OnDeleteAoiFileName : DetailProjectEvent()
+    data object OnDeleteRencanaTitikControlFileName : DetailProjectEvent()
 
     //document
     data object LoadDocumentList : DetailProjectEvent()

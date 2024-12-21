@@ -169,6 +169,15 @@ class DetailProjectViewModel(
             is DetailProjectEvent.OnChangeContentType -> {
                 updateUiState(_uiState.value.copy(contentType = event.contentType))
             }
+
+            DetailProjectEvent.OnDeleteAoiFileName -> {
+                updateUiState(_uiState.value.copy(settingProjectState = _uiState.value.settingProjectState.copy(aoiFileName = "", aoiByteArray = null))
+                )
+            }
+            DetailProjectEvent.OnDeleteRencanaTitikControlFileName -> {
+                updateUiState(_uiState.value.copy(settingProjectState = _uiState.value.settingProjectState.copy(rencanaTitikControlFileName = "", rencanaTitikControlByteArray = null))
+                )
+            }
         }
     }
 

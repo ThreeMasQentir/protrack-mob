@@ -13,10 +13,12 @@ import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
+import io.ktor.http.headers
 import io.ktor.utils.io.copyAndClose
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
+import org.gspi.protrack.common.local.UserPreferences
 import org.gspi.protrack.common.model.BaseResponse
 import org.gspi.protrack.common.model.Meta
 import org.gspi.protrack.feature.feat_detail_project.data.model.request.AddDocumentRequest
@@ -27,7 +29,8 @@ import org.gspi.protrack.feature.feat_detail_project.data.model.response.ItemDoc
 import org.gspi.protrack.feature.feat_detail_project.data.model.response.ItemLogResponse
 import org.gspi.protrack.feature.feat_detail_project.presentation.dialog.getCurrentDate
 
-class DetailRemoteDataSource(private val client: HttpClient) {
+class DetailRemoteDataSource(private val client: HttpClient,private val userPreferences: UserPreferences,
+) {
     private val baseUrl = "https://gspi-protrack.my.id/api-dev"
 
     suspend fun getDetailProject(id: Int): BaseResponse<DetailProjectResponse>{
@@ -63,6 +66,7 @@ class DetailRemoteDataSource(private val client: HttpClient) {
 
     suspend fun updateProject(id: Int, request: UpdateProjectRequest): Meta{
         return runCatching{
+            println("cekreq: ${request.aoiFileName} ${request.aoi}")
             val response = client.submitFormWithBinaryData(
                 url = "$baseUrl/project/update/$id",
                 formData = formData {
@@ -85,6 +89,7 @@ class DetailRemoteDataSource(private val client: HttpClient) {
             )
             response.body<Meta>()
         }.getOrElse { exception ->
+            println("errorcek: ${exception.message}")
             throw exception
         }
     }

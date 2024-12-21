@@ -16,7 +16,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val detailProjectModule = module {
-    single { DetailRemoteDataSource(get()) }
+    single { DetailRemoteDataSource(get(), get()) }
     single<DetailProjectRepository> { DetailProjectRepositoryImpl(get()) }
     single { GetDetailProjectUseCase(get()) }
     single { DeleteProjectUseCase(get()) }
