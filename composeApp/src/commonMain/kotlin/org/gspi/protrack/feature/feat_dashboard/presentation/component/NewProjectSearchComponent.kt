@@ -41,6 +41,7 @@ fun NewProjectSearchComponent(
     onButtonClick: () -> Unit,
     title: String = "Projects",
     buttonText: String = "New Project",
+    isButtonVisible: Boolean = true,
     icon: DrawableResource = Res.drawable.ic_project_map
 ) {
     Column {
@@ -54,14 +55,16 @@ fun NewProjectSearchComponent(
                 icon = icon,
                 modifier = Modifier.padding(start = 16.dp).weight(1.5f)
             )
-            GspiButtonLeftIcon(
-                modifier = Modifier.wrapContentWidth().weight(1f),
-                text = buttonText,
-                icon = Res.drawable.ic_edit,
-                onClick = {
-                    onButtonClick()
-                }
-            )
+            if (isButtonVisible) {
+                GspiButtonLeftIcon(
+                    modifier = Modifier.wrapContentWidth().weight(1f),
+                    text = buttonText,
+                    icon = Res.drawable.ic_edit,
+                    onClick = {
+                        onButtonClick()
+                    }
+                )
+            }
         }
         SearchComponent(
             value = searchValue,

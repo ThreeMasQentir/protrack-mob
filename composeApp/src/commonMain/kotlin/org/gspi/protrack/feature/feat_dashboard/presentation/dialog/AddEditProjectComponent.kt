@@ -14,8 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -34,6 +36,7 @@ import androidx.compose.ui.window.DialogProperties
 import gspiprotrack.composeapp.generated.resources.Res
 import gspiprotrack.composeapp.generated.resources.ic_calendar
 import gspiprotrack.composeapp.generated.resources.ic_checklist
+import gspiprotrack.composeapp.generated.resources.ic_delete_red
 import org.gspi.protrack.common.media.LaunchFilePicker
 import org.gspi.protrack.common.picker.AllowedFileType
 import org.gspi.protrack.common.picker.FilePickResult
@@ -65,7 +68,11 @@ fun AddEditProjectComponent(
     aoiFileName: String = "Select File",
     kontrolFileName: String = "Select File",
     onSaveProjectClick: () -> Unit,
-    isButtonEnabled: Boolean = false
+    isButtonEnabled: Boolean = false,
+    onDeleteAoiButtonClicked: () -> Unit,
+    onDeleteKontrolButtonClicked: () -> Unit,
+    aoiByteArray: ByteArray? = null,
+    kontrolByteArray: ByteArray? = null
 ) {
     if (isDialogVisible) {
         Dialog(
@@ -176,18 +183,35 @@ fun AddEditProjectComponent(
                     text = "Area of Interest (AOI)",
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
-                LaunchFilePicker(
-                    allowedType = AllowedFileType.ZIP,
-                    onResult = { file ->
-                        onAoiChange(file)
-                    },
-                    content = {
-                        GspiButtonPickFile(
-                            text = aoiFileName,
-                            onClick = { it.invoke() }
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+
+                ) {
+                    LaunchFilePicker(
+                        allowedType = AllowedFileType.ZIP,
+                        onResult = { file ->
+                            onAoiChange(file)
+                        },
+                        content = {
+                            GspiButtonPickFile(
+                                text = aoiFileName.ifEmpty { "Select File" },
+                                onClick = { it.invoke() }
+                            )
+                        }
+                    )
+                    Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                    if (aoiByteArray != null) {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_delete_red),
+                            contentDescription = "Delete Icon",
+                            tint = Color.Red,
+                            modifier = Modifier.size(32.dp).widthIn(min = 32.dp).clickable {
+                                onDeleteAoiButtonClicked()
+                            }
                         )
                     }
-                )
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -196,18 +220,35 @@ fun AddEditProjectComponent(
                     text = "Rencana Titik Kontrol",
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
-                LaunchFilePicker(
-                    allowedType = AllowedFileType.ZIP,
-                    onResult = { file ->
-                        onKontrolChange(file)
-                    },
-                    content = {
-                        GspiButtonPickFile(
-                            text = kontrolFileName,
-                            onClick = { it.invoke() }
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+
+                ) {
+                    LaunchFilePicker(
+                        allowedType = AllowedFileType.ZIP,
+                        onResult = { file ->
+                            onKontrolChange(file)
+                        },
+                        content = {
+                            GspiButtonPickFile(
+                                text = kontrolFileName.ifEmpty { "Select File" },
+                                onClick = { it.invoke() }
+                            )
+                        }
+                    )
+                    Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                    if (kontrolByteArray != null) {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_delete_red),
+                            contentDescription = "Delete Icon",
+                            tint = Color.Red,
+                            modifier = Modifier.size(32.dp).widthIn(min = 32.dp).clickable {
+                                onDeleteKontrolButtonClicked()
+                            }
                         )
                     }
-                )
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -224,7 +265,7 @@ fun AddEditProjectComponent(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     GspiButtonLeftIcon(
-                        isEnabled = isButtonEnabled ,
+                        isEnabled = isButtonEnabled,
                         icon = Res.drawable.ic_checklist,
                         text = "Save",
                         onClick = {

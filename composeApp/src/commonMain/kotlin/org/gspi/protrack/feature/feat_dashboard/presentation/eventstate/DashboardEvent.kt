@@ -1,6 +1,7 @@
 package org.gspi.protrack.feature.feat_dashboard.presentation.eventstate
 
 import org.gspi.protrack.feature.feat_dashboard.presentation.model.ContentType
+import org.gspi.protrack.feature.feat_detail_project.presentation.eventstate.DetailProjectEvent
 
 sealed class DashboardEvent {
     data class OnSearchValueChange(val searchValue: String) : DashboardEvent()
@@ -19,6 +20,8 @@ sealed class DashboardEvent {
     data class OnAoiChange(val aoiFileName: String, val aoiByteArray: ByteArray?) : DashboardEvent()
     data class OnRencanaTitikControlChange(val rencanaTitikControlFileName: String, val rencanaTitikControlByteArray: ByteArray?) : DashboardEvent()
     data object OnSaveProjectClick : DashboardEvent()
+    data object OnDeleteAoiFileName : DashboardEvent()
+    data object OnDeleteRencanaTitikControlFileName : DashboardEvent()
 
     //user dialog
     data class OnAddUserClick(val isDialogVisible: Boolean) : DashboardEvent()

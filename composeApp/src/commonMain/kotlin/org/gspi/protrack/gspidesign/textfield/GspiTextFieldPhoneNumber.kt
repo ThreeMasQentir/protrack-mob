@@ -34,7 +34,7 @@ fun GspiTextFieldPhoneNumber(
         placeholder = {
             Text(
                 text = placeholder,
-                color = Color(0xFFA59C9C) // Placeholder text color
+                color = Color(0xFFA59C9C)
             )
         },
         keyboardOptions = KeyboardOptions.Default.copy(

@@ -23,9 +23,9 @@ data class DashboardState (
     val projectName: String = "",
     val projectstartDate: String = "",
     val projectEndDate: String = "",
-    val projectAoiFileName: String = "Select File",
+    val projectAoiFileName: String = "",
     val projectAoiByteArray: ByteArray? = null,
-    val projectRencanaTitikControlFileName: String = "Select File",
+    val projectRencanaTitikControlFileName: String = "",
     val projectRencanaTitikControlByteArray: ByteArray? = null,
 
     //user dialog

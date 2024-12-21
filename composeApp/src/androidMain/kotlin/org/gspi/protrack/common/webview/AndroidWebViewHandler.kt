@@ -49,10 +49,17 @@ class AndroidWebViewHandler : WebViewHandler {
                     }
                     webChromeClient = CustomWebChromeClient()
                     webViewClient = CustomWebViewClient() // Ensures all navigation stays in-app
+
+                    // Clear cache and history when the WebView is created
+                    clearCache(true)
+                    clearHistory()
                 }
             },
-            update = {
-                it.loadUrl(url)
+            update = { webView ->
+                // Clear cache and history every time a new URL is loaded
+                webView.clearCache(true)
+                webView.clearHistory()
+                webView.loadUrl(url)
             }
         )
     }

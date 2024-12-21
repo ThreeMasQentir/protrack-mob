@@ -142,7 +142,7 @@ fun UpdateProgressComponent(
 @Composable
 fun UpdateProgressTitle(
     title: String = "Update Progress",
-    date: String = "27/11/2024",
+    date: String = getCurrentDate(),
     modifier: Modifier = Modifier,
     fontFamily: FontFamily = PoppinsFontFamily()
 ) {

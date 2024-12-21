@@ -102,14 +102,13 @@ class DashboardRemoteDataSource(private val client: HttpClient) {
                     append("deadline_date", request.deadlineDate)
                     request.aoi?.let {
                         append("aoi", it, Headers.build {
-                            append(HttpHeaders.ContentDisposition, "filename=aoi${request.projectName}.zip")
+                            append(HttpHeaders.ContentDisposition, "filename=${request.aoiFileName}")
                         })
                     }
                     request.rencanaTitikControl?.let {
                         append("rencana_titik_control", it, Headers.build {
-                            append(HttpHeaders.ContentDisposition, "filename=rtk${request.projectName}.zip")
+                            append(HttpHeaders.ContentDisposition, "filename=${request.rencanaTitikControlFileName}")
                         })
-
                     }
                 }
             )

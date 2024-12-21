@@ -102,7 +102,15 @@ fun DashboardScreen(
         },
         isButtonEnabled = uiState.projectName.isNotEmpty() &&
                 uiState.projectstartDate.isNotEmpty() &&
-                uiState.projectEndDate.isNotEmpty()
+                uiState.projectEndDate.isNotEmpty(),
+        onDeleteAoiButtonClicked = {
+            viewModel.onEvent(DashboardEvent.OnDeleteAoiFileName)
+        },
+        onDeleteKontrolButtonClicked = {
+            viewModel.onEvent(DashboardEvent.OnDeleteRencanaTitikControlFileName)
+        },
+        aoiByteArray = uiState.projectAoiByteArray,
+        kontrolByteArray = uiState.projectRencanaTitikControlByteArray
     )
 
     ModalNavigationDrawer(
@@ -155,7 +163,8 @@ fun DashboardScreen(
                         scope.launch {
                             drawerState.open()
                         }
-                    }
+                    },
+                    profilName = viewModel.getName()
                 )
 
                 // Scrollable Content Below Header

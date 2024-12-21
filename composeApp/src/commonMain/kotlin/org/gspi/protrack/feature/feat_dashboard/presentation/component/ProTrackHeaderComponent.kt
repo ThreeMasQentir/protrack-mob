@@ -30,6 +30,7 @@ import org.jetbrains.compose.resources.painterResource
 fun ProTrackHeaderComponent(
     isDashboard: Boolean = false,
     onHamburgerClick: () -> Unit = {},
+    profilName: String= "",
     modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
@@ -78,7 +79,7 @@ fun ProTrackHeaderComponent(
             }
         }
         Text(
-            text = "Hi, Admin",
+            text = "Hi, $profilName",
             style = TextStyle(
                 fontFamily = PoppinsFontFamily(),
                 fontWeight = FontWeight.Bold,

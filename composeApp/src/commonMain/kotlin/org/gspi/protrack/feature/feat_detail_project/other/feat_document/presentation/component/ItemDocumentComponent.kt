@@ -9,12 +9,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -60,7 +58,9 @@ fun ItemDocumentComponent(
                     .background(Color(0xFF113F3F))
                     .padding(16.dp)
             ) {
-                Row(){
+                Row(
+                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                ){
                     Text(
                         text = projectName,
                         style = TextStyle(
@@ -75,16 +75,16 @@ fun ItemDocumentComponent(
                         imageVector = Icons.Default.Download,
                         contentDescription = null,
                         tint = Color.White,
-                        modifier = Modifier.clickable {
+                        modifier = Modifier.size(24.dp).clickable {
                             onDownloadClick()
                         }
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(24.dp))
                     Icon(
                         painter = painterResource(Res.drawable.ic_delete_red),
                         contentDescription = null,
                         tint = Color.Red,
-                        modifier = Modifier.clickable {
+                        modifier = Modifier.size(24.dp).clickable {
                             onDeleteClick()
                         }
                     )
@@ -92,13 +92,11 @@ fun ItemDocumentComponent(
 
             }
 
-            // Content
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                // Total Progress Label
                 Row(
                     modifier = Modifier
                         .fillMaxWidth() ,
@@ -114,7 +112,7 @@ fun ItemDocumentComponent(
                             fontFamily = PoppinsFontFamily(),
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 10.sp,
-                            color = Color(0xFFA59C9C) // Gray color
+                            color = Color(0xFFA59C9C)
                         )
                     )
                 }

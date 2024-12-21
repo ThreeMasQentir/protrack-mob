@@ -11,9 +11,18 @@ class CreateProjectUseCase(private val repository: DashboardRepository) {
         startDate: String,
         endDate: String,
         aoi: ByteArray?,
-        rencanaTitikControl: ByteArray?
+        rencanaTitikControl: ByteArray?,
+        aoifFileName: String?,
+        rencanaTitikControlFileName: String?
     ): Result<Meta> {
-        val request = AddEditProjectRequest(name, startDate, endDate, aoi, rencanaTitikControl)
+        val request = AddEditProjectRequest(name,
+            startDate,
+            endDate,
+            aoi,
+            rencanaTitikControl,
+            aoiFileName = aoifFileName,
+            rencanaTitikControlFileName = rencanaTitikControlFileName
+        )
         return repository.createProject(request)
     }
 }

@@ -15,4 +15,6 @@ data class AddEditProjectRequest (
     val aoi: ByteArray?,
     @SerialName("rencana_titik_control")
     val rencanaTitikControl: ByteArray?,
+    val aoiFileName: String? = null,
+    val rencanaTitikControlFileName: String? = null
 )

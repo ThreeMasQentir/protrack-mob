@@ -13,7 +13,7 @@ import org.gspi.protrack.feature.feat_login.data.model.response.LoginResponse
 
 class LoginRemoteDataSource(private val client: HttpClient) {
 
-    private val baseUrl = "https://gspi-protrack.my.id/api"
+    private val baseUrl = "https://gspi-protrack.my.id/api-dev"
 
     suspend fun login(req: LoginRequest): BaseResponse<LoginResponse> {
         return runCatching {

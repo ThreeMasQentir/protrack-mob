@@ -51,7 +51,8 @@ fun DashboardContent(modifier: Modifier = Modifier,
             },
             onButtonClick = {
                 viewModel.onEvent(DashboardEvent.OnAddProjectClick(true))
-            }
+            },
+            isButtonVisible = viewModel.isAdministrator()
         )
         if (uiState.listProjectFiltered.isNotEmpty()) {
             EmptyView.hide()

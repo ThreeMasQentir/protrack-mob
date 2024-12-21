@@ -233,7 +233,28 @@ class DashboardViewModel(
                 }
 
             }
+
+            DashboardEvent.OnDeleteAoiFileName -> {
+                updateUiState(_uiState.value.copy(projectAoiFileName = "", projectAoiByteArray = null))
+            }
+            DashboardEvent.OnDeleteRencanaTitikControlFileName -> {
+                updateUiState(
+                    _uiState.value.copy(
+                        projectRencanaTitikControlFileName = "",
+                        projectRencanaTitikControlByteArray = null
+                    )
+                )
+            }
         }
+    }
+
+    fun getName(): String {
+        return userPreferences.getName() ?: ""
+    }
+
+    fun isAdministrator(): Boolean {
+        val role = userPreferences.getListRole()
+        return role?.contains("admin") == true
     }
 
     private fun logout() {
@@ -391,7 +412,9 @@ class DashboardViewModel(
                         startDate = _uiState.value.projectstartDate,
                         endDate = _uiState.value.projectEndDate,
                         aoi = _uiState.value.projectAoiByteArray,
-                        rencanaTitikControl = _uiState.value.projectRencanaTitikControlByteArray
+                        rencanaTitikControl = _uiState.value.projectRencanaTitikControlByteArray,
+                        aoifFileName = _uiState.value.projectAoiFileName,
+                        rencanaTitikControlFileName = _uiState.value.projectRencanaTitikControlFileName
                     )
                 },
                 onSuccess = { response ->
