@@ -46,7 +46,8 @@ fun ItemUserComponent(
     fontFamily: FontFamily = PoppinsFontFamily(),
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onStatusClick: () -> Unit
+    onStatusClick: () -> Unit,
+    isAdmin: Boolean = false
 ) {
     val backgroundColor = if (isActivated) Color(0xFF113F3F) else Color(0xFFA59C9C)
     val titleColor = Color.White
@@ -91,14 +92,16 @@ fun ItemUserComponent(
                 }
 
                 // Right Section: Status and Delete Icons
-                Row {
-                    Icon(
-                        modifier = Modifier.clickable { onStatusClick() },
-                        painter = painterResource(iconStatus), contentDescription = "Status", tint = if (isActivated) Color.Red else Color(0xFF3982FF))
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Icon(
-                        modifier = Modifier.clickable { onDeleteClick() },
-                        painter = painterResource(Res.drawable.ic_delete_red), contentDescription = "Delete", tint = Color.Red)
+                if (!isAdmin){
+                    Row {
+                        Icon(
+                            modifier = Modifier.clickable { onStatusClick() },
+                            painter = painterResource(iconStatus), contentDescription = "Status", tint = if (isActivated) Color.Red else Color(0xFF3982FF))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Icon(
+                            modifier = Modifier.clickable { onDeleteClick() },
+                            painter = painterResource(Res.drawable.ic_delete_red), contentDescription = "Delete", tint = Color.Red)
+                    }
                 }
             }
         }

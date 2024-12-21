@@ -21,6 +21,7 @@ import org.gspi.protrack.feature.feat_dashboard.presentation.dialog.AddEditUserC
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
 import org.gspi.protrack.feature.feat_dashboard.presentation.viewmodel.DashboardViewModel
 import org.gspi.protrack.gspidesign.confirmation.ConfirmationDialog
+import org.gspi.protrack.gspidesign.empty.EmptyView
 import org.gspi.protrack.gspidesign.error.Error
 import org.gspi.protrack.gspidesign.font.PoppinsFontFamily
 import org.gspi.protrack.gspidesign.success.SuccessToast
@@ -116,47 +117,56 @@ fun UsersContent(
                     viewModel.onEvent(DashboardEvent.OnAddUserClick(true))
                 }
             )
-            uiState.listUsers.forEach { item ->
-                ItemUserComponent(
-                    isActivated = item.isActivated == 1,
-                    userName = item.name,
-                    name = item.name,
-                    password = item.password,
-                    email = item.email,
-                    phoneNumber = item.phone,
-                    joinDate = item.dateCreated,
-                    fontFamily = PoppinsFontFamily(),
-                    onEditClick = {
-                        viewModel.onEvent(
-                            DashboardEvent.ShowEditUserDialog(
-                                id = item.id,
-                                userName = item.name,
-                                userUsername = item.password,
-                                userPassword = item.password,
-                                userEmail = item.email,
-                                userPhoneNumber = item.phone
+            if (uiState.listUsersFiltered.isNotEmpty()) {
+                EmptyView.hide()
+                uiState.listUsersFiltered.forEach { item ->
+                    ItemUserComponent(
+                        isAdmin = item.id == 1,
+                        isActivated = item.isActivated == 1,
+                        userName = item.name,
+                        name = item.name,
+                        password = item.password,
+                        email = item.email,
+                        phoneNumber = item.phone,
+                        joinDate = item.dateCreated,
+                        fontFamily = PoppinsFontFamily(),
+                        onEditClick = {
+                            viewModel.onEvent(
+                                DashboardEvent.ShowEditUserDialog(
+                                    id = item.id,
+                                    userName = item.name,
+                                    userUsername = item.password,
+                                    userPassword = item.password,
+                                    userEmail = item.email,
+                                    userPhoneNumber = item.phone
+                                )
                             )
-                        )
-                    },
-                    onDeleteClick = {
-                        ConfirmationDialog.show(
-                            title = "Delete User",
-                            message = "Are you sure you want to delete this user?",
-                            onYesClick = {
-                                viewModel.onEvent(DashboardEvent.OnDeleteUserClick(item.id))
-                            },
-                        )
-                    },
-                    onStatusClick = {
-                        ConfirmationDialog.show(
-                            title = "Change User Status",
-                            message = "Are you sure you want to change this user status?",
-                            onYesClick = {
-                                viewModel.onEvent(DashboardEvent.OnUserStateChange(item.isActivated == 1, item.id))
-                            },
-                        )
-                    })
+                        },
+                        onDeleteClick = {
+                            ConfirmationDialog.show(
+                                title = "Delete User",
+                                message = "Are you sure you want to delete this user?",
+                                onYesClick = {
+                                    viewModel.onEvent(DashboardEvent.OnDeleteUserClick(item.id))
+                                },
+                            )
+                        },
+                        onStatusClick = {
+                            ConfirmationDialog.show(
+                                title = "Change User Status",
+                                message = "Are you sure you want to change this user status?",
+                                onYesClick = {
+                                    viewModel.onEvent(DashboardEvent.OnUserStateChange(item.isActivated == 1, item.id))
+                                },
+                            )
+                        })
+                }
+            } else if (uiState.listUsersFiltered.isNotEmpty()) {
+                EmptyView.show("No users found")
+            } else {
+                EmptyView.show("No users available")
             }
+
 
         }
     }

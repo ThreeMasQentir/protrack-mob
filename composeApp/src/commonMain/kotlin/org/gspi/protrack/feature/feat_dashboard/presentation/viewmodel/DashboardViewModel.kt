@@ -216,17 +216,24 @@ class DashboardViewModel(
             is DashboardEvent.OnSearchUserValueChange -> {
                 val searchValue = event.searchValue
                 if (searchValue.isEmpty()) {
-                    getAllUsers()
-                    updateUiState(_uiState.value.copy(searchValue = searchValue))
-                    return
+                    updateUiState(
+                        _uiState.value.copy(
+                            searchValue = searchValue,
+                            listUsersFiltered = _uiState.value.listUsers
+                        )
+                    )
                 } else {
                     val filteredList = _uiState.value.listUsers.filter {
                         it.name.contains(searchValue, ignoreCase = true) ||
-                                it.email.contains(searchValue, ignoreCase = true)
+                                it.email.contains(searchValue, ignoreCase = true) ||
+                                it.phone.contains(searchValue, ignoreCase = true) ||
+                                it.dateCreated.contains(searchValue, ignoreCase = true) ||
+                                it.id.toString().contains(searchValue, ignoreCase = true) ||
+                                it.password.contains(searchValue, ignoreCase = true)
                     }
                     updateUiState(
                         _uiState.value.copy(
-                            listUsers = filteredList,
+                            listUsersFiltered = filteredList,
                             searchValue = searchValue
                         )
                     )
@@ -235,8 +242,14 @@ class DashboardViewModel(
             }
 
             DashboardEvent.OnDeleteAoiFileName -> {
-                updateUiState(_uiState.value.copy(projectAoiFileName = "", projectAoiByteArray = null))
+                updateUiState(
+                    _uiState.value.copy(
+                        projectAoiFileName = "",
+                        projectAoiByteArray = null
+                    )
+                )
             }
+
             DashboardEvent.OnDeleteRencanaTitikControlFileName -> {
                 updateUiState(
                     _uiState.value.copy(
@@ -270,7 +283,13 @@ class DashboardViewModel(
                 apiCall = { getListProjectUseCase.execute() },
                 onSuccess = { response ->
                     println("response: $response")
-                    updateUiState(_uiState.value.copy(isLoading = false, listProject = response, listProjectFiltered = response))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            listProject = response,
+                            listProjectFiltered = response
+                        )
+                    )
                 },
                 onError = { error ->
                     println("errorload: $error")
@@ -287,7 +306,7 @@ class DashboardViewModel(
                 apiCall = { getListUserUseCase.execute() },
                 onSuccess = { response ->
                     println("response: $response")
-                    updateUiState(_uiState.value.copy(isLoading = false, listUsers = response))
+                    updateUiState(_uiState.value.copy(isLoading = false, listUsers = response, listUsersFiltered = response))
                 },
                 onError = { error ->
                     println("errorload: $error")
@@ -403,7 +422,7 @@ class DashboardViewModel(
     }
 
     private fun createProject() {
-        updateUiState(_uiState.value.copy(isLoading = true,isDialogVisible = false))
+        updateUiState(_uiState.value.copy(isLoading = true, isDialogVisible = false))
         viewModelScope.launch {
             handleApiResponseMeta(
                 apiCall = {
