@@ -6,5 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AddDocumentRequest(
     @SerialName("document_name") val documentName: String,
-    @SerialName("document") val document: ByteArray
+    @SerialName("document") val document: ByteArray,
+    val documentRealName: String? = null
 )

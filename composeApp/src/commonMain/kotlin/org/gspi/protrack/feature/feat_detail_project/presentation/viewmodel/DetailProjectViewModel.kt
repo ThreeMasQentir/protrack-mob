@@ -532,7 +532,7 @@ class DetailProjectViewModel(
             handleApiResponseMeta(
                 apiCall = { deleteDocumentUseCase.execute(id) },
                 onSuccess = { response ->
-                    updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
+                    updateUiState(_uiState.value.copy(isLoading = false, documentState = _uiState.value.documentState.copy(metaResponseDocument = response)))
                 },
                 onError = { errorMessage ->
                     updateUiState(
@@ -554,7 +554,8 @@ class DetailProjectViewModel(
                     uploadDocumentUseCase.execute(
                         id = _uiState.value.idProject,
                         documentName = _uiState.value.documentState.documentName,
-                        documentFile = _uiState.value.documentState.documentByteArray!!
+                        documentFile = _uiState.value.documentState.documentByteArray!!,
+                        documentRealName = _uiState.value.documentState.documentButtonName
                     )
                 },
                 onSuccess = { response ->

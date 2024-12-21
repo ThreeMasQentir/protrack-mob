@@ -60,20 +60,21 @@ fun GspiLabeledTextFieldRow(
         }
     }
 }
-
 @Composable
 fun TextFieldProgress(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = "Enter text",
+    placeholder: String = "Enter number",
     isEditable: Boolean
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = {
-            // Only allow text changes when editable
-            if (isEditable) onValueChange(it)
+            // Allow only numeric input
+            if (it.all { char -> char.isDigit() } && isEditable) {
+                onValueChange(it)
+            }
         },
         placeholder = {
             Text(
@@ -83,7 +84,7 @@ fun TextFieldProgress(
             )
         },
         keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Text
+            keyboardType = KeyboardType.Number // Restrict to numeric keyboard
         ),
         textStyle = TextStyle(
             fontSize = 14.sp, // Adjusted text size
@@ -107,4 +108,3 @@ fun TextFieldProgress(
         enabled = isEditable // Control editability
     )
 }
-
