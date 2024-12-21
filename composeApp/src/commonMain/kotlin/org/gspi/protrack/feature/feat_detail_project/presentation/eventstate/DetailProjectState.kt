@@ -15,6 +15,7 @@ data class DetailProjectState(
     val listDocumentFiltered: List<ItemDocumentResponse>? = null,
     val metaResponse: Meta? = null,
     val searchDocumentValue : String = "",
+    val searchLogValue : String = "",
     val idProject: Int = 0,
     val updateProgressState: UpdateProgressState = UpdateProgressState(),
     val settingProjectState: SettingProjectState = SettingProjectState(),

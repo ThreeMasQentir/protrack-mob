@@ -15,6 +15,7 @@ import org.gspi.protrack.feature.feat_detail_project.presentation.eventstate.Det
 import org.gspi.protrack.feature.feat_detail_project.presentation.viewmodel.DetailProjectViewModel
 import org.gspi.protrack.feature.feat_detail_project.other.feat_log.presentation.component.ItemLogComponent
 import org.gspi.protrack.feature.feat_detail_project.other.feat_log.presentation.component.NewProjectLogSearchComponent
+import org.gspi.protrack.gspidesign.empty.EmptyView
 
 @Composable
 fun LogDetailScreen(
@@ -32,18 +33,27 @@ fun LogDetailScreen(
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         NewProjectLogSearchComponent(
-            searchValue = "",
-            onValueChange = {},
+            searchValue = uiState.searchLogValue,
+            onValueChange = {
+                viewModel.onEvent(DetailProjectEvent.OnSearchLog(it))
+            },
             onButtonClick = {}
         )
-        uiState.listLog?.forEach {
-            ItemLogComponent(
-                projectName = it.activity,
-                timeLeft = it.time,
-                name = it.user,
-                onClick = {
-                }
-            )
+        if (uiState.listLogFiltered?.isNotEmpty() == true){
+            EmptyView.hide()
+            uiState.listLogFiltered.forEach {
+                ItemLogComponent(
+                    projectName = it.activity,
+                    timeLeft = it.time,
+                    name = it.user,
+                    onClick = {
+                    }
+                )
+            }
+        }else if (uiState.searchDocumentValue.isNotEmpty()) {
+            EmptyView.show("No logs found")
+        } else {
+            EmptyView.show("No logs available")
         }
     }
 

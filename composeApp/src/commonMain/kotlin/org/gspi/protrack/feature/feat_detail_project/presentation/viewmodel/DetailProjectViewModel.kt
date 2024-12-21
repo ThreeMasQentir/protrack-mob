@@ -347,6 +347,20 @@ class DetailProjectViewModel(
                     updateUiState(_uiState.value.copy(listDocumentFiltered = filteredList))
                 }
             }
+
+            is DetailProjectEvent.OnSearchLog -> {
+                updateUiState(_uiState.value.copy(searchLogValue = event.searchValue))
+                val filteredList = _uiState.value.listLog?.filter {
+                    it.activity.contains(event.searchValue, ignoreCase = true) ||
+                            it.date.contains(event.searchValue, ignoreCase = true) ||
+                            it.user.contains(event.searchValue, ignoreCase = true)
+                }
+                if (filteredList.isNullOrEmpty()) {
+                    updateUiState(_uiState.value.copy(listLogFiltered = emptyList()))
+                } else {
+                    updateUiState(_uiState.value.copy(listLogFiltered = filteredList))
+                }
+            }
         }
     }
 
@@ -465,7 +479,7 @@ class DetailProjectViewModel(
             handleApiResponse(
                 apiCall = { getListLogUseCase.execute(_uiState.value.idProject) },
                 onSuccess = { response ->
-                    updateUiState(_uiState.value.copy(isLoading = false, listLog = response))
+                    updateUiState(_uiState.value.copy(isLoading = false, listLog = response, listLogFiltered = response))
                 },
                 onError = { errorMessage ->
                     updateUiState(

@@ -61,5 +61,6 @@ sealed class DetailProjectEvent {
 
     //log
     data object LoadLogList : DetailProjectEvent()
+    data class OnSearchLog(val searchValue: String) : DetailProjectEvent()
 
 }
