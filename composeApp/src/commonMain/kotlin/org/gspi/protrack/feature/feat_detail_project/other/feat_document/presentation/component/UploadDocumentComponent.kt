@@ -68,7 +68,8 @@ fun UploadDocumentComponent(
                     onValueChange = {
                         onDocumentNameChange(it)
                     },
-                    placeholder = "Document Name"
+                    placeholder = "Document Name",
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
                 )
                 GspiTextLabel("Document", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
                 LaunchFilePicker(
@@ -79,9 +80,10 @@ fun UploadDocumentComponent(
                     content = {
                         GspiButtonPickFile(
                             text = projectName,
-                            onClick = { it.invoke() }
+                            onClick = { it.invoke() },
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                         )
-                    }
+                    },
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),

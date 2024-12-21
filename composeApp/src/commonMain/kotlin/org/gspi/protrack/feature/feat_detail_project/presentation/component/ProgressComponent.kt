@@ -20,11 +20,25 @@ fun ProgressComponent(
     currentPengolahanData: Int,
     totalPengolahanData: Int,
 ) {
-    val progressTitikControl = (currentTitikControl.toFloat() / totalTitikControl.toFloat()) * 100
-    val progressFotoUdara = (currentFotoUdara.toFloat() / totalFotoUdara.toFloat()) * 100
-    val progressPengolahanData = (currentPengolahanData.toFloat() / totalPengolahanData.toFloat()) * 100
-    val totalProgress = (progressTitikControl + progressFotoUdara + progressPengolahanData) / 3
+    val progressTitikControl = if (totalTitikControl != 0) {
+        (currentTitikControl.toFloat() / totalTitikControl.toFloat()) * 100
+    } else {
+        0f
+    }
 
+    val progressFotoUdara = if (totalFotoUdara != 0) {
+        (currentFotoUdara.toFloat() / totalFotoUdara.toFloat()) * 100
+    } else {
+        0f
+    }
+
+    val progressPengolahanData = if (totalPengolahanData != 0) {
+        (currentPengolahanData.toFloat() / totalPengolahanData.toFloat()) * 100
+    } else {
+        0f
+    }
+
+    val totalProgress = (progressTitikControl + progressFotoUdara + progressPengolahanData) / 3
     Row(modifier = modifier.fillMaxWidth()) {
         CircularProgressComponentWithLabel(progress = totalProgress / 100f, modifier = Modifier.weight(1f))
         Column(modifier = Modifier.weight(2f)) {
