@@ -64,9 +64,11 @@ class DetailRemoteDataSource(private val client: HttpClient,private val userPref
         }
     }
 
-    suspend fun updateProject(id: Int, request: UpdateProjectRequest): Meta{
-        return runCatching{
-            println("cekreq: ${request.aoiFileName} ${request.aoi}")
+    suspend fun updateProject(id: Int, request: UpdateProjectRequest): Meta {
+        return runCatching {
+            println("Starting project update for ID: $id")
+            println("Request details: projectName=${request.projectName}, startDate=${request.startDate}, deadlineDate=${request.deadlineDate}")
+
             val response = client.submitFormWithBinaryData(
                 url = "$baseUrl/project/update/$id",
                 formData = formData {
@@ -75,22 +77,27 @@ class DetailRemoteDataSource(private val client: HttpClient,private val userPref
                     append("deadline_date", request.deadlineDate)
                     append("aoiFileName", request.aoiFileName)
                     append("titikKontrolFileName", request.titikKontrolFileName)
+
                     request.aoi?.let {
                         append("aoi", it, Headers.build {
-                            append(HttpHeaders.ContentDisposition, "filename=aoi${request.projectName} ${getCurrentDate()}.zip")
+                            append(HttpHeaders.ContentDisposition, "filename=${request.aoiFileName}")
                         })
                     }
+
                     request.rencanaTitikKontrol?.let {
                         append("rencana_titik_control", it, Headers.build {
-                            append(HttpHeaders.ContentDisposition, "filename=rtk${request.projectName} ${getCurrentDate()}.zip")
+                            append(HttpHeaders.ContentDisposition, "filename=${request.titikKontrolFileName}")
                         })
                     }
                 }
             )
+
+            println("Response received for project update: $response")
             response.body<Meta>()
         }.getOrElse { exception ->
-            println("errorcek: ${exception.message}")
-            throw exception
+            println("Error during project update: ${exception.message}")
+            exception.printStackTrace() // For detailed stack trace during development
+            throw Exception("Failed to update project with ID: $id", exception)
         }
     }
 
