@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.techieroid.webviewapplication.WebViewHandler
 import org.gspi.protrack.common.navigation.Routes
+import org.gspi.protrack.common.utils.calculateTimeLeft
+import org.gspi.protrack.common.utils.isOverdue
 import org.gspi.protrack.common.utils.setBackStackEntryData
 import org.gspi.protrack.common.utils.toIndonesianDateFormat
 import org.gspi.protrack.feature.feat_detail_project.presentation.component.OtherComponent
@@ -69,7 +71,10 @@ fun MainDetailContent(
             endDate = uiState.detailProject?.deadlineDate?.toIndonesianDateFormat()?.ifEmpty {
                 "-"
             }.toString(),
-            daysRemaining = "120"
+            daysRemaining = uiState.detailProject?.deadlineDate?.takeIf { it.isNotEmpty() }?.let {
+                calculateTimeLeft(it)
+            }.orEmpty(),
+            isOverdue = uiState.detailProject?.deadlineDate?.let { isOverdue(it) } ?: false
         )
         Spacer(modifier = Modifier.height(16.dp))
         OtherComponent(

@@ -9,13 +9,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.gspi.protrack.common.utils.isOverdue
 import org.gspi.protrack.gspidesign.font.PoppinsFontFamily
 
 @Composable
 fun TimelineComponent(
     startDate: String,
     endDate: String,
-    daysRemaining: String
+    daysRemaining: String,
+    isOverdue: Boolean = false
 ) {
     Column(
         modifier = Modifier.padding(16.dp),
@@ -87,7 +89,7 @@ fun TimelineComponent(
             Text(
                 text = daysRemaining,
                 fontSize = 14.sp, // Increased by 2px
-                color = Color(0xFFA59C9C),
+                color = if (!isOverdue) Color(0xFFA59C9C) else Color(0xFFDA292E),
                 fontFamily = PoppinsFontFamily()
             )
         }
