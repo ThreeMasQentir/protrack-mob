@@ -15,9 +15,14 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -34,6 +39,9 @@ class AndroidWebViewHandler : WebViewHandler {
 
     @Composable
     fun WebView(url: String) {
+        // Use remember to force recomposition with a unique key
+        var reloadKey by remember { mutableStateOf(0) }
+
         AndroidView(
             factory = { context ->
                 WebView(context).apply {
@@ -45,36 +53,40 @@ class AndroidWebViewHandler : WebViewHandler {
                         javaScriptEnabled = true
                         domStorageEnabled = true
                         allowFileAccess = true
-                        mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW // Handle mixed content
+                        mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
                     }
                     webChromeClient = CustomWebChromeClient()
-                    webViewClient = CustomWebViewClient() // Ensures all navigation stays in-app
+                    webViewClient = CustomWebViewClient()
 
-                    // Clear cache and history when the WebView is created
+                    // Clear cache and reload the initial URL
                     clearCache(true)
                     clearHistory()
+                    loadUrl(url)
                 }
             },
             update = { webView ->
-                // Clear cache and history every time a new URL is loaded
+                // On recomposition, clear the cache and reload
                 webView.clearCache(true)
                 webView.clearHistory()
                 webView.loadUrl(url)
+            },
+            modifier = Modifier.clickable {
+                // Optionally add a trigger to force reload manually
+                reloadKey++
             }
         )
     }
 
     class CustomWebViewClient : WebViewClient() {
-        // Ensures all navigation stays within the app
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
             view?.loadUrl(request?.url.toString())
-            return true // Prevent external browser launch
+            return true
         }
 
         @Deprecated("Deprecated in Java")
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
             url?.let { view?.loadUrl(it) }
-            return true // Prevent external browser launch
+            return true
         }
     }
 
@@ -87,7 +99,6 @@ class AndroidWebViewHandler : WebViewHandler {
         }
 
         override fun onCloseWindow(window: WebView?) {
-            // Prevent the WebView from closing
             Log.d("WebView", "Attempted to close WebView window")
         }
     }

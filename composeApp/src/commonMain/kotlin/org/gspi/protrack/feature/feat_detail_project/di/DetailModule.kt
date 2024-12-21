@@ -26,5 +26,5 @@ val detailProjectModule = module {
     single { GetListDocumentUseCase(get()) }
     single { DeleteDocumentUseCase(get()) }
     single { UploadDocumentUseCase(get()) }
-    viewModel { DetailProjectViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { DetailProjectViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
 }

@@ -54,7 +54,11 @@ fun UpdateProgressDialogContent(
         },
         onSaveButtonClicked = {
             viewModel.onEvent(DetailProjectEvent.OnSaveUpdateProgress)
-        }
+        },
+        isAdmin = viewModel.isAdministrator(),
+        enabled = uiState.updateProgressState.currentFotoUdara <= uiState.updateProgressState.totalFotoUdara &&
+                uiState.updateProgressState.currentPengolahanData <= uiState.updateProgressState.totalPengolahanData &&
+                uiState.updateProgressState.currentTitikKonrol <= uiState.updateProgressState.totalTitikKontrol
 
     )
 }

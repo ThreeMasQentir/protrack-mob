@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.gspi.protrack.common.local.UserPreferences
 import org.gspi.protrack.common.utils.handleApiResponse
 import org.gspi.protrack.common.utils.handleApiResponseMeta
 import org.gspi.protrack.feature.feat_detail_project.domain.usecase.document.DeleteDocumentUseCase
@@ -27,10 +28,16 @@ class DetailProjectViewModel(
     private val getListLogUseCase: GetListLogUseCase,
     private val getListDocumentUseCase: GetListDocumentUseCase,
     private val deleteDocumentUseCase: DeleteDocumentUseCase,
-    private val uploadDocumentUseCase: UploadDocumentUseCase
+    private val uploadDocumentUseCase: UploadDocumentUseCase,
+    private val userPreferences: UserPreferences
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(DetailProjectState())
     val uiState: StateFlow<DetailProjectState> = _uiState
+
+    fun isAdministrator(): Boolean {
+        val role = userPreferences.getListRole()
+        return role?.contains("admin") == true
+    }
 
     private fun updateUiState(state: DetailProjectState) {
         _uiState.value = state

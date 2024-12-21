@@ -32,7 +32,8 @@ fun GspiLabeledTextFieldRow(
     secondFieldValue: String,
     secondPlaceholder: String = "",
     onSecondFieldValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isEditable: Boolean
 ) {
     Column(modifier = modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         // Label
@@ -46,13 +47,15 @@ fun GspiLabeledTextFieldRow(
                 value = firstFieldValue,
                 onValueChange = onFirstFieldValueChange,
                 placeholder = firstPlaceholder,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                isEditable = true
             )
             TextFieldProgress(
                 value = secondFieldValue,
                 onValueChange = onSecondFieldValueChange,
                 placeholder = secondPlaceholder,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                isEditable = isEditable
             )
         }
     }
@@ -63,11 +66,15 @@ fun TextFieldProgress(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = "Enter text"
+    placeholder: String = "Enter text",
+    isEditable: Boolean
 ) {
     OutlinedTextField(
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = {
+            // Only allow text changes when editable
+            if (isEditable) onValueChange(it)
+        },
         placeholder = {
             Text(
                 text = placeholder,
@@ -96,7 +103,8 @@ fun TextFieldProgress(
         modifier = modifier
             .height(48.dp) // Fixed height
             .fillMaxWidth()
-            .padding()
+            .padding(),
+        enabled = isEditable // Control editability
     )
 }
 

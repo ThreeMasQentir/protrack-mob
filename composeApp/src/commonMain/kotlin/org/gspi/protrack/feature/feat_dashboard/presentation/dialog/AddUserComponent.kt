@@ -43,8 +43,6 @@ fun AddEditUserComponent(
     onDialogVisibleChange: (Boolean) -> Unit,
     userName: String,
     onUserNameChange: (String) -> Unit,
-    userUserName: String,
-    onUserUserNameChange: (String) -> Unit,
     userPassword: String,
     onUserPasswordChange: (String) -> Unit,
     userEmail: String,
@@ -88,21 +86,13 @@ fun AddEditUserComponent(
                     },
                     placeholder = "Name"
                 )
-                LabeledTextField(
-                    label = "Username",
-                    value = userUserName,
-                    onValueChange = {
-                        onUserUserNameChange(it)
-                    },
-                    placeholder = "Username"
-                )
-                LabeledTextField(
-                    label = "Password",
+                GspiTextLabel("Password", modifier= Modifier.align(Alignment.Start).padding(start = 16.dp))
+                GspiTextFieldPassword(
                     value = userPassword,
                     onValueChange = {
                         onUserPasswordChange(it)
                     },
-                    placeholder = "Password"
+                    placeholder = "Enter password"
                 )
                 LabeledTextField(
                     label = "Email",

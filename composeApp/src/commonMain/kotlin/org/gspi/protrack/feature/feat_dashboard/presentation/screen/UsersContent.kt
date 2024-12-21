@@ -57,10 +57,6 @@ fun UsersContent(
             onUserNameChange = {
                 viewModel.onEvent(DashboardEvent.OnUserNameChange(it))
             },
-            userUserName = uiState.userUsername,
-            onUserUserNameChange = {
-                viewModel.onEvent(DashboardEvent.OnUserUsernameChange(it))
-            },
             userPassword = uiState.userPassword,
             onUserPasswordChange = {
                 viewModel.onEvent(DashboardEvent.OnUserPasswordChange(it))
@@ -90,7 +86,6 @@ fun UsersContent(
             onSaveClick = {
                 if (
                     uiState.userName.isNotEmpty() &&
-                    uiState.userUsername.isNotEmpty() &&
                     uiState.userPassword.isNotEmpty() &&
                     uiState.userEmail.isNotEmpty() &&
                     uiState.userPhoneNumber.isNotEmpty()

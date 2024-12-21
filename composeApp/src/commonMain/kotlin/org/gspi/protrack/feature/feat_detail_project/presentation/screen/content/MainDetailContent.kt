@@ -10,12 +10,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.techieroid.webviewapplication.WebViewHandler
-import org.gspi.protrack.common.navigation.Routes
 import org.gspi.protrack.common.utils.calculateTimeLeft
 import org.gspi.protrack.common.utils.isOverdue
-import org.gspi.protrack.common.utils.setBackStackEntryData
 import org.gspi.protrack.common.utils.toIndonesianDateFormat
 import org.gspi.protrack.feature.feat_detail_project.presentation.component.OtherComponent
 import org.gspi.protrack.feature.feat_detail_project.presentation.component.ProgressComponent
@@ -24,7 +21,6 @@ import org.gspi.protrack.feature.feat_detail_project.presentation.component.Time
 import org.gspi.protrack.feature.feat_detail_project.presentation.eventstate.DetailProjectEvent
 import org.gspi.protrack.feature.feat_detail_project.presentation.eventstate.DetailProjectState
 import org.gspi.protrack.feature.feat_detail_project.presentation.viewmodel.DetailProjectViewModel
-import kotlin.text.ifEmpty
 
 @Composable
 fun MainDetailContent(

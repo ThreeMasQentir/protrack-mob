@@ -58,6 +58,8 @@ fun UpdateProgressComponent(
     onTotalPengolahanDataChange: (String) -> Unit,
     onCancelButtonClicked: () -> Unit,
     onSaveButtonClicked: () -> Unit,
+    isAdmin: Boolean,
+    enabled: Boolean
 ) {
     if (isDialogVisible) {
         Dialog(
@@ -89,6 +91,7 @@ fun UpdateProgressComponent(
                     onSecondFieldValueChange = {
                         onTotalTitikControlChange(it)
                     },
+                    isEditable = isAdmin
                 )
                 GspiLabeledTextFieldRow(
                     label = "Progress Akuisisi Foto Udara",
@@ -102,6 +105,7 @@ fun UpdateProgressComponent(
                     onSecondFieldValueChange = {
                         onTotalFotoUdaraChange(it)
                     },
+                    isEditable = isAdmin
                 )
                 GspiLabeledTextFieldRow(
                     label = "Progress Pengolahan Data",
@@ -115,6 +119,7 @@ fun UpdateProgressComponent(
                     onSecondFieldValueChange = {
                         onTotalPengolahanDataChange(it)
                     },
+                    isEditable = isAdmin
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
@@ -132,6 +137,7 @@ fun UpdateProgressComponent(
                         onClick = {
                             onSaveButtonClicked()
                         },
+                        enabled = enabled
                     )
                 }
             }
