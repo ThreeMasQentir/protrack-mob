@@ -57,6 +57,7 @@ sealed class DetailProjectEvent {
     data class OnDocumentFileChange(val documentByteArray: ByteArray?, val documentName: String) : DetailProjectEvent()
     data class OnDeleteDocument(val documentId: Int) : DetailProjectEvent()
     data object OnDownloadDocument : DetailProjectEvent()
+    data class OnSearchDocument(val searchValue: String) : DetailProjectEvent()
 
     //log
     data object LoadLogList : DetailProjectEvent()

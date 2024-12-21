@@ -28,7 +28,7 @@ class DetailProjectViewModel(
     private val getListDocumentUseCase: GetListDocumentUseCase,
     private val deleteDocumentUseCase: DeleteDocumentUseCase,
     private val uploadDocumentUseCase: UploadDocumentUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(DetailProjectState())
     val uiState: StateFlow<DetailProjectState> = _uiState
 
@@ -39,88 +39,200 @@ class DetailProjectViewModel(
     fun onEvent(event: DetailProjectEvent) {
         when (event) {
             is DetailProjectEvent.OnUpdateButtonClick -> {
-                updateUiState(_uiState.value.copy(updateProgressState = _uiState.value.updateProgressState.copy(
-                    isDialogUpdateVisible = event.isDialogVisible,
-                    totalTitikKontrol = event.totalTitikControl,
-                    totalFotoUdara = event.totalFotoUdara,
-                    totalPengolahanData = event.totalPengolahanData,
-                    currentTitikKonrol = event.currentTitikKonrol,
-                    currentFotoUdara = event.currentFotoUdara,
-                    currentPengolahanData = event.currentPengolahanData)))
+                updateUiState(
+                    _uiState.value.copy(
+                        updateProgressState = _uiState.value.updateProgressState.copy(
+                            isDialogUpdateVisible = event.isDialogVisible,
+                            totalTitikKontrol = event.totalTitikControl,
+                            totalFotoUdara = event.totalFotoUdara,
+                            totalPengolahanData = event.totalPengolahanData,
+                            currentTitikKonrol = event.currentTitikKonrol,
+                            currentFotoUdara = event.currentFotoUdara,
+                            currentPengolahanData = event.currentPengolahanData
+                        )
+                    )
+                )
             }
 
             DetailProjectEvent.OnCancelUpdateProgress -> {
-                updateUiState(_uiState.value.copy(updateProgressState = _uiState.value.updateProgressState.copy(isDialogUpdateVisible = false)))
+                updateUiState(
+                    _uiState.value.copy(
+                        updateProgressState = _uiState.value.updateProgressState.copy(
+                            isDialogUpdateVisible = false
+                        )
+                    )
+                )
             }
+
             DetailProjectEvent.OnSaveUpdateProgress -> {
-                updateUiState(_uiState.value.copy(updateProgressState = _uiState.value.updateProgressState.copy(isDialogUpdateVisible = false)))
+                updateUiState(
+                    _uiState.value.copy(
+                        updateProgressState = _uiState.value.updateProgressState.copy(
+                            isDialogUpdateVisible = false
+                        )
+                    )
+                )
                 postUpdateProgress()
             }
+
             DetailProjectEvent.OnClearProgress -> {
                 updateUiState(_uiState.value.copy(updateProgressState = UpdateProgressState()))
             }
+
             is DetailProjectEvent.OnCurrentFotoUdaraChange -> {
-                updateUiState(_uiState.value.copy(updateProgressState = _uiState.value.updateProgressState.copy(currentFotoUdara = event.fotoUdara)))
+                updateUiState(
+                    _uiState.value.copy(
+                        updateProgressState = _uiState.value.updateProgressState.copy(
+                            currentFotoUdara = event.fotoUdara
+                        )
+                    )
+                )
             }
+
             is DetailProjectEvent.OnCurrentPengolahanDataChange -> {
-                updateUiState(_uiState.value.copy(updateProgressState = _uiState.value.updateProgressState.copy(currentPengolahanData = event.pengolahanData)))
+                updateUiState(
+                    _uiState.value.copy(
+                        updateProgressState = _uiState.value.updateProgressState.copy(
+                            currentPengolahanData = event.pengolahanData
+                        )
+                    )
+                )
             }
+
             is DetailProjectEvent.OnCurrentTitikControlChange -> {
-                updateUiState(_uiState.value.copy(updateProgressState = _uiState.value.updateProgressState.copy(currentTitikKonrol = event.currentTitikControl)))
+                updateUiState(
+                    _uiState.value.copy(
+                        updateProgressState = _uiState.value.updateProgressState.copy(
+                            currentTitikKonrol = event.currentTitikControl
+                        )
+                    )
+                )
             }
+
             is DetailProjectEvent.OnTotalFotoUdaraChange -> {
-                updateUiState(_uiState.value.copy(updateProgressState = _uiState.value.updateProgressState.copy(totalFotoUdara = event.totalFotoUdara)))
+                updateUiState(
+                    _uiState.value.copy(
+                        updateProgressState = _uiState.value.updateProgressState.copy(
+                            totalFotoUdara = event.totalFotoUdara
+                        )
+                    )
+                )
             }
+
             is DetailProjectEvent.OnTotalPengolahanDataChange -> {
-                updateUiState(_uiState.value.copy(updateProgressState = _uiState.value.updateProgressState.copy(totalPengolahanData = event.totalPengolahanData)))
+                updateUiState(
+                    _uiState.value.copy(
+                        updateProgressState = _uiState.value.updateProgressState.copy(
+                            totalPengolahanData = event.totalPengolahanData
+                        )
+                    )
+                )
             }
+
             is DetailProjectEvent.OnTotalTitikControlChange -> {
-                updateUiState(_uiState.value.copy(updateProgressState = _uiState.value.updateProgressState.copy(totalTitikKontrol = event.totalTitikControl)))
+                updateUiState(
+                    _uiState.value.copy(
+                        updateProgressState = _uiState.value.updateProgressState.copy(
+                            totalTitikKontrol = event.totalTitikControl
+                        )
+                    )
+                )
             }
 
             is DetailProjectEvent.OnAoiFileChange -> {
-                updateUiState(_uiState.value.copy(settingProjectState = _uiState.value.settingProjectState.copy(
-                    aoiFileName = event.aoiFileName,
-                    aoiByteArray = event.aoiByteArray
-                )))
+                updateUiState(
+                    _uiState.value.copy(
+                        settingProjectState = _uiState.value.settingProjectState.copy(
+                            aoiFileName = event.aoiFileName,
+                            aoiByteArray = event.aoiByteArray
+                        )
+                    )
+                )
             }
+
             DetailProjectEvent.OnCancelSettingProject -> {
-                updateUiState(_uiState.value.copy(settingProjectState = _uiState.value.settingProjectState.copy(isDialogSettingVisible = false)))
+                updateUiState(
+                    _uiState.value.copy(
+                        settingProjectState = _uiState.value.settingProjectState.copy(
+                            isDialogSettingVisible = false
+                        )
+                    )
+                )
             }
+
             DetailProjectEvent.OnClearSettingProject -> {
                 updateUiState(_uiState.value.copy(settingProjectState = SettingProjectState()))
             }
+
             DetailProjectEvent.OnDeleteProject -> {
                 deleteProject()
             }
+
             is DetailProjectEvent.OnEndDateChange -> {
-                updateUiState(_uiState.value.copy(settingProjectState = _uiState.value.settingProjectState.copy(endDate = event.endDate)))
+                updateUiState(
+                    _uiState.value.copy(
+                        settingProjectState = _uiState.value.settingProjectState.copy(
+                            endDate = event.endDate
+                        )
+                    )
+                )
             }
+
             is DetailProjectEvent.OnProjectNameChange -> {
-                updateUiState(_uiState.value.copy(settingProjectState = _uiState.value.settingProjectState.copy(projectName = event.projectName)))
+                updateUiState(
+                    _uiState.value.copy(
+                        settingProjectState = _uiState.value.settingProjectState.copy(
+                            projectName = event.projectName
+                        )
+                    )
+                )
             }
+
             is DetailProjectEvent.OnRencanaTitikControlFileChange -> {
-                updateUiState(_uiState.value.copy(settingProjectState = _uiState.value.settingProjectState.copy(
-                    rencanaTitikControlFileName = event.rencanaTitikControlFileName,
-                    rencanaTitikControlByteArray = event.rencanaTitikControlByteArray,
-                )))
+                updateUiState(
+                    _uiState.value.copy(
+                        settingProjectState = _uiState.value.settingProjectState.copy(
+                            rencanaTitikControlFileName = event.rencanaTitikControlFileName,
+                            rencanaTitikControlByteArray = event.rencanaTitikControlByteArray,
+                        )
+                    )
+                )
             }
+
             DetailProjectEvent.OnSaveSettingProject -> {
-                updateUiState(_uiState.value.copy(settingProjectState = _uiState.value.settingProjectState.copy(isDialogSettingVisible = false)))
+                updateUiState(
+                    _uiState.value.copy(
+                        settingProjectState = _uiState.value.settingProjectState.copy(
+                            isDialogSettingVisible = false
+                        )
+                    )
+                )
                 postUpdateSettingProject()
             }
+
             is DetailProjectEvent.OnSettingProjectClick -> {
-                updateUiState(_uiState.value.copy(settingProjectState = _uiState.value.settingProjectState.copy(
-                    isDialogSettingVisible = event.isDialogVisible,
-                    projectName = event.projectName,
-                    startDate = event.startDate,
-                    endDate = event.endDate,
-                    aoiFileName = event.aoiFileName,
-                    rencanaTitikControlFileName = event.rencanaTitikControlFileName
-                )))
+                updateUiState(
+                    _uiState.value.copy(
+                        settingProjectState = _uiState.value.settingProjectState.copy(
+                            isDialogSettingVisible = event.isDialogVisible,
+                            projectName = event.projectName,
+                            startDate = event.startDate,
+                            endDate = event.endDate,
+                            aoiFileName = event.aoiFileName,
+                            rencanaTitikControlFileName = event.rencanaTitikControlFileName
+                        )
+                    )
+                )
             }
+
             is DetailProjectEvent.OnStartDateChange -> {
-                updateUiState(_uiState.value.copy(settingProjectState = _uiState.value.settingProjectState.copy(startDate = event.startDate)))
+                updateUiState(
+                    _uiState.value.copy(
+                        settingProjectState = _uiState.value.settingProjectState.copy(
+                            startDate = event.startDate
+                        )
+                    )
+                )
             }
 
             is DetailProjectEvent.OnGetDetailProject -> {
@@ -128,6 +240,7 @@ class DetailProjectViewModel(
                 updateUiState(_uiState.value.copy(idProject = event.projectId.toInt()))
                 getDetailProject()
             }
+
             DetailProjectEvent.ClearError -> {
                 updateUiState(_uiState.value.copy(errorMessage = null))
             }
@@ -136,33 +249,62 @@ class DetailProjectViewModel(
                 resetDocumentState()
                 getListDocument()
             }
+
             DetailProjectEvent.LoadLogList -> {
                 getListLog()
             }
+
             is DetailProjectEvent.OnAddDocumentClick -> {
-                updateUiState(_uiState.value.copy(documentState = _uiState.value.documentState.copy(isDialogDocumentVisible = event.isDialogVisible)))
+                updateUiState(
+                    _uiState.value.copy(
+                        documentState = _uiState.value.documentState.copy(
+                            isDialogDocumentVisible = event.isDialogVisible
+                        )
+                    )
+                )
             }
+
             DetailProjectEvent.OnCancelDocument -> {
                 resetDocumentState()
             }
+
             is DetailProjectEvent.OnDeleteDocument -> {
                 deleteDocument(event.documentId)
             }
+
             is DetailProjectEvent.OnDocumentFileChange -> {
-                updateUiState(_uiState.value.copy(documentState = _uiState.value.documentState.copy(
-                    documentByteArray = event.documentByteArray, documentButtonName = event.documentName
-                )))
+                updateUiState(
+                    _uiState.value.copy(
+                        documentState = _uiState.value.documentState.copy(
+                            documentByteArray = event.documentByteArray,
+                            documentButtonName = event.documentName
+                        )
+                    )
+                )
             }
+
             is DetailProjectEvent.OnDocumentNameChange -> {
-                updateUiState(_uiState.value.copy(documentState = _uiState.value.documentState.copy(
-                    documentName = event.documentName
-                )))
+                updateUiState(
+                    _uiState.value.copy(
+                        documentState = _uiState.value.documentState.copy(
+                            documentName = event.documentName
+                        )
+                    )
+                )
             }
+
             DetailProjectEvent.OnDownloadDocument -> {
 
             }
+
             DetailProjectEvent.OnSaveDocument -> {
-                updateUiState(_uiState.value.copy(documentState = _uiState.value.documentState.copy(isDialogDocumentVisible = false)))
+                updateUiState(
+                    _uiState.value.copy(
+                        documentState = _uiState.value.documentState.copy(
+                            isDialogDocumentVisible = false
+                        )
+                    )
+                )
                 uploadDocument()
             }
 
@@ -171,12 +313,39 @@ class DetailProjectViewModel(
             }
 
             DetailProjectEvent.OnDeleteAoiFileName -> {
-                updateUiState(_uiState.value.copy(settingProjectState = _uiState.value.settingProjectState.copy(aoiFileName = "", aoiByteArray = null))
+                updateUiState(
+                    _uiState.value.copy(
+                        settingProjectState = _uiState.value.settingProjectState.copy(
+                            aoiFileName = "",
+                            aoiByteArray = null
+                        )
+                    )
                 )
             }
+
             DetailProjectEvent.OnDeleteRencanaTitikControlFileName -> {
-                updateUiState(_uiState.value.copy(settingProjectState = _uiState.value.settingProjectState.copy(rencanaTitikControlFileName = "", rencanaTitikControlByteArray = null))
+                updateUiState(
+                    _uiState.value.copy(
+                        settingProjectState = _uiState.value.settingProjectState.copy(
+                            rencanaTitikControlFileName = "",
+                            rencanaTitikControlByteArray = null
+                        )
+                    )
                 )
+            }
+
+            is DetailProjectEvent.OnSearchDocument -> {
+                updateUiState(_uiState.value.copy(searchDocumentValue = event.searchValue))
+                val filteredList = _uiState.value.listDocument?.filter {
+                    it.fileName.contains(event.searchValue, ignoreCase = true) ||
+                            it.documentName.contains(event.searchValue, ignoreCase = true) ||
+                            it.dateUploaded.contains(event.searchValue, ignoreCase = true)
+                }
+                if (filteredList.isNullOrEmpty()) {
+                    updateUiState(_uiState.value.copy(listDocumentFiltered = emptyList()))
+                } else {
+                    updateUiState(_uiState.value.copy(listDocumentFiltered = filteredList))
+                }
             }
         }
     }
@@ -198,7 +367,12 @@ class DetailProjectViewModel(
                     updateUiState(_uiState.value.copy(isLoading = false, detailProject = response))
                 },
                 onError = { errorMessage ->
-                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = errorMessage))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = errorMessage
+                        )
+                    )
                 }
             )
         }
@@ -213,7 +387,12 @@ class DetailProjectViewModel(
                     updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
                 },
                 onError = { errorMessage ->
-                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = errorMessage.message))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = errorMessage.message
+                        )
+                    )
                 }
             )
         }
@@ -223,20 +402,27 @@ class DetailProjectViewModel(
         updateUiState(_uiState.value.copy(isLoading = true))
         viewModelScope.launch {
             handleApiResponseMeta(
-                apiCall = { postUpdateProgressUseCase.execute(
-                    id = _uiState.value.idProject,
-                    currentTitikControl = _uiState.value.updateProgressState.currentTitikKonrol,
-                    totalTitikControl = _uiState.value.updateProgressState.totalTitikKontrol,
-                    currentFotoUdara = _uiState.value.updateProgressState.currentFotoUdara,
-                    totalFotoUdara = _uiState.value.updateProgressState.totalFotoUdara,
-                    currentPengolahanLahan = _uiState.value.updateProgressState.currentPengolahanData,
-                    totalPengolahanLahan = _uiState.value.updateProgressState.totalPengolahanData
-                    ) },
+                apiCall = {
+                    postUpdateProgressUseCase.execute(
+                        id = _uiState.value.idProject,
+                        currentTitikControl = _uiState.value.updateProgressState.currentTitikKonrol,
+                        totalTitikControl = _uiState.value.updateProgressState.totalTitikKontrol,
+                        currentFotoUdara = _uiState.value.updateProgressState.currentFotoUdara,
+                        totalFotoUdara = _uiState.value.updateProgressState.totalFotoUdara,
+                        currentPengolahanLahan = _uiState.value.updateProgressState.currentPengolahanData,
+                        totalPengolahanLahan = _uiState.value.updateProgressState.totalPengolahanData
+                    )
+                },
                 onSuccess = { response ->
                     updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
                 },
                 onError = { errorMessage ->
-                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = errorMessage.message))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = errorMessage.message
+                        )
+                    )
                 }
             )
         }
@@ -246,21 +432,28 @@ class DetailProjectViewModel(
         updateUiState(_uiState.value.copy(isLoading = true))
         viewModelScope.launch {
             handleApiResponseMeta(
-                apiCall = { postSettingProjectUseCase.execute(
-                    id = _uiState.value.idProject,
-                    projectName = _uiState.value.settingProjectState.projectName,
-                    startDate = _uiState.value.settingProjectState.startDate,
-                    endDate = _uiState.value.settingProjectState.endDate,
-                    aoiFile = _uiState.value.settingProjectState.aoiByteArray,
-                    aoiFileName = _uiState.value.settingProjectState.aoiFileName,
-                    rencanaTitikControlFileName = _uiState.value.settingProjectState.rencanaTitikControlFileName,
-                    rencanaTitikControlFile = _uiState.value.settingProjectState.rencanaTitikControlByteArray
-                ) },
+                apiCall = {
+                    postSettingProjectUseCase.execute(
+                        id = _uiState.value.idProject,
+                        projectName = _uiState.value.settingProjectState.projectName,
+                        startDate = _uiState.value.settingProjectState.startDate,
+                        endDate = _uiState.value.settingProjectState.endDate,
+                        aoiFile = _uiState.value.settingProjectState.aoiByteArray,
+                        aoiFileName = _uiState.value.settingProjectState.aoiFileName,
+                        rencanaTitikControlFileName = _uiState.value.settingProjectState.rencanaTitikControlFileName,
+                        rencanaTitikControlFile = _uiState.value.settingProjectState.rencanaTitikControlByteArray
+                    )
+                },
                 onSuccess = { response ->
                     updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
                 },
                 onError = { errorMessage ->
-                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = errorMessage.message))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = errorMessage.message
+                        )
+                    )
                 }
             )
         }
@@ -275,7 +468,12 @@ class DetailProjectViewModel(
                     updateUiState(_uiState.value.copy(isLoading = false, listLog = response))
                 },
                 onError = { errorMessage ->
-                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = errorMessage))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = errorMessage
+                        )
+                    )
                 }
             )
         }
@@ -287,10 +485,21 @@ class DetailProjectViewModel(
             handleApiResponse(
                 apiCall = { getListDocumentUseCase.execute(_uiState.value.idProject) },
                 onSuccess = { response ->
-                    updateUiState(_uiState.value.copy(isLoading = false, listDocument = response))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            listDocument = response,
+                            listDocumentFiltered = response
+                        )
+                    )
                 },
                 onError = { errorMessage ->
-                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = errorMessage))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = errorMessage
+                        )
+                    )
                 }
             )
         }
@@ -305,7 +514,12 @@ class DetailProjectViewModel(
                     updateUiState(_uiState.value.copy(isLoading = false, metaResponse = response))
                 },
                 onError = { errorMessage ->
-                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = errorMessage.message))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = errorMessage.message
+                        )
+                    )
                 }
             )
         }
@@ -315,16 +529,28 @@ class DetailProjectViewModel(
         updateUiState(_uiState.value.copy(isLoading = true))
         viewModelScope.launch {
             handleApiResponseMeta(
-                apiCall = { uploadDocumentUseCase.execute(
-                    id = _uiState.value.idProject,
-                    documentName = _uiState.value.documentState.documentName,
-                    documentFile = _uiState.value.documentState.documentByteArray!!
-                ) },
+                apiCall = {
+                    uploadDocumentUseCase.execute(
+                        id = _uiState.value.idProject,
+                        documentName = _uiState.value.documentState.documentName,
+                        documentFile = _uiState.value.documentState.documentByteArray!!
+                    )
+                },
                 onSuccess = { response ->
-                    updateUiState(_uiState.value.copy(isLoading = false, documentState = _uiState.value.documentState.copy(metaResponseDocument = response)))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            documentState = _uiState.value.documentState.copy(metaResponseDocument = response)
+                        )
+                    )
                 },
                 onError = { errorMessage ->
-                    updateUiState(_uiState.value.copy(isLoading = false, errorMessage = errorMessage.message))
+                    updateUiState(
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = errorMessage.message
+                        )
+                    )
                 }
             )
         }

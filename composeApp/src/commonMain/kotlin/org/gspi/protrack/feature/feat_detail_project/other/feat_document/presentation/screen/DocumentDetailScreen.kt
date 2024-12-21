@@ -20,6 +20,7 @@ import org.gspi.protrack.feature.feat_detail_project.other.feat_document.present
 import org.gspi.protrack.feature.feat_detail_project.other.feat_document.presentation.component.UploadDocumentComponent
 import org.gspi.protrack.feature.feat_detail_project.presentation.eventstate.DetailProjectEvent
 import org.gspi.protrack.gspidesign.confirmation.ConfirmationDialog
+import org.gspi.protrack.gspidesign.empty.EmptyView
 
 @Composable
 fun DocumentDetailScreen(
@@ -71,35 +72,47 @@ fun DocumentDetailScreen(
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             NewProjectDocSearchComponent(
-                searchValue = "",
-                onValueChange = {},
+                searchValue = uiState.searchDocumentValue,
+                onValueChange = {
+                    viewModel.onEvent(
+                        DetailProjectEvent.OnSearchDocument(it)
+                    )
+                },
                 onButtonClick = {
                     viewModel.onEvent(
                         DetailProjectEvent.OnAddDocumentClick(true)
                     )
                 }
             )
-            uiState.listDocument?.forEach {
-                ItemDocumentComponent(
-                    projectName = it.documentName,
-                    timeLeft = it.dateUploaded,
-                    author = it.fileName,
-                    onClick = {},
-                    onDownloadClick = {
-                        openOrDownloadPdf(it.path)
-                    },
-                    onDeleteClick = {
-                        ConfirmationDialog.show(
-                            title = "Delete Document",
-                            message = "Are you sure you want to delete this document?",
-                            onYesClick = {
-                                viewModel.onEvent(
-                                    DetailProjectEvent.OnDeleteDocument(it.id)
-                                )
-                            }
-                        )
-                    }
-                )
+
+            if (uiState.listDocumentFiltered?.isNotEmpty() == true){
+                EmptyView.hide()
+                uiState.listDocumentFiltered.forEach {
+                    ItemDocumentComponent(
+                        projectName = it.documentName,
+                        timeLeft = it.dateUploaded,
+                        author = it.fileName,
+                        onClick = {},
+                        onDownloadClick = {
+                            openOrDownloadPdf(it.path)
+                        },
+                        onDeleteClick = {
+                            ConfirmationDialog.show(
+                                title = "Delete Document",
+                                message = "Are you sure you want to delete this document?",
+                                onYesClick = {
+                                    viewModel.onEvent(
+                                        DetailProjectEvent.OnDeleteDocument(it.id)
+                                    )
+                                }
+                            )
+                        }
+                    )
+                }
+            }else if (uiState.searchDocumentValue.isNotEmpty()) {
+                EmptyView.show("No documents found")
+            } else {
+                EmptyView.show("No documents available")
             }
         }
     }
