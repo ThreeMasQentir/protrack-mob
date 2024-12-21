@@ -22,6 +22,8 @@ fun DrawerDashboard(
     onUserClick: () -> Unit,
     onProjectClick: () -> Unit,
     onLogOutClick: () -> Unit,
+    profileName: String = "",
+    isAdmin: Boolean = false
 ) {
     Column(
         modifier = Modifier
@@ -31,7 +33,7 @@ fun DrawerDashboard(
             .padding(16.dp)
     ) {
         // Header
-        ProTrackHeaderComponent(isDashboard = false)
+        ProTrackHeaderComponent(isDashboard = false, profilName = profileName)
         Spacer(modifier = Modifier.padding(8.dp))
 
         // Other Buttons
@@ -46,18 +48,18 @@ fun DrawerDashboard(
             textColor = Color(0xFF113F3F)
         )
         Spacer(modifier = Modifier.padding(8.dp))
-        GspiButtonLeftIconFull(
-            text = "Users",
-            icon = Res.drawable.ic_users,
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {
-                onUserClick()
-            },
-            buttonColor = Color(0xFFFFEFC4),
-            textColor = Color(0xFF113F3F)
-        )
-
-
+        if (isAdmin){
+            GspiButtonLeftIconFull(
+                text = "Users",
+                icon = Res.drawable.ic_users,
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    onUserClick()
+                },
+                buttonColor = Color(0xFFFFEFC4),
+                textColor = Color(0xFF113F3F)
+            )
+        }
         // Spacer to push content above and Log Out button to the bottom
         Spacer(modifier = Modifier.weight(1f))
 

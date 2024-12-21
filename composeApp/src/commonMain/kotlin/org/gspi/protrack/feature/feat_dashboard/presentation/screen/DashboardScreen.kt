@@ -117,6 +117,8 @@ fun DashboardScreen(
         drawerState = drawerState,
         drawerContent = {
             DrawerDashboard(
+                profileName = viewModel.getName(),
+                isAdmin = viewModel.isAdministrator(),
                 onUserClick = {
                     scope.launch {
                         drawerState.close()
