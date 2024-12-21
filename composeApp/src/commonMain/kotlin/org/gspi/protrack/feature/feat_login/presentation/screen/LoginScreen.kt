@@ -108,6 +108,7 @@ fun LoginScreen(
                 )
 
                 GspiButtonPrimary(
+                    enabled = uiState.loginRequest.phone.isNotEmpty() && uiState.loginRequest.password.isNotEmpty(),
                     text = "Login",
                     onClick = {
                         viewModel.onEvent(LoginEvent.LoginClicked)

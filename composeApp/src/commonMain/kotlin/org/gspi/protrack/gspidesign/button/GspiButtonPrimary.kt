@@ -20,6 +20,7 @@ import org.jetbrains.compose.resources.Font
 fun GspiButtonPrimary(
     text: String,
     onClick: () -> Unit,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Button(
@@ -28,6 +29,7 @@ fun GspiButtonPrimary(
             containerColor = Color(0xFF113F3F), // Button background color
             contentColor = Color(0xFFFFEFC4) // Text color
         ),
+        enabled = enabled,
         shape = RoundedCornerShape(8.dp), // Rounded corners with 8dp
         modifier = modifier.height(48.dp)
     ) {

@@ -66,9 +66,6 @@ class DetailRemoteDataSource(private val client: HttpClient,private val userPref
 
     suspend fun updateProject(id: Int, request: UpdateProjectRequest): Meta {
         return runCatching {
-            println("Starting project update for ID: $id")
-            println("Request details: projectName=${request.projectName}, startDate=${request.startDate}, deadlineDate=${request.deadlineDate}")
-
             val response = client.submitFormWithBinaryData(
                 url = "$baseUrl/project/update/$id",
                 formData = formData {
@@ -91,12 +88,9 @@ class DetailRemoteDataSource(private val client: HttpClient,private val userPref
                     }
                 }
             )
-
-            println("Response received for project update: $response")
             response.body<Meta>()
         }.getOrElse { exception ->
-            println("Error during project update: ${exception.message}")
-            exception.printStackTrace() // For detailed stack trace during development
+            exception.printStackTrace()
             throw Exception("Failed to update project with ID: $id", exception)
         }
     }
