@@ -4,11 +4,14 @@ import org.gspi.protrack.common.model.Meta
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.ProjectResponseItem
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.UserResponseItem
 import org.gspi.protrack.feature.feat_dashboard.presentation.model.ContentType
+import org.gspi.protrack.feature.feat_login.data.model.response.DecoderTokenResponse
 
 data class DashboardState (
     val isLoading: Boolean = false,
     val token: String = "",
     val errorMessage: String?= null,
+    val errorMessageDecoder: String?= null,
+    val decoderTokenResponse: DecoderTokenResponse? = null,
     val searchValue: String = "",
     val listProject: List<ProjectResponseItem> = emptyList(),
     val listProjectFiltered: List<ProjectResponseItem> = emptyList(),

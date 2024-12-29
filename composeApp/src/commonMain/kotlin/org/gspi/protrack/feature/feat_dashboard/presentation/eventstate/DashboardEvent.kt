@@ -22,6 +22,7 @@ sealed class DashboardEvent {
     data object OnSaveProjectClick : DashboardEvent()
     data object OnDeleteAoiFileName : DashboardEvent()
     data object OnDeleteRencanaTitikControlFileName : DashboardEvent()
+    data object OnDecoderToken : DashboardEvent()
 
     //user dialog
     data class OnAddUserClick(val isDialogVisible: Boolean) : DashboardEvent()

@@ -52,9 +52,10 @@ fun DetailProjectScreen(
         uiState.metaResponse?.let {
             if (it.code == 200) {
                 SuccessToast.show("Sucess")
-                id?.let{
-                    viewModel.onEvent(DetailProjectEvent.OnGetDetailProject(it.toString()))
-                }
+//                id?.let{
+//                    viewModel.onEvent(DetailProjectEvent.OnGetDetailProject(it.toString()))
+//                }
+                navController.popBackStack()
             } else {
                 Error.show("Failed: ${it.message}")
             }

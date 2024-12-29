@@ -20,7 +20,7 @@ import org.gspi.protrack.feature.feat_dashboard.data.model.response.ProjectRespo
 import org.gspi.protrack.feature.feat_dashboard.data.model.response.UserResponseItem
 
 class DashboardRemoteDataSource(private val client: HttpClient) {
-    private val baseUrl = "https://gspi-protrack.my.id/api-dev"
+    private val baseUrl = "https://gspi-protrack.my.id/api"
 
     suspend fun getProjectList(): BaseResponse<List<ProjectResponseItem>>{
         return runCatching {

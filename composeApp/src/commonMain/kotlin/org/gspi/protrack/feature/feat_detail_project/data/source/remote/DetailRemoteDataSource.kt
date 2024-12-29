@@ -31,7 +31,7 @@ import org.gspi.protrack.feature.feat_detail_project.presentation.dialog.getCurr
 
 class DetailRemoteDataSource(private val client: HttpClient,private val userPreferences: UserPreferences,
 ) {
-    private val baseUrl = "https://gspi-protrack.my.id/api-dev"
+    private val baseUrl = "https://gspi-protrack.my.id/api"
 
     suspend fun getDetailProject(id: Int): BaseResponse<DetailProjectResponse>{
         return runCatching{

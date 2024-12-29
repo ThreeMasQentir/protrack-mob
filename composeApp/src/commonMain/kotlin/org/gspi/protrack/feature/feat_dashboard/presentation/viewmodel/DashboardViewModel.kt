@@ -18,6 +18,8 @@ import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.PostDeactive
 import org.gspi.protrack.feature.feat_dashboard.domain.usersusecase.PostUpdateUserUseCase
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardEvent
 import org.gspi.protrack.feature.feat_dashboard.presentation.eventstate.DashboardState
+import org.gspi.protrack.feature.feat_login.domain.DecoderTokenUseCase
+import org.gspi.protrack.feature.feat_login.presentation.eventstate.LoginEvent
 
 class DashboardViewModel(
     private val userPreferences: UserPreferences,
@@ -28,7 +30,8 @@ class DashboardViewModel(
     private val deleteUserUseCase: DeleteUserUseCase,
     private val postDeactiveUserUseCase: PostDeactiveUserUseCase,
     private val postActiveUserUseCase: PostActiveUserUseCase,
-    private val createProjectUseCase: CreateProjectUseCase
+    private val createProjectUseCase: CreateProjectUseCase,
+    private val decoderTokenUseCase: DecoderTokenUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(DashboardState())
     val uiState: StateFlow<DashboardState> = _uiState
@@ -258,11 +261,18 @@ class DashboardViewModel(
                     )
                 )
             }
+            is DashboardEvent.OnDecoderToken -> {
+                decodeToken()
+            }
         }
     }
 
     fun getName(): String {
         return userPreferences.getName() ?: ""
+    }
+
+    fun getToken(): String? {
+        return userPreferences.getToken()
     }
 
     fun isAdministrator(): Boolean {
@@ -273,6 +283,7 @@ class DashboardViewModel(
     private fun logout() {
         viewModelScope.launch {
             userPreferences.clearAll()
+            decodeToken()
         }
     }
 
@@ -446,6 +457,21 @@ class DashboardViewModel(
                             errorMessage = error.message
                         )
                     )
+                }
+            )
+        }
+    }
+
+    private fun decodeToken() {
+        updateUiState(_uiState.value.copy(isLoading = true))
+        viewModelScope.launch {
+            handleApiResponse(
+                apiCall = { decoderTokenUseCase.execute() },
+                onSuccess = { response ->
+                    updateUiState(_uiState.value.copy(isLoading = false, decoderTokenResponse = response))
+                },
+                onError = { error ->
+                    updateUiState(_uiState.value.copy(isLoading = false, errorMessageDecoder = error))
                 }
             )
         }

@@ -22,6 +22,7 @@ import org.gspi.protrack.feature.feat_login.presentation.component.LoginBackgrou
 import org.gspi.protrack.feature.feat_login.presentation.eventstate.LoginEvent
 import org.gspi.protrack.feature.feat_login.presentation.viewmodel.LoginViewModel
 import org.gspi.protrack.gspidesign.button.GspiButtonPrimary
+import org.gspi.protrack.gspidesign.empty.EmptyView
 import org.gspi.protrack.gspidesign.error.Error
 import org.gspi.protrack.gspidesign.loading.Loading
 import org.gspi.protrack.gspidesign.success.SuccessToast
@@ -40,6 +41,7 @@ fun LoginScreen(
 
     val uiState by viewModel.uiState.collectAsState()
     LaunchedEffect(uiState) {
+        EmptyView.hide()
         if (uiState.isLoading) Loading.show() else Loading.hide()
         uiState.errorMessage?.let { errorMessage ->
             Error.show(errorMessage)
@@ -50,13 +52,8 @@ fun LoginScreen(
         }
         uiState.decoderTokenResponse?.let {
             SuccessToast.show("Login successful")
-            onLoginSuccess()
             Loading.hide()
-        }
-        viewModel.getToken()?.let {
-            if (it != "") {
-                onLoginSuccess()
-            }
+            onLoginSuccess()
         }
     }
 

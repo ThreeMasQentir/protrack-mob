@@ -40,7 +40,7 @@ fun DashboardScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
-        viewModel.onEvent(DashboardEvent.LoadListProject)
+        viewModel.onEvent(DashboardEvent.OnDecoderToken)
     }
     LaunchedEffect(uiState) {
         if (uiState.isLoading) Loading.show() else Loading.hide()
@@ -49,6 +49,26 @@ fun DashboardScreen(
             viewModel.onEvent(DashboardEvent.ClearError)
         }
     }
+
+    LaunchedEffect(uiState.decoderTokenResponse){
+        uiState.decoderTokenResponse?.let {
+            Loading.hide()
+            viewModel.onEvent(DashboardEvent.LoadListProject)
+        }
+    }
+
+    LaunchedEffect(uiState.errorMessageDecoder){
+        uiState.errorMessageDecoder?.let {
+            Loading.hide()
+            viewModel.onEvent(DashboardEvent.ClearError)
+            navController.navigate(Routes.Login.route) {
+                popUpTo(Routes.Login.route) {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
     AddEditProjectComponent(
         isDialogVisible = uiState.isDialogVisible,
         projectName = uiState.projectName,
@@ -76,6 +96,7 @@ fun DashboardScreen(
                         )
                     )
                 }
+
                 else -> {}
             }
         },
@@ -138,8 +159,8 @@ fun DashboardScreen(
                             message = "Are you sure you want to logout?",
                             onYesClick = {
                                 viewModel.onEvent(DashboardEvent.OnLogout)
-                                navController.navigate(Routes.Login.route){
-                                    popUpTo(Routes.Login.route){
+                                navController.navigate(Routes.Login.route) {
+                                    popUpTo(Routes.Login.route) {
                                         inclusive = true
                                     }
                                 }

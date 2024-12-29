@@ -120,7 +120,17 @@ android {
     }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            // Enable code shrinking, obfuscation, and optimization
+            isMinifyEnabled = true
+
+            // Enable resource shrinking
+            isShrinkResources = true
+
+            // Specify ProGuard rules files
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {

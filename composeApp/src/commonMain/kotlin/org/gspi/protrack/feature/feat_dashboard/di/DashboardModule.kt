@@ -29,5 +29,5 @@ val dashboardModule = module {
     single { PostDeactiveUserUseCase(get()) }
     single { PostActiveUserUseCase(get()) }
     single { CreateProjectUseCase(get()) }
-    viewModel { DashboardViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { DashboardViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
 }

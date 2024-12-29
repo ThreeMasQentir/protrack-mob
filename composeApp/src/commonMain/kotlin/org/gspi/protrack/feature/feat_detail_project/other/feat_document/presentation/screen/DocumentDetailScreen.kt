@@ -1,5 +1,6 @@
 package org.gspi.protrack.feature.feat_detail_project.other.feat_document.presentation.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,7 @@ import org.gspi.protrack.feature.feat_detail_project.other.feat_document.present
 import org.gspi.protrack.feature.feat_detail_project.presentation.eventstate.DetailProjectEvent
 import org.gspi.protrack.gspidesign.confirmation.ConfirmationDialog
 import org.gspi.protrack.gspidesign.empty.EmptyView
+import org.gspi.protrack.gspidesign.infodialog.InfoDialog
 
 @Composable
 fun DocumentDetailScreen(

@@ -15,6 +15,7 @@ import org.gspi.protrack.feature.feat_detail_project.presentation.screen.DetailP
 import org.gspi.protrack.gspidesign.confirmation.ConfirmationDialog
 import org.gspi.protrack.gspidesign.datepicker.DatePickerDialog
 import org.gspi.protrack.gspidesign.empty.EmptyView
+import org.gspi.protrack.gspidesign.infodialog.InfoDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -22,14 +23,10 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun App() {
     val navController = rememberNavController()
     Box {
-        NavHost(navController = navController, startDestination = Routes.Login.route) {
+        NavHost(navController = navController, startDestination = Routes.Dashboard.route) {
             composable(route = Routes.Login.route) {
                 LoginScreen(onLoginSuccess = {
-                    navController.navigate(Routes.Dashboard.route){
-                        popUpTo(Routes.Dashboard.route){
-                            inclusive = true
-                        }
-                    }
+                    navController.navigate(Routes.Dashboard.route)
                 })
             }
             composable(route = Routes.Dashboard.route) {
@@ -45,6 +42,7 @@ fun App() {
         ConfirmationDialog.Content()
         DatePickerDialog.Content()
         EmptyView.Content()
+        InfoDialog.Content()
     }
 
 }
